@@ -12,12 +12,12 @@ session_start();
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
-$hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
-$hostelDetails = $UserController->gethostelInformation($hostelid);
+$hostelid = isset($_GET['id']) ? $_GET['id'] : '';
+$hostelDetails = $UserController->gethosteldetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
-$UserController->updateOwnerInfo();
-?>
+$UserController->update_hostel();
 
+?>
 ?>
 
 

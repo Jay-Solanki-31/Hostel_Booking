@@ -276,6 +276,61 @@ class UserController
     }
     
 
+    public function update_hostel()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $hostelid = isset($_GET['id']) ? $_GET['id'] : '';
+    
+            try {
+                $hostelname = $_POST['hostelName'];
+                $location = $_POST['location'];
+                $description = $_POST['description'];
+                $imageFILE = $_FILES['picture']['name'];
+    
+                $uploadDirectory = 'uploads/hostels/';
+                $imageFILEDestination = "";
+    
+                $currentHostelImage = $this->userModel->gethostelimage($hostelid)['image'];
+    
+                if (!empty($imageFILE)) {
+                    $uploadedFile = $_FILES['picture']['tmp_name'];
+                    $originalFileName = $_FILES['picture']['name'];
+                    $destination = $uploadDirectory . $originalFileName;
+    
+                    if (move_uploaded_file($uploadedFile, $destination)) {
+                        $imageFILEDestination = $originalFileName;
+    
+                        if ($currentHostelImage && file_exists($uploadDirectory . $currentHostelImage)) {
+                            unlink($uploadDirectory . $currentHostelImage);
+                        }
+                    }
+                } else {
+                    $imageFILEDestination = $currentHostelImage;
+                }
+    
+                $this->userModel->update_hostel($hostelid, $hostelname, $location, $description, $imageFILEDestination);
+    
+                showToast('Hostel updated successfully!');
+                header("refresh:2;url=hostelProfile.php");
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
+        }
+    }
+    
+    public function deletehostel($id)
+    {
+        try {
+            $this->userModel->deletehostel($id);
+            showToast('Hostel delated successfully!');
+            header("location:hostelProfile.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     public function updateOwnerInfo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

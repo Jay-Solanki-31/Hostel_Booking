@@ -2,6 +2,7 @@
 session_start();
 include "main_header.php";
 include "config/UserController.php";
+
 $UserController = new UserController();
 $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
@@ -11,8 +12,12 @@ $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
 
-
+$deleteid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
+if ($deleteid) {
+    $delatehostel = $UserController->deleteHostel($deleteid);
+}
 ?>
+
 <style>
     .profile-picture {
         text-align: center;
@@ -231,7 +236,7 @@ $hostellist = $UserController->gethostelInformation($hostelid);
         let conform = window.confirm("Are you sure want to delete this record?");
         if (conform) {
             // alert('delated');
-            window.location.href = "hostels.php?delateid=" + id;
+            window.location.href = "hostelProfile.php?delateid=" + id;
         }
     }
 </script>

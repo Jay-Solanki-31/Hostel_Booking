@@ -366,7 +366,7 @@ public function add_hostel($hostelName, $location, $description, $image, $amenit
 function gethosteldetails($id)
 {
     try {
-        $gethosteldetails = "SELECT * from  hostels where hostels.id = '$id'";
+        $gethosteldetails = "SELECT * from  hostels where id = '$id'";
         $result = $this->mysqli->query($gethosteldetails);
 
         if (!$result) {
@@ -422,9 +422,70 @@ function getOwnerImage($id)
 
 
 
+function gethostelimage($id)
+{
+    try {
+        $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
+        $result = $this->mysqli->query($gethostelimage);
+
+        if (!$result) {
+            throw new Exception("Error in login query: " . $this->mysqli->error);
+        }
+
+        return $result->fetch_assoc();
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 
 
+public function update_hostel($hostelid, $hostelname, $location, $description, $image)
+{
+    try {
+        $hostelname = $this->mysqli->real_escape_string($hostelname);
+        $location = $this->mysqli->real_escape_string($location);
+        $description = $this->mysqli->real_escape_string($description);
+        $image = $this->mysqli->real_escape_string($image) ?? '';
+        $hostelid = $this->mysqli->real_escape_string($hostelid);
 
+        $picturequery = "";
+        if ($image) {
+            $picturequery = ", image = '$image'";
+        }
+
+        $updatehosteldata = "UPDATE hostels 
+                             SET hostel_name = '$hostelname', 
+                                 location = '$location',   
+                                 description = '$description'" . $picturequery . " 
+                             WHERE id = '$hostelid'";
+
+        $result = $this->mysqli->query($updatehosteldata);
+        if (!$result) {
+            throw new Exception("Error in update query: " . $this->mysqli->error);
+        }
+    } catch (Exception $e) {
+        throw new Exception("Error in update function: " . $e->getMessage());
+    }
+}
+
+public function deleteHostel($id)
+{
+    try {
+        $deleteQuery = "DELETE FROM hostels
+                        WHERE hostels.id = $id";
+
+        $result = $this->mysqli->query($deleteQuery);
+
+        if (!$result) {
+            throw new Exception("Error in delete query: " . $this->mysqli->error);
+        }
+
+        return $result;
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
 
 
 
