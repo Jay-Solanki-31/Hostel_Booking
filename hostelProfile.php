@@ -2,7 +2,6 @@
 session_start();
 include "main_header.php";
 include "config/UserController.php";
-
 $UserController = new UserController();
 $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
@@ -12,12 +11,13 @@ $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
 
-$deleteid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
-if ($deleteid) {
-    $delatehostel = $UserController->deleteHostel($deleteid);
+$delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
+if($delateid){
+$delatehostel = $UserController->deleteHostel($delateid);
 }
-?>
 
+
+?>
 <style>
     .profile-picture {
         text-align: center;
@@ -143,7 +143,6 @@ if ($deleteid) {
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Complaint ID</th>
                                             <th>Student Name </th>
                                             <th>Description</th>
                                             <th>Status</th>
