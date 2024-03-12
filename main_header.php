@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <?php
+    $page_titles = array(
+        "about.php" => "About Us",
+        "contact.php" => "Contact Us",
+        "hostel.php" => "Hostel",
+        "login.php" => "Login",
+        "register.php" => "Register",
+        "room-detail.php" => "Rooms Details",
+        "studentProfile.php" => "Profile",
+        "hostelProfile.php" => "Profile",
+
+    );
+
+    // Get the current page filename
+    $current_page = basename($_SERVER['PHP_SELF']);
+
+    // Check if the current page exists in the $page_titles array, if not, default to "Untitled"
+    $title = isset($page_titles[$current_page]) ? $page_titles[$current_page] : "Untitled";
+
+    // Echo the dynamic title
+    echo "<title>$title</title>";
+    ?>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="images/favicon.png" />
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,300,500,600%7cMontserrat:400,700" rel='stylesheet' type='text/css'>
+
+    <!-- CSS LIBRARY -->
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/font-lotusicon.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/magnific-popup.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/settings.css">
+    <link rel="stylesheet" type="text/css" href="css/lib/bootstrap-select.min.css">
+
+    <!-- MAIN STYLE -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+</head>
+ <body>
+
+
+    <!-- PRELOADER -->
+    <!-- <div id="preloader">
+        <span class="preloader-dot"></span>
+    </div> -->
+    <!-- END / PRELOADER -->
+
+    <!-- PAGE WRAP -->
+    <div id="page-wrap">
+
+        <!-- HEADER -->
+        <header id="header">
+
+            <!-- HEADER TOP -->
+            <div class="header_top">
+                <div class="container">
+                <div class="header_right float-right">
+                        <?php
+                        session_start(); // Start the session
+                        if (isset($_SESSION['user_email'])) {
+                            // User is logged in
+                            ?>
+                        <?php } else { ?>
+                            <span class="login-register">
+                                <!-- Add login and register links if user is not logged in -->
+                                <a href="login.php">Login</a>
+                                <a href="register.php">Register</a>
+                            </span>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <!-- END / HEADER TOP -->
+
+            <!-- HEADER LOGO & MENU -->
+            <div class="header_content" id="header_content">
+
+                <div class="container">
+                    <!-- HEADER LOGO -->
+                    <div class="header_logo">
+                        <a href="index.php"><img src="images/logo-header.png" alt=""></a>
+                    </div>
+                    <!-- END / HEADER LOGO -->
+
+                    <!-- HEADER MENU -->
+                    <nav class="header_menu">
+                        <ul class="menu">
+                            <li>
+                                <a href="index.php">Home</span></a>
+
+                            </li>
+                            <li><a href="about.php">About</a></li>
+
+                            <li>
+                                <a href="hostel.php">HOSTEL </span></a>
+
+                            </li>
+                            <li><a href="contact.php">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <!-- END / HEADER MENU -->
+
+                    <!-- MENU BAR -->
+                    <span class="menu-bars">
+                        <span></span>
+                    </span>
+                    <!-- END / MENU BAR -->
+
+                </div>
+            </div>
+            <!-- END / HEADER LOGO & MENU -->
+
+        </header>
+        <!-- END / HEADER -->
