@@ -66,25 +66,6 @@ class UserController
     }
 }
 
-    public function UpdateUsersPassword()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $new_password = $_POST['new_password'];
-            $confirm_password = $_POST['confirm_password'];
-
-
-            try {
-                $this->userModel->UpdateUsers_password($email, $new_password, $confirm_password);
-                showToast('Admin password updated successfully!');
-                header("refresh:1;url=profile.php");
-                exit();
-            } catch (Exception $e) {
-                error_log('Error: ' . $e->getMessage());
-                showToast($e->getMessage(), 'error');
-            }
-        }
-    }
     public function GetHostelData()
     {
         try {
@@ -387,7 +368,25 @@ class UserController
             }
         }
     }
-    
+
+    public function updateHostelPassword($userId)
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+        
+        try {
+            $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
+            showToast('Password updated successfully!');
+            header("refresh:1;url=hostelProfile.php");
+            exit();
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
+        }
+    }
+}
 
    
 }

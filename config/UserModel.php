@@ -112,53 +112,6 @@ class UserModel
             throw new Exception("Error: " . $e->getMessage());
         }
     }
-    
-
-
-    function GetUserPassword($email)
-    {
-        try {
-            $email = $this->mysqli->real_escape_string($email);
-            $GetUseremail = "SELECT password FROM users WHERE email = '$email'";
-            $result = $this->mysqli->query($GetUseremail);
-
-            if (!$result) {
-                throw new Exception("Error fetching password: " . $this->mysqli->error);
-            }
-            return $result;
-        } catch (Exception $e) {
-            echo "error: " . $e->getMessage();
-        }
-    }
-
-
-    public function UpdateUsers_password($email, $new_password, $confirm_password)
-    {
-        try {
-            $email = $this->mysqli->real_escape_string($email);
-            $new_password = $this->mysqli->real_escape_string($new_password);
-            $confirm_password = $this->mysqli->real_escape_string($confirm_password);
-
-            $userPasswordResult = $this->GetUserPassword($email);
-
-            if ($new_password !== $confirm_password) {
-                throw new Exception("New Password and Confirm New Password must be the same.");
-            }
-
-            if ($userPasswordResult->num_rows > 0) {
-                $updatepassword = "UPDATE users SET `password` = '$new_password' WHERE email = '$email'";
-                $result2 = $this->mysqli->query($updatepassword);
-
-                if (!$result2) {
-                    throw new Exception("Error in update query: " . $this->mysqli->error);
-                }
-            } else {
-                throw new Exception("No user found with the provided email.");
-            }
-        } catch (Exception $e) {
-            throw new Exception("Error in update function: " . $e->getMessage());
-        }
-    }
 
     public function contact($name, $email, $contactNo, $message)
     {
@@ -226,11 +179,10 @@ class UserModel
 }
 
 
-
 function getStudentsdetails($id)
 {
     try {
-        $getStudentsdetails = "SELECT id, email  FROM users where users.id = '$id'";
+        $getStudentsdetails = "SELECT * FROM users where users.id = '$id'";
         $result = $this->mysqli->query($getStudentsdetails);
 
         if (!$result) {
@@ -259,7 +211,7 @@ function getStudentsComplaint($id)
     }
 }
 
-
+//  hostel data part will start 
 
 function gethostelsdetails($id)
 {
@@ -508,8 +460,54 @@ public function deleteInquery($id)
 }
 
 
+public function getUserPassword($userId)
+{
+    try {
+        $getUserPassword = "SELECT password from users where id = '$userId'";
+        $result = $this->mysqli->query($getUserPassword);
+
+        if (!$result) {
+            throw new Exception("Error fetching password: " . $this->mysqli->error);
+        }
+        return $result;
+    } catch (Exception $e) {
+        throw new Exception("Error: " . $e->getMessage());
+    }
+}
 
 
+public function update_password($userId, $current_password, $new_password, $confirm_password)
+{
+    try {
+        $current_password = $this->mysqli->real_escape_string($current_password);
+        $new_password = $this->mysqli->real_escape_string($new_password);
+        $confirm_password = $this->mysqli->real_escape_string($confirm_password);
+
+        $userPasswordResult = $this->getUserPassword($userId);
+
+        if ($new_password !== $confirm_password) {
+            throw new Exception("New Password and Confirm New Password must be the same.");
+        }
+
+        if ($userPasswordResult->num_rows > 0) {
+            $userPassword = $userPasswordResult->fetch_assoc();
+            $actual_current_password = $userPassword['password'];
+
+            if ($current_password === $actual_current_password) {
+                $updatepassword = "UPDATE users SET `password` = '$new_password' WHERE id = '$userId'";
+                $result2 = $this->mysqli->query($updatepassword);
+
+                if (!$result2) {
+                    throw new Exception("Error in update query: " . $this->mysqli->error);
+                }
+            } else {
+                throw new Exception("Current password is incorrect");
+            }
+        }
+    } catch (Exception $e) {
+        throw new Exception("Error in update function: " . $e->getMessage());
+    }
+}
 
 
 }

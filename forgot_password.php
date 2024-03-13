@@ -3,7 +3,6 @@
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
-$UserController->UpdateUsersPassword();
 
 ?>
         <!-- ACCOUNT -->

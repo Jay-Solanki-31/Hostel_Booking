@@ -27,6 +27,19 @@ $complaintStatus = [
     ],
 ];
 ?>
+<style>
+    .profile-picture {
+        text-align: center;
+    }
+
+    .profile-picture img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+</style>
 
 <section class="section-sub-banner bg-16">
     <div class="awe-overlay"></div>
@@ -58,17 +71,33 @@ $complaintStatus = [
 
                             <!-- PROFILE TAB -->
                             <div id="profile" class="tab-pane fade active in">
-                                <h3>Student Details</h3>
-                                <table class="table">
-                                    <tr>
-                                        <th>Student ID</th>
-                                        <td><?= $student['id'] ?? 'N/A' ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email</th>
-                                        <td><?= $student['email'] ?? 'N/A' ?></td>
-                                    </tr>
-                                </table>
+                            <h3>Profile Details</h3>
+                                <div class="profile-picture">
+                                    <img src="uploads/students/<?= $student['image'] ?? 'N/A' ?>" alt="Profile Picture" class="rounded-circle">
+                                </div>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="hostel_name">Name</label>
+                                        <input type="text" class="form-control" id="full_name" value="<?= $student['full_name'] ?? 'N/A' ?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location">Email</label>
+                                        <input type="text" class="form-control" id="location" value="<?= $student['email'] ?? 'N/A' ?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contact_no">Contact No</label>
+                                        <input type="text" class="form-control" id="contact_no" value="<?= $student['contact_no'] ?? 'N/A' ?>" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="created_date">Date of Registration</label>
+                                        <input type="text" class="form-control" id="created_date" value="<?= $student['created_date'] ?? 'N/A' ?>" readonly>
+                                    </div>
+                                    <div class="text-end mt-4" style="text-align: left!important;">
+                                        <a href="editOwnerprofile.php" class="btn btn-primary">Edit Profile</a>
+                                        <a href="index.php" style="margin-left: 5px">Cancel</a>
+                                    </div>
+                                </form>
+                            </div> 
                             </div>
 
 

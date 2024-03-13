@@ -6,15 +6,16 @@ $UserController = new UserController();
 $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
+$UserController->updateHostelPassword($hostelid);
 
 $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
 
 $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
-if($delateid){
-$delatehostel = $UserController->deleteHostel($delateid);
-$delateInquey = $UserController->deleteInquery($delateid);
+if ($delateid) {
+    $delatehostel = $UserController->deleteHostel($delateid);
+    $delateInquey = $UserController->deleteInquery($delateid);
 }
 
 $complaintStatus = [
@@ -124,6 +125,7 @@ $complaintStatus = [
                                             <th>image</th>
                                             <th>amenities</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -182,7 +184,7 @@ $complaintStatus = [
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $complaint['created_date'] ?></td>
-                                                
+
                                             </tr>
                                         <?php endwhile; ?>
 
@@ -208,6 +210,7 @@ $complaintStatus = [
                                             <th>Contact NO</th>
                                             <th>Description</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -220,7 +223,7 @@ $complaintStatus = [
                                                 <td><?= $inquery['description'] ?></td>
                                                 <td><?= $inquery['created_date'] ?></td>
                                                 <td>
-                                                <a href="javascript:;" onclick="deleteInquery(<?= $inquery['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
+                                                    <a href="javascript:;" onclick="deleteInquery(<?= $inquery['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
 
                                                 </td>
                                             </tr>
@@ -236,7 +239,39 @@ $complaintStatus = [
 
                             <!-- CHANGE PASSWORD TAB -->
                             <div id="password" class="tab-pane fade">
-                                <!-- Change Password Form Goes Here -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title" style="margin-bottom:25px;">Change Password</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="POST" action="">
+                                            <div class="row form-group">
+                                                <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" require>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" require>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
+                                                <div class="col-sm-9">
+                                                    <div class="mb-3">
+                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm="##new_password">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="submit" onclick="" class="btn btn-primary">Change Password</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -272,4 +307,3 @@ $complaintStatus = [
         }
     }
 </script>
-
