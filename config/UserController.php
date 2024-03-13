@@ -66,6 +66,8 @@ class UserController
     }
 }
 
+
+
     public function GetHostelData()
     {
         try {

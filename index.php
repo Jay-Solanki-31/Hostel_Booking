@@ -8,7 +8,6 @@ $hostelImages = $UserController->GetHostelData();
 $sliders = $UserController->displaysliders();
 ?>
 
-
 <body>
 
     <!-- BANNER SLIDER -->
@@ -51,20 +50,20 @@ $sliders = $UserController->displaysliders();
                         $counter = 0;
                         foreach ($hostelImages as $hostelName => $imagePath) :
                         ?>
-                           <div class="col-xs-12 col-sm-4">
-    <div class="item room-item text-center accomd-modifications-room_1">
-        <!-- Hostel image -->
-        <div class="img">
-            <!-- Set a fixed size for the image -->
-            <a href="#"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $imagePath; ?>" alt="<?php echo $hostelName; ?>" style="width: 100%; height: 250px;"></a>
-        </div>
-        <!-- Hostel name -->
-        <h2 class="title"><a href="#"><?php echo $hostelName; ?></a></h2>
-        <div class="info upper">
-            <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="room-detail.php">View Details</a>
-        </div>
-    </div>
-</div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="item room-item text-center accomd-modifications-room_1">
+                                    <!-- Hostel image -->
+                                    <div class="img">
+                                        <!-- Set a fixed size for the image -->
+                                        <a href="#"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $imagePath; ?>" alt="<?php echo $hostelName; ?>" style="width: 100%; height: 250px;"></a>
+                                    </div>
+                                    <!-- Hostel name -->
+                                    <h2 class="title"><a href="#"><?php echo $hostelName; ?></a></h2>
+                                    <div class="info upper">
+                                        <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="room-detail.php">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
 
                         <?php
                             $counter++;
