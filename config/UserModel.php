@@ -198,7 +198,7 @@ function getStudentsdetails($id)
 function getStudentsComplaint($id)
 {
     try {
-        $getStudentsdetails = "SELECT * FROM complaint Where student_id = $id";
+        $getStudentsdetails = "SELECT complaint.*, users.full_name FROM complaint JOIN users ON complaint.student_id = users.id WHERE complaint.student_id = $id";
         $result = $this->mysqli->query($getStudentsdetails);
 
         if (!$result) {
@@ -210,6 +210,49 @@ function getStudentsComplaint($id)
         echo "Error: " . $e->getMessage();
     }
 }
+
+public function updateStudentInfo($email, $contact_no, $name,$address , $image, $studentid)
+{
+    try {
+        $email = $this->mysqli->real_escape_string($email);
+        $contact_no = $this->mysqli->real_escape_string($contact_no);
+        $name = $this->mysqli->real_escape_string($name);
+        $address = $this->mysqli->real_escape_string($address);
+        $image = $this->mysqli->real_escape_string($image) ?? '';
+
+        $picturequery = $image ? ", image = '$image'" : "";
+
+        $updateOwnerData = "UPDATE users SET email='$email', contact_no='$contact_no', full_name='$name', address='$address' $picturequery WHERE id ='$studentid'";
+        $result = $this->mysqli->query($updateOwnerData);
+
+        if (!$result) {
+            throw new Exception("Error in update query: " . $this->mysqli->error);
+        }
+    } catch (Exception $e) {
+        throw new Exception("Error in update function: " . $e->getMessage());
+    }
+}
+
+
+
+function getStudentImage($id)
+{
+    try {
+        $getOwnerImageQuery = "SELECT users.image FROM `users` WHERE users.id = '$id'";
+        $result = $this->mysqli->query($getOwnerImageQuery);
+        if (!$result) {
+            throw new Exception("Picture not found: " . $this->mysqli->error);
+        }
+
+        return $result->fetch_assoc();
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+
+
+
 
 //  hostel data part will start 
 

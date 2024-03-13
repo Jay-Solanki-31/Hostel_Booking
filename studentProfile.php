@@ -8,7 +8,6 @@ $studentDetails = $UserController->getStudentsdetails($studentid);
 $student = $studentDetails->fetch_assoc();
 $complaints = $UserController->getStudentsComplaint($studentid);
 
-// Define the complaint status array
 $complaintStatus = [
     [
         "value" => "1",
@@ -26,6 +25,7 @@ $complaintStatus = [
         "color" => "bg-success-light",
     ],
 ];
+
 ?>
 <style>
     .profile-picture {
@@ -60,10 +60,12 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#complaints" data-toggle="tab">Compalints History</a></li>
+                            <li><a href="#complaints" data-toggle="tab">Compalints</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
+
                         </ul>
+
                     </div>
 
                     <div class="col-md-9">
@@ -71,17 +73,17 @@ $complaintStatus = [
 
                             <!-- PROFILE TAB -->
                             <div id="profile" class="tab-pane fade active in">
-                            <h3>Profile Details</h3>
+                                <h3>Owner Details</h3>
                                 <div class="profile-picture">
                                     <img src="uploads/students/<?= $student['image'] ?? 'N/A' ?>" alt="Profile Picture" class="rounded-circle">
                                 </div>
                                 <form>
                                     <div class="form-group">
-                                        <label for="hostel_name">Name</label>
+                                        <label for="full_name">Name</label>
                                         <input type="text" class="form-control" id="full_name" value="<?= $student['full_name'] ?? 'N/A' ?>" readonly>
                                     </div>
                                     <div class="form-group">
-                                        <label for="location">Email</label>
+                                        <label for="email">Email</label>
                                         <input type="text" class="form-control" id="location" value="<?= $student['email'] ?? 'N/A' ?>" readonly>
                                     </div>
                                     <div class="form-group">
@@ -89,50 +91,103 @@ $complaintStatus = [
                                         <input type="text" class="form-control" id="contact_no" value="<?= $student['contact_no'] ?? 'N/A' ?>" readonly>
                                     </div>
                                     <div class="form-group">
+                                        <label for="address">address </label>
+                                        <input type="text" class="form-control" id="address" value="<?= $student['address'] ?? 'N/A' ?>" readonly>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="created_date">Date of Registration</label>
                                         <input type="text" class="form-control" id="created_date" value="<?= $student['created_date'] ?? 'N/A' ?>" readonly>
                                     </div>
                                     <div class="text-end mt-4" style="text-align: left!important;">
-                                        <a href="editOwnerprofile.php" class="btn btn-primary">Edit Profile</a>
+                                        <a href="editStudent-Profile.php" class="btn btn-primary">Edit Profile</a>
                                         <a href="index.php" style="margin-left: 5px">Cancel</a>
                                     </div>
                                 </form>
-                            </div> 
                             </div>
+
+                    
+
 
 
                             <!-- COMPLAINTS HISTORY TAB -->
                             <div id="complaints" class="tab-pane fade">
                                 <h3>Complaints History</h3>
-                                <?php if ($complaints && $complaints->num_rows > 0) : ?>
-                                    <table class="table">
-                                        <thead>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Student Name </th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while ($complaint = $complaints->fetch_assoc()) : ?>
                                             <tr>
-                                                <th>Complaint ID</th>
-                                                <th>Subject</th>
-                                                <th>Date</th>
-                                                <th>Status</th>
+                                                <td><?= $complaint['full_name'] ?></td>
+                                                <td><?= $complaint['description'] ?></td>
+                                                <td>
+                                                    <?php foreach ($complaintStatus as $status) : ?>
+                                                        <?php if ($status['value'] == $complaint['status']) : ?>
+                                                            <button type="button" class="btn btn-sm <?= $status['color']; ?>">
+                                                                <?= $status['status']; ?>
+                                                            </button>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                                </td>
+                                                <td><?= $complaint['created_date'] ?></td>
+
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php while ($complaint = $complaints->fetch_assoc()) : ?>
-                                                <tr>
-                                                    <td><?= $complaint['id'] ?></td>
-                                                    <td><?= $complaint['description'] ?></td>
-                                                    <td><?= $complaint['created_date'] ?></td>
-                                                    <td><span class="badge <?= getStatusColor($complaint['status']) ?>"><?= getStatusLabel($complaint['status']) ?></span></td>
-                                                </tr>
-                                            <?php endwhile; ?>
-                                        </tbody>
-                                    </table>
-                                <?php else : ?>
-                                    <p>No complaints found</p>
+                                        <?php endwhile; ?>
+
+                                    </tbody>
+
+                                </table>
+
+                                <?php if ($complaints->num_rows === 0) : ?>
+                                    <p>No complaints found.</p>
                                 <?php endif; ?>
                             </div>
 
+
+                          
+
+
                             <!-- CHANGE PASSWORD TAB -->
                             <div id="password" class="tab-pane fade">
-                                <!-- Change Password Form Goes Here -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title" style="margin-bottom:25px;">Change Password</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="POST" action="">
+                                            <div class="row form-group">
+                                                <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" require>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
+                                                <div class="col-sm-9">
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" require>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
+                                                <div class="col-sm-9">
+                                                    <div class="mb-3">
+                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm="##new_password">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="submit" onclick="" class="btn btn-primary">Change Password</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -145,30 +200,26 @@ $complaintStatus = [
     </div>
 </section>
 
+
+
 <?php include "main_footer.php" ?>
 
-<?php
-// Function to get the color based on status value
-function getStatusColor($statusValue) {
-    global $complaintStatus;
-    foreach ($complaintStatus as $status) {
-        if ($status['value'] == $statusValue) {
-            return $status['color'];
+<script>
+    function deletehostel(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostelProfile.php?delateid=" + id;
         }
     }
-    // Default color if status value not found
-    return 'bg-secondary-light';
-}
 
-// Function to get the label based on status value
-function getStatusLabel($statusValue) {
-    global $complaintStatus;
-    foreach ($complaintStatus as $status) {
-        if ($status['value'] == $statusValue) {
-            return $status['status'];
+    function deleteInquery(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostelProfile.php?delateid=" + id;
         }
     }
-    // Default label if status value not found
-    return 'Unknown';
-}
-?>
+</script>

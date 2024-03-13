@@ -163,6 +163,49 @@ class UserController
         }
     }
 
+    public function updateStudentInfo()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $contact_no = $_POST['phone']; 
+        $name = $_POST['name']; 
+        $address = $_POST['address'];
+        $imageFILE = $_FILES['picture']; 
+        $imageFILEDestination = "";
+        $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+        $originalFileName = "";
+
+        try {
+            $uploadDirectory = 'uploads/students/'; 
+            $singleImageArray = $this->userModel->getStudentImage($studentid);
+
+            if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                // Handle profile picture upload
+                $uploadedFile = $imageFILE['tmp_name'];
+                $originalFileName = $imageFILE['name'];
+                $destination = $uploadDirectory . $originalFileName;
+
+                if (move_uploaded_file($uploadedFile, $destination)) {
+                    $imageFILEDestination = $destination;
+                }
+            }
+
+            $this->userModel->updateStudentInfo($email, $contact_no, $name, $address, $originalFileName, $studentid);
+            showToast('Student Information updated successfully!');
+            header("refresh:1;url=studentProfile.php");
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
+        }
+    }
+}
+
+
+
+
+
+
+// HOSTEL PART START
     public function gethostelsdetails($id)
     {
         try {
