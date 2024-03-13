@@ -15,6 +15,7 @@ $hostellist = $UserController->gethostelInformation($hostelid);
 $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
 if ($delateid) {
     $delatehostel = $UserController->deleteHostel($delateid);
+    $delateComplain = $UserController->deleteComplain($delateid);
     $delateInquey = $UserController->deleteInquery($delateid);
 }
 
@@ -115,7 +116,7 @@ $complaintStatus = [
 
                             <!-- Add Hostel TAB -->
                             <div id="AddHostels" class="tab-pane fade">
-                                <h3>Add Hostel</h3>
+                                <h3>My Hostel's</h3>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -184,7 +185,9 @@ $complaintStatus = [
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $complaint['created_date'] ?></td>
-
+                                                <td>
+                                                    <a href="javascript:;" onclick="deleteComplain(<?= $complaint['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
+                                                </td>
                                             </tr>
                                         <?php endwhile; ?>
 
@@ -204,10 +207,9 @@ $complaintStatus = [
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th> ID</th>
                                             <th>Student Name </th>
                                             <th>Email </th>
-                                            <th>Contact NO</th>
+                                            <th>Contact No</th>
                                             <th>Description</th>
                                             <th>Date</th>
                                             <th>Action</th>
@@ -216,7 +218,6 @@ $complaintStatus = [
                                     <tbody>
                                         <?php while ($inquery = $inquerylist->fetch_assoc()) : ?>
                                             <tr>
-                                                <td><?= $inquery['id'] ?></td>
                                                 <td><?= $inquery['student_name'] ?></td>
                                                 <td><?= $inquery['email'] ?></td>
                                                 <td><?= $inquery['contact_no'] ?></td>
@@ -224,7 +225,6 @@ $complaintStatus = [
                                                 <td><?= $inquery['created_date'] ?></td>
                                                 <td>
                                                     <a href="javascript:;" onclick="deleteInquery(<?= $inquery['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
-
                                                 </td>
                                             </tr>
                                         <?php endwhile; ?>
@@ -299,6 +299,15 @@ $complaintStatus = [
     }
 
     function deleteInquery(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostelProfile.php?delateid=" + id;
+        }
+    }
+
+    function deleteComplain(id) {
         // alert(id);
         let conform = window.confirm("Are you sure want to delete this record?");
         if (conform) {

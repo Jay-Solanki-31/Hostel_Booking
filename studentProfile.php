@@ -7,6 +7,7 @@ $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $studentDetails = $UserController->getStudentsdetails($studentid);
 $student = $studentDetails->fetch_assoc();
 $complaints = $UserController->getStudentsComplaint($studentid);
+$UserController->updateStudentPassword($studentid);
 
 $complaintStatus = [
     [
@@ -73,7 +74,7 @@ $complaintStatus = [
 
                             <!-- PROFILE TAB -->
                             <div id="profile" class="tab-pane fade active in">
-                                <h3>Owner Details</h3>
+                                <h3>Profile Details</h3>
                                 <div class="profile-picture">
                                     <img src="uploads/students/<?= $student['image'] ?? 'N/A' ?>" alt="Profile Picture" class="rounded-circle">
                                 </div>

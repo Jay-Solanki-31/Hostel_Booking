@@ -200,10 +200,24 @@ class UserController
     }
 }
 
-
-
-
-
+public function updateStudentPassword($userId)
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $current_password = $_POST['current_password'];
+        $new_password = $_POST['new_password'];
+        $confirm_password = $_POST['confirm_password'];
+        
+        try {
+            $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
+            showToast('Password updated successfully!');
+            header("refresh:1;url=studentProfile.php");
+            exit();
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
+        }
+    }
+}
 
 // HOSTEL PART START
     public function gethostelsdetails($id)
@@ -347,6 +361,18 @@ class UserController
     {
         try {
             $this->userModel->deletehostel($id);
+            showToast('Hostel delated successfully!');
+            header("location:hostelProfile.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function deleteComplain($id)
+    {
+        try {
+            $this->userModel->deletecomplain($id);
             showToast('Hostel delated successfully!');
             header("location:hostelProfile.php");
         } catch (Exception $e) {
