@@ -11,19 +11,11 @@ $UserController = new UserController();
             <div class="container">
                 <div class="login-register">
                     <div class="text text-center">
-                        <h2>LOGIN ACCOUNT</h2>
+                        <h2>Forgot Password</h2>
             
-                     <form action="" method="post" id="loginForm" class="account_form">
+                     <form action="send-password-reset.php" method="post" id="" class="account_form">
                             <div class="field-form">
                                 <input type="text" class="field-text" id=email name="email" placeholder="Email">
-                            </div>
-                            <div class="field-form">
-                                <input type="password" id="new_password" name="new_password" class="field-text" placeholder="New Password">
-                                <span class="view-pass"><i class="lotus-icon-view"></i></span>
-                            </div>
-                            <div class="field-form">
-                                <input type="password" id="confirm_password" name="confirm_password" class="field-text" placeholder="Confirm New Password">
-                                <span class="view-pass"><i class="lotus-icon-view"></i></span>
                             </div>
                             <div class="field-form field-submit">
                                 <button class="awe-btn awe-btn-13">Change Password</button>

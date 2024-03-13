@@ -69,7 +69,9 @@ class UserModel
             throw new Exception("Error in login function: " . $e->getMessage());
         }
     }
+     
 
+    
     function GetHostelData()
     {
         try {
