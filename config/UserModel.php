@@ -488,6 +488,26 @@ public function deleteHostel($id)
 }
 
 
+public function deleteInquery($id)
+{
+    try {
+        $deleteQuery = "DELETE FROM inquiry
+        WHERE id = $id";
+
+        $result = $this->mysqli->query($deleteQuery);
+
+        if (!$result) {
+            throw new Exception("Error in delete query: " . $this->mysqli->error);
+        }
+
+        return $result;
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return false;
+    }
+}
+
+
 
 
 

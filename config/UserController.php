@@ -331,6 +331,18 @@ class UserController
         }
     }
 
+    public function deleteInquery($id)
+    {
+        try {
+            $this->userModel->deleteInquery($id);
+            showToast('inquery  delated successfully!');
+            header("location:hostelProfile.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     public function updateOwnerInfo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -376,4 +388,6 @@ class UserController
         }
     }
     
+
+   
 }

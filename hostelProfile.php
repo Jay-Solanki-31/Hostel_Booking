@@ -14,8 +14,26 @@ $hostellist = $UserController->gethostelInformation($hostelid);
 $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
 if($delateid){
 $delatehostel = $UserController->deleteHostel($delateid);
+$delateInquey = $UserController->deleteInquery($delateid);
 }
 
+$complaintStatus = [
+    [
+        "value" => "1",
+        "status" => "Pending",
+        "color" => "bg-danger-light",
+    ],
+    [
+        "value" => "2",
+        "status" => "In Progress",
+        "color" => "bg-warning-light",
+    ],
+    [
+        "value" => "3",
+        "status" => "Resolved",
+        "color" => "bg-success-light",
+    ],
+];
 
 ?>
 <style>
@@ -152,19 +170,19 @@ $delatehostel = $UserController->deleteHostel($delateid);
                                     <tbody>
                                         <?php while ($complaint = $complaints->fetch_assoc()) : ?>
                                             <tr>
-                                                <td><?= $complaint['id'] ?></td>
                                                 <td><?= $complaint['student_name'] ?></td>
                                                 <td><?= $complaint['description'] ?></td>
                                                 <td>
                                                     <?php foreach ($complaintStatus as $status) : ?>
                                                         <?php if ($status['value'] == $complaint['status']) : ?>
-                                                            <button type="button" class="btn btn-sm <?= $status['color']; ?>">
+                                                            <button type="button" class="btn btn-sm <?= $status['color']; ?>" onclick="openEditStatusModal(<?= $complaint['id']; ?>, <?= $status['value']; ?>, '<?= $status['status']; ?>')">
                                                                 <?= $status['status']; ?>
                                                             </button>
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $complaint['created_date'] ?></td>
+                                                
                                             </tr>
                                         <?php endwhile; ?>
 
@@ -201,6 +219,10 @@ $delatehostel = $UserController->deleteHostel($delateid);
                                                 <td><?= $inquery['contact_no'] ?></td>
                                                 <td><?= $inquery['description'] ?></td>
                                                 <td><?= $inquery['created_date'] ?></td>
+                                                <td>
+                                                <a href="javascript:;" onclick="deleteInquery(<?= $inquery['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
+
+                                                </td>
                                             </tr>
                                         <?php endwhile; ?>
 
@@ -227,6 +249,8 @@ $delatehostel = $UserController->deleteHostel($delateid);
     </div>
 </section>
 
+
+
 <?php include "main_footer.php" ?>
 
 <script>
@@ -238,4 +262,14 @@ $delatehostel = $UserController->deleteHostel($delateid);
             window.location.href = "hostelProfile.php?delateid=" + id;
         }
     }
+
+    function deleteInquery(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostelProfile.php?delateid=" + id;
+        }
+    }
 </script>
+
