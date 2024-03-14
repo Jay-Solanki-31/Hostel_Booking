@@ -19,29 +19,32 @@ if (isset($_GET['id'])) {
 $UserController = new UserController();
 $hostelData = $UserController->get_hostel($hostelId);
 ?>
-<section class="section-sub-banner bg-16">
-    <div class="awe-overlay"></div>
-    <div class="sub-banner">
-        <div class="container">
-            <div class="text text-center">
-                <h2>HOSTEL IMFORMATION </h2>
+
+    <!-- SUB BANNER -->
+    <section class="section-sub-banner bg-16">
+        <div class="awe-overlay"></div>
+        <div class="sub-banner">
+            <div class="container">
+                <div class="text text-center">
+                    <h2>LUXURY ROOM</h2>
+                    <p>Lorem Ipsum is simply dummy text</p>
+                </div>
             </div>
+
         </div>
 
-    </div>
+    </section>
+    <!-- END / SUB BANNER -->
 
-</section>
-<!-- END / SUB BANNER -->
-
-<!-- ROOM DETAIL -->
-<section class="section-room-detail bg-white">
-    <div class="container">
-        <div class="room-wrap-5">
+    <!-- ROOM DETAIL -->
+    <section class="section-room-detail bg-white">
+        <div class="container">
 
             <!-- DETAIL -->
             <div class="room-detail">
                 <div class="row">
                     <div class="col-lg-9">
+
                         <!-- LAGER IMGAE -->
                         <div class="room-detail_img">
                             <?php foreach ($hostelData as $hostel) {
@@ -55,6 +58,7 @@ $hostelData = $UserController->get_hostel($hostelId);
                         <!-- END / LAGER IMGAE -->
 
 
+
                     </div>
 
                     <div class="col-lg-3">
@@ -64,12 +68,17 @@ $hostelData = $UserController->get_hostel($hostelId);
 
                             <div class="room-detail_total">
                                 <img src="images/icon-logo.png" alt="" class="icon-logo">
-                                <h5>Inquery Now </h5>
+
+                                <h6>STARTING ROOM FROM</h6>
+
+                                <p class="price">
+                                    <span class="amout">$260</span> /days
+                                </p>
                             </div>
 
                             <div class="room-detail_form">
                                 <label>Name</label>
-                                <input type="text" placeholder="Enter Your Name ">
+                                <input type="text" class="text" placeholder="Enter Your Name ">
                                 <label>Email</label>
                                 <input type="email" placeholder="Enter your Email">
                                 <label>Phone No </label>
@@ -93,9 +102,11 @@ $hostelData = $UserController->get_hostel($hostelId);
                 <div class="row">
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
-                            <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
-                            <li><a href="#location" data-toggle="tab">LOCATION</a></li>
-                            <li ><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
+                            <ul class="room-detail_tab-header">
+                                <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
+                                <li><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
+                                <li><a href="#location" data-toggle="tab">LOCATION</a></li>
+                            </ul>
                         </ul>
                     </div>
 
@@ -103,38 +114,26 @@ $hostelData = $UserController->get_hostel($hostelId);
                         <div class="room-detail_tab-content tab-content">
 
                             <!-- OVERVIEW -->
-                            <div class="tab-pane fade  active in" id="overview">
+                            <div class="tab-pane fade" id="overview">
 
-                                <?php foreach ($hostelData as $hostel) {
-                                    if ($hostel->id == $hostelId) { ?>
-                                        <div class="room-detail_overview">
+                                <div class="tab-pane fade active in" id="overview">
+                                    <?php foreach ($hostelData as $hostel) {
+                                        if ($hostel->id == $hostelId) { ?>
+                                            <div class="room-detail_overview">
 
-                                        <?php echo $hostel->description; ?>
-                                        </div>
-                                <?php }
-                                } ?>
+                                                <?php echo $hostel->description; ?>
+                                            </div>
+                                    <?php }
+                                    } ?>
 
-                            </div>
-                            <!-- END / OVERVIEW -->
-
-                            
-                            <!-- OVERVIEW -->
-                            <div class="tab-pane fade" id="location">
-
-                                <?php foreach ($hostelData as $hostel) {
-                                    if ($hostel->id == $hostelId) { ?>
-                                        <div class="room-detail_overview">
-
-                                        <?php echo $hostel->location; ?>
-                                        </div>
-                                <?php }
-                                } ?>
+                                </div>
 
                             </div>
                             <!-- END / OVERVIEW -->
 
                             <!-- AMENITIES -->
                             <div class="tab-pane fade" id="amenities">
+
                                 <div class="room-detail_amenities">
                                     <?php foreach ($hostelData as $hostel) {
                                         if ($hostel->id == $hostelId) { ?>
@@ -153,21 +152,43 @@ $hostelData = $UserController->get_hostel($hostelId);
                                             </div>
                                     <?php }
                                     } ?>
+
                                 </div>
 
                             </div>
                             <!-- END / AMENITIES -->
 
+                            <!-- PACKAGE -->
+                            <div class="tab-pane fade" id="package">
+
+                                <div class="room-detail_package">
+
+                                    <!-- location -->
+                                    <div class="tab-pane fade" id="location">
+
+                                        <?php foreach ($hostelData as $hostel) {
+                                            if ($hostel->id == $hostelId) { ?>
+                                                <div class="room-detail_overview">
+
+                                                    <?php echo $hostel->location; ?>
+                                                </div>
+                                        <?php }
+                                        } ?>
+
+                                    </div>
+                                    <!-- END / location -->
+                                </div>
+                            </div>
+
                         </div>
+
                     </div>
+                    <!-- END / TAB -->
+
+
 
                 </div>
-
-            </div>
-            <!-- END / TAB -->
-
-
-        </div>
-</section>
+    </section>
+    <!-- END / SHOP DETAIL -->
 
 <?php include "main_footer.php" ?>

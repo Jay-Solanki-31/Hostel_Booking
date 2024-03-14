@@ -51,7 +51,7 @@ $hostelData = $UserController->get_hostel();
                                         <h3><?php echo $hostel->hostel_name; ?></h3>
                                         <p><?php echo $hostel->description; ?></p>
                                         <p><?php echo $hostel->location; ?></p>
-                                        <a href="room-detail.php?id=<?php echo $hostel->id; ?>" class="awe-btn awe-btn-13">VIEW DETAILS</a>
+                                        <a href="hostel-detail.php?id=<?php echo $hostel->id; ?>" class="awe-btn awe-btn-13">VIEW DETAILS</a>
                                     </div>
 
                                 </div>
