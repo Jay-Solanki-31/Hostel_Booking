@@ -76,24 +76,31 @@ class AdminModel
             echo "error :" . $e->getMessage();
         }
     }
-
-    public function update_adminInfo($name, $email, $phone)
+    function updateAdminInfo($email, $contact_no, $name, $image)
     {
         try {
-
             $name = $this->mysqli->real_escape_string($name);
             $email = $this->mysqli->real_escape_string($email);
-            $phone = $this->mysqli->real_escape_string($phone);
-
-            $updateAdminInfo = "UPDATE users SET `email`='$email',`full_name`='$name' , `contact_no` = '$phone' WHERE role ='admin'";
-            $result2 = $this->mysqli->query($updateAdminInfo);
-            if (!$result2) {
-                throw new Exception("Error in update  query: " . $this->mysqli->error);
+            $contact_no = $this->mysqli->real_escape_string($contact_no);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+    
+            // Update query to include image update
+            $picturequery = "";
+            if ($image) {
+                $picturequery = ", image = '$image'";
+            }
+    
+            $updateQuery = "UPDATE users SET `email`='$email', `full_name`='$name', `contact_no`='$contact_no' $picturequery WHERE role ='admin'";
+            $result = $this->mysqli->query($updateQuery);
+    
+            if (!$result) {
+                throw new Exception("Error in update query: " . $this->mysqli->error);
             }
         } catch (Exception $e) {
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
+    
 
     public function update_password($current_password, $new_password, $confirm_password)
     {
@@ -130,6 +137,20 @@ class AdminModel
     }
 
 
+    function getAdminimage()
+    {
+        try {
+            $getstudentimage = "SELECT users.image FROM `users` WHERE role = 'admin'";
+            $result = $this->mysqli->query($getstudentimage);
+            if (!$result) {
+                throw new Exception("Picrure not Found: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 
     public function add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $image, $amenities)
     {
@@ -562,7 +583,7 @@ class AdminModel
     function GetBookinInqueryCount()
     {
         try {
-            $GetinqueryCount = "SELECT COUNT(*) as count FROM inquery ";
+            $GetinqueryCount = "SELECT COUNT(*) as count FROM inquiry ";
             $result = $this->mysqli->query($GetinqueryCount);
 
             if (!$result) {

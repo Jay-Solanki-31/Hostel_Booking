@@ -52,27 +52,45 @@ class AdminController
     }
 
 
-    public function update_AdminInfo()
+    public function updateAdminInfo()
     {
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
             $name = $_POST['full_name'];
-            $phone = $_POST['phone'];
-
-
+            $email = $_POST['email'];
+            $contact_no = $_POST['phone'];
+            $imageFILE = $_FILES['profile_image'];
+            $imageFILEDestination = "";
+    
             try {
-                $this->adminModel->update_adminInfo($name, $email, $phone);
+                $uploadDirectory = '../uploads/owners/';
+    
+                // Check if a new image is uploaded
+                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                    // If there's an existing image, delete it
+                    $oldImagePath = $this->adminModel->getAdminimage();
+                    if ($oldImagePath && file_exists($oldImagePath['image'])) {
+                        unlink($oldImagePath['image']);
+                    }
+    
+                    $uploadedFile = $imageFILE['tmp_name'];
+                    $originalFileName = $imageFILE['name'];
+                    $destination = $uploadDirectory . $originalFileName;
+    
+                    if (move_uploaded_file($uploadedFile, $destination)) {
+                        $imageFILEDestination = $destination;
+                    }
+                }
+    
+                $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
                 showToast('Admin Information updated successfully!');
                 header("refresh:1;url=profile.php");
-                exit();
             } catch (Exception $e) {
-
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }
         }
     }
+    
 
     public function updateAdminPassword()
     {

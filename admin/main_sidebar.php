@@ -29,9 +29,6 @@ $filename = basename($_SERVER['SCRIPT_FILENAME']);
         <li class="<?php echo $filename === "booking_inquiries.php" ?  "active" : ''; ?>">
           <a href="booking_inquiries.php"><i data-feather="message-square"></i> <span>Booking Inquiries</span></a>
         </li>
-        <li class="<?php echo $filename === "booking_assign.php" ?  "active" : ''; ?>">
-          <a href="booking_assign.php"><i data-feather="user"></i> <span>Booking Assign</span></a>
-        </li>
         <li class="<?php echo $filename === "slider.php" ?  "active" : ''; ?>">
           <a href="slider.php"><i data-feather="user"></i> <span>Slider</span></a>
         </li>
