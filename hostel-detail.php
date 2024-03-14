@@ -18,33 +18,31 @@ if (isset($_GET['id'])) {
 
 $UserController = new UserController();
 $hostelData = $UserController->get_hostel($hostelId);
+$UserController->AddInquery($hostelId);
 ?>
-
-    <!-- SUB BANNER -->
-    <section class="section-sub-banner bg-16">
-        <div class="awe-overlay"></div>
-        <div class="sub-banner">
-            <div class="container">
-                <div class="text text-center">
-                    <h2>LUXURY ROOM</h2>
-                    <p>Lorem Ipsum is simply dummy text</p>
-                </div>
+<section class="section-sub-banner bg-16">
+    <div class="awe-overlay"></div>
+    <div class="sub-banner">
+        <div class="container">
+            <div class="text text-center">
+                <h2>HOSTEL IMFORMATION </h2>
             </div>
-
         </div>
 
-    </section>
-    <!-- END / SUB BANNER -->
+    </div>
 
-    <!-- ROOM DETAIL -->
-    <section class="section-room-detail bg-white">
-        <div class="container">
+</section>
+<!-- END / SUB BANNER -->
+
+<!-- ROOM DETAIL -->
+<section class="section-room-detail bg-white">
+    <div class="container">
+        <div class="room-wrap-5">
 
             <!-- DETAIL -->
             <div class="room-detail">
                 <div class="row">
                     <div class="col-lg-9">
-
                         <!-- LAGER IMGAE -->
                         <div class="room-detail_img">
                             <?php foreach ($hostelData as $hostel) {
@@ -58,7 +56,6 @@ $hostelData = $UserController->get_hostel($hostelId);
                         <!-- END / LAGER IMGAE -->
 
 
-
                     </div>
 
                     <div class="col-lg-3">
@@ -68,25 +65,24 @@ $hostelData = $UserController->get_hostel($hostelId);
 
                             <div class="room-detail_total">
                                 <img src="images/icon-logo.png" alt="" class="icon-logo">
-
-                                <h6>STARTING ROOM FROM</h6>
-
-                                <p class="price">
-                                    <span class="amout">$260</span> /days
-                                </p>
+                                <h5>Inquery Now </h5>
                             </div>
 
-                            <div class="room-detail_form">
-                                <label>Name</label>
-                                <input type="text" class="text" placeholder="Enter Your Name ">
-                                <label>Email</label>
-                                <input type="email" placeholder="Enter your Email">
-                                <label>Phone No </label>
-                                <input type="text" placeholder="Enter Your Contact No">
-                                <label>Description</label>
-                                <input type="text" placeholder="Enter Your Desciption">
-                                <button class="awe-btn awe-btn-13">Inquery Now</button>
-                            </div>
+                            <form action="" method="post">
+                                <div class="room-detail_form">
+                                <input type="hidden" name="hostel_id" value="<?php echo $hostelId; ?>">
+                                    <label>Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter Your Name ">
+                                    <label>Email</label>
+                                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your Email">
+                                    <label>Phone No </label>
+                                    <input type="text" name="contactNo" id="contactNo"  class="form-control" placeholder="Enter Your Contact No">
+                                    <label>Description</label>
+                                    <input type="text" name="message" id="message" class="form-control" placeholder="Enter Your Desciption">
+                                    <button class="awe-btn awe-btn-13">Inquery Now</button>
+                                </div>
+                            </form>
+
 
                         </div>
                         <!-- END / FORM BOOK -->
@@ -102,11 +98,9 @@ $hostelData = $UserController->get_hostel($hostelId);
                 <div class="row">
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
-                            <ul class="room-detail_tab-header">
-                                <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
-                                <li><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
-                                <li><a href="#location" data-toggle="tab">LOCATION</a></li>
-                            </ul>
+                            <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
+                            <li><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
+                            <li><a href="#location" data-toggle="tab">LOCATION</a></li>
                         </ul>
                     </div>
 
@@ -114,26 +108,24 @@ $hostelData = $UserController->get_hostel($hostelId);
                         <div class="room-detail_tab-content tab-content">
 
                             <!-- OVERVIEW -->
-                            <div class="tab-pane fade" id="overview">
+                            <div class="tab-pane fade  active in" id="overview">
 
-                                <div class="tab-pane fade active in" id="overview">
-                                    <?php foreach ($hostelData as $hostel) {
-                                        if ($hostel->id == $hostelId) { ?>
-                                            <div class="room-detail_overview">
+                                <?php foreach ($hostelData as $hostel) {
+                                    if ($hostel->id == $hostelId) { ?>
+                                        <div class="room-detail_overview">
 
-                                                <?php echo $hostel->description; ?>
-                                            </div>
-                                    <?php }
-                                    } ?>
-
-                                </div>
+                                            <?php echo $hostel->description; ?>
+                                        </div>
+                                <?php }
+                                } ?>
 
                             </div>
                             <!-- END / OVERVIEW -->
 
+
+
                             <!-- AMENITIES -->
                             <div class="tab-pane fade" id="amenities">
-
                                 <div class="room-detail_amenities">
                                     <?php foreach ($hostelData as $hostel) {
                                         if ($hostel->id == $hostelId) { ?>
@@ -152,43 +144,37 @@ $hostelData = $UserController->get_hostel($hostelId);
                                             </div>
                                     <?php }
                                     } ?>
-
                                 </div>
 
                             </div>
                             <!-- END / AMENITIES -->
 
-                            <!-- PACKAGE -->
-                            <div class="tab-pane fade" id="package">
+                            <!-- location -->
+                            <div class="tab-pane fade" id="location">
 
-                                <div class="room-detail_package">
+                                <?php foreach ($hostelData as $hostel) {
+                                    if ($hostel->id == $hostelId) { ?>
+                                        <div class="room-detail_overview">
 
-                                    <!-- location -->
-                                    <div class="tab-pane fade" id="location">
+                                            <?php echo $hostel->location; ?>
+                                        </div>
+                                <?php }
+                                } ?>
 
-                                        <?php foreach ($hostelData as $hostel) {
-                                            if ($hostel->id == $hostelId) { ?>
-                                                <div class="room-detail_overview">
-
-                                                    <?php echo $hostel->location; ?>
-                                                </div>
-                                        <?php }
-                                        } ?>
-
-                                    </div>
-                                    <!-- END / location -->
-                                </div>
                             </div>
+                            <!-- END / location -->
+
 
                         </div>
-
                     </div>
-                    <!-- END / TAB -->
-
-
 
                 </div>
-    </section>
-    <!-- END / SHOP DETAIL -->
+
+            </div>
+            <!-- END / TAB -->
+
+
+        </div>
+</section>
 
 <?php include "main_footer.php" ?>

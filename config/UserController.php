@@ -98,6 +98,8 @@ class UserController
     }
 
 
+    
+
 
 
     public function Contact()
@@ -122,6 +124,26 @@ class UserController
             }
         }
     }
+    public function AddInquery()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $contactNo = $_POST['contactNo'];
+            $message = $_POST['message'];
+            $userId = $_SESSION['user_id'];
+            $hostelId = $_POST['hostel_id']; 
+    
+            try {
+                $this->userModel->AddInquery($name, $email, $contactNo, $message, $userId, $hostelId);
+                header("refresh:1;url=hostel-detail.php?id=$hostelId");
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
+        }
+    }
+    
 
     public function displaysliders()
     {

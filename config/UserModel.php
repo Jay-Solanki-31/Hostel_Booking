@@ -21,7 +21,7 @@ class UserModel
 
 
 
-    public function UserAccountRegister($account_type, $username, $email, $password,$contact)
+    public function UserAccountRegister($account_type, $username, $email, $password, $contact)
     {
         try {
             $account_type = $this->mysqli->real_escape_string($account_type);
@@ -50,14 +50,14 @@ class UserModel
             // Sanitize input to prevent SQL injection
             $email = $this->mysqli->real_escape_string($email);
             $password = $this->mysqli->real_escape_string($password);
-    
+
             $query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
             $result = $this->mysqli->query($query);
-    
+
             if (!$result) {
                 throw new Exception("Error in login query: " . $this->mysqli->error);
             }
-    
+
             // Check if the user exists
             if ($result->num_rows > 0) {
                 $user = $result->fetch_assoc();
@@ -69,22 +69,22 @@ class UserModel
             throw new Exception("Error in login function: " . $e->getMessage());
         }
     }
-     
 
-    
+
+
     function GetHostelData()
     {
         try {
             $GetHosteldata = "SELECT * FROM hostels";
             $result = $this->mysqli->query($GetHosteldata);
-    
-            if (!$result) { 
+
+            if (!$result) {
                 throw new Exception("Error in query: " . $this->mysqli->error);
             }
-    
+
             $hostelImages = array();
             while ($row = $result->fetch_assoc()) {
-                $hostelImages[$row['hostel_name']] = $row['image']; 
+                $hostelImages[$row['hostel_name']] = $row['image'];
             }
             return $hostelImages;
         } catch (Exception $e) {
@@ -100,20 +100,42 @@ class UserModel
             if (!$result) {
                 throw new Exception("Error in fetching hostel data: " . $this->mysqli->error);
             }
-    
+
             $hostels = array();
             while ($row = $result->fetch_object()) {
                 $hostels[] = $row;
             }
-    
+
             // Free result set
             $result->free();
-    
+
             return $hostels;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
+
+    public function AddInquery($name, $email, $contactNo, $message, $userId, $hostelId)
+    {
+        try {
+            $name = $this->mysqli->real_escape_string($name);
+            $email = $this->mysqli->real_escape_string($email);
+            $contactNo = $this->mysqli->real_escape_string($contactNo);
+            $message = $this->mysqli->real_escape_string($message);
+            
+            $query = "INSERT INTO inquiry (name, email, contact_no, description, student_id, hostel_id)
+                      VALUES ('$name', '$email', '$contactNo', '$message', '$userId', '$hostelId')";
+            $result1 = $this->mysqli->query($query);
+            
+            if (!$result1) {
+                throw new Exception("Error in insert query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in contact function: " . $e->getMessage());
+        }
+    }
+    
+    
 
     public function contact($name, $email, $contactNo, $message)
     {
@@ -143,436 +165,434 @@ class UserModel
             if (!$result) {
                 throw new Exception("Error in fetching slider data: " . $this->mysqli->error);
             }
-    
+
             $slider = array();
             while ($row = $result->fetch_object()) {
                 $slider[] = $row;
             }
-    
+
             // Free result set
             $result->free();
-    
+
             return $slider;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
-    
+
     public function showAboutUsData()
-{
-    try {
-        $sql = "SELECT info, picture FROM aboutus";
-        $result = $this->mysqli->query($sql);
-        if (!$result) {
-            throw new Exception("Error in fetching about us data: " . $this->mysqli->error);
+    {
+        try {
+            $sql = "SELECT info, picture FROM aboutus";
+            $result = $this->mysqli->query($sql);
+            if (!$result) {
+                throw new Exception("Error in fetching about us data: " . $this->mysqli->error);
+            }
+
+            $aboutUsData = array();
+            while ($row = $result->fetch_object()) {
+                $aboutUsData[] = $row; // Append each row (object) to the array
+            }
+
+            $result->free();
+
+            return $aboutUsData; // Return the array
+        } catch (Exception $e) {
+            return "Error: " . $e->getMessage(); // Return error message as string
         }
-
-        $aboutUsData = array();
-        while ($row = $result->fetch_object()) {
-            $aboutUsData[] = $row; // Append each row (object) to the array
-        }
-
-        $result->free();
-
-        return $aboutUsData; // Return the array
-    } catch (Exception $e) {
-        return "Error: " . $e->getMessage(); // Return error message as string
     }
-}
 
 
-function getStudentsdetails($id)
-{
-    try {
-        $getStudentsdetails = "SELECT * FROM users where users.id = '$id'";
-        $result = $this->mysqli->query($getStudentsdetails);
+    function getStudentsdetails($id)
+    {
+        try {
+            $getStudentsdetails = "SELECT * FROM users where users.id = '$id'";
+            $result = $this->mysqli->query($getStudentsdetails);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
-function getStudentsComplaint($id)
-{
-    try {
-        $getStudentsdetails = "SELECT complaint.*, users.full_name FROM complaint JOIN users ON complaint.student_id = users.id WHERE complaint.student_id = $id";
-        $result = $this->mysqli->query($getStudentsdetails);
+    function getStudentsComplaint($id)
+    {
+        try {
+            $getStudentsdetails = "SELECT complaint.*, users.full_name FROM complaint JOIN users ON complaint.student_id = users.id WHERE complaint.student_id = $id";
+            $result = $this->mysqli->query($getStudentsdetails);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
-public function updateStudentInfo($email, $contact_no, $name,$address , $image, $studentid)
-{
-    try {
-        $email = $this->mysqli->real_escape_string($email);
-        $contact_no = $this->mysqli->real_escape_string($contact_no);
-        $name = $this->mysqli->real_escape_string($name);
-        $address = $this->mysqli->real_escape_string($address);
-        $image = $this->mysqli->real_escape_string($image) ?? '';
+    public function updateStudentInfo($email, $contact_no, $name, $address, $image, $studentid)
+    {
+        try {
+            $email = $this->mysqli->real_escape_string($email);
+            $contact_no = $this->mysqli->real_escape_string($contact_no);
+            $name = $this->mysqli->real_escape_string($name);
+            $address = $this->mysqli->real_escape_string($address);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
 
-        $picturequery = $image ? ", image = '$image'" : "";
+            $picturequery = $image ? ", image = '$image'" : "";
 
-        $updateOwnerData = "UPDATE users SET email='$email', contact_no='$contact_no', full_name='$name', address='$address' $picturequery WHERE id ='$studentid'";
-        $result = $this->mysqli->query($updateOwnerData);
+            $updateOwnerData = "UPDATE users SET email='$email', contact_no='$contact_no', full_name='$name', address='$address' $picturequery WHERE id ='$studentid'";
+            $result = $this->mysqli->query($updateOwnerData);
 
-        if (!$result) {
-            throw new Exception("Error in update query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in update query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
         }
-    } catch (Exception $e) {
-        throw new Exception("Error in update function: " . $e->getMessage());
     }
-}
 
 
 
-function getStudentImage($id)
-{
-    try {
-        $getOwnerImageQuery = "SELECT users.image FROM `users` WHERE users.id = '$id'";
-        $result = $this->mysqli->query($getOwnerImageQuery);
-        if (!$result) {
-            throw new Exception("Picture not found: " . $this->mysqli->error);
+    function getStudentImage($id)
+    {
+        try {
+            $getOwnerImageQuery = "SELECT users.image FROM `users` WHERE users.id = '$id'";
+            $result = $this->mysqli->query($getOwnerImageQuery);
+            if (!$result) {
+                throw new Exception("Picture not found: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result->fetch_assoc();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
 
 
 
 
-//  hostel data part will start 
+    //  hostel data part will start 
 
-function gethostelsdetails($id)
-{
-    try {
-        $gethosteldetails = "SELECT * from users where id = $id";
-        $result = $this->mysqli->query($gethosteldetails);
+    function gethostelsdetails($id)
+    {
+        try {
+            $gethosteldetails = "SELECT * from users where id = $id";
+            $result = $this->mysqli->query($gethosteldetails);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
-function gethostelComplaint($id)
-{
-    try {
-        $gethostelcomplaint= "SELECT complaint.*, users.full_name AS student_name
+    function gethostelComplaint($id)
+    {
+        try {
+            $gethostelcomplaint = "SELECT complaint.*, users.full_name AS student_name
         FROM complaint
         JOIN users ON complaint.student_id = users.id
         WHERE complaint.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id');
         ";
-        $result = $this->mysqli->query($gethostelcomplaint);
+            $result = $this->mysqli->query($gethostelcomplaint);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
 
-function gethostelInquery($id)
-{
-    try {
-        $gethostelinquery= "SELECT inquiry.*, users.full_name AS student_name
+    function gethostelInquery($id)
+    {
+        try {
+            $gethostelinquery = "SELECT inquiry.*, users.full_name AS student_name
         FROM inquiry
         JOIN users ON inquiry.student_id = users.id
         WHERE inquiry.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id');
         ";
-        $result = $this->mysqli->query($gethostelinquery);
+            $result = $this->mysqli->query($gethostelinquery);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
 
 
-function getHostel($id)
-{
-    try {
-        $gethostel= "SELECT * from hostels where user_id = $id";
-        $result = $this->mysqli->query($gethostel);
+    function getHostel($id)
+    {
+        try {
+            $gethostel = "SELECT * from hostels where user_id = $id";
+            $result = $this->mysqli->query($gethostel);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
 
-public function add_hostel($hostelName, $location, $description, $image, $amenities)
-{
-    try {
-        // Sanitize and escape input
-        $hostelName = $this->mysqli->real_escape_string($hostelName);
-        $location = $this->mysqli->real_escape_string($location);
-        $description = $this->mysqli->real_escape_string($description);
-        $image = $this->mysqli->real_escape_string($image) ?? '';
-        $amenitiesString = implode(',', $amenities);
+    public function add_hostel($hostelName, $location, $description, $image, $amenities)
+    {
+        try {
+            // Sanitize and escape input
+            $hostelName = $this->mysqli->real_escape_string($hostelName);
+            $location = $this->mysqli->real_escape_string($location);
+            $description = $this->mysqli->real_escape_string($description);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+            $amenitiesString = implode(',', $amenities);
 
-        $userID = $_SESSION['user_id'];
-    
-        $query = "INSERT INTO hostels(user_id, hostel_name, description, location, image, amenities) 
+            $userID = $_SESSION['user_id'];
+
+            $query = "INSERT INTO hostels(user_id, hostel_name, description, location, image, amenities) 
                    VALUES ('$userID', '$hostelName', '$description', '$location', '$image', '$amenitiesString')";
-    
-        $result = $this->mysqli->query($query);
 
-        if (!$result) {
-            throw new Exception("Error in insert query: " . $this->mysqli->error);
+            $result = $this->mysqli->query($query);
+
+            if (!$result) {
+                throw new Exception("Error in insert query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in add_hostel function: " . $e->getMessage());
         }
-    } catch (Exception $e) {
-        throw new Exception("Error in add_hostel function: " . $e->getMessage());
     }
-}
 
 
-function gethosteldetails($id)
-{
-    try {
-        $gethosteldetails = "SELECT * from  hostels where id = '$id'";
-        $result = $this->mysqli->query($gethosteldetails);
+    function gethosteldetails($id)
+    {
+        try {
+            $gethosteldetails = "SELECT * from  hostels where id = '$id'";
+            $result = $this->mysqli->query($gethosteldetails);
 
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
-}
 
-public function updateOwnerInfo($email, $contact_no, $name, $image, $hostelid)
-{
-    try {
-        $email = $this->mysqli->real_escape_string($email);
-        $contact_no = $this->mysqli->real_escape_string($contact_no);
-        $name = $this->mysqli->real_escape_string($name);
-        $image = $this->mysqli->real_escape_string($image) ?? '';
+    public function updateOwnerInfo($email, $contact_no, $name, $image, $hostelid)
+    {
+        try {
+            $email = $this->mysqli->real_escape_string($email);
+            $contact_no = $this->mysqli->real_escape_string($contact_no);
+            $name = $this->mysqli->real_escape_string($name);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
 
-        if ($image) {
-            $picturequery = ", image = '$image'";
-        } else {
+            if ($image) {
+                $picturequery = ", image = '$image'";
+            } else {
+                $picturequery = "";
+            }
+
+            $updateOwnerData = "UPDATE users SET email='$email', full_name='$name', contact_no='$contact_no' $picturequery WHERE id ='$hostelid'";
+            $result = $this->mysqli->query($updateOwnerData);
+
+            if (!$result) {
+                throw new Exception("Error in update query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
+        }
+    }
+
+
+    function getOwnerImage($id)
+    {
+        try {
+            $getOwnerImageQuery = "SELECT users.image FROM `users` WHERE users.id = '$id'";
+            $result = $this->mysqli->query($getOwnerImageQuery);
+            if (!$result) {
+                throw new Exception("Picture not found: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
+
+    function gethostelimage($id)
+    {
+        try {
+            $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
+            $result = $this->mysqli->query($gethostelimage);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
+    public function update_hostel($hostelid, $hostelname, $location, $description, $image)
+    {
+        try {
+            $hostelname = $this->mysqli->real_escape_string($hostelname);
+            $location = $this->mysqli->real_escape_string($location);
+            $description = $this->mysqli->real_escape_string($description);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+            $hostelid = $this->mysqli->real_escape_string($hostelid);
+
             $picturequery = "";
-        }
+            if ($image) {
+                $picturequery = ", image = '$image'";
+            }
 
-        $updateOwnerData = "UPDATE users SET email='$email', full_name='$name', contact_no='$contact_no' $picturequery WHERE id ='$hostelid'";
-        $result = $this->mysqli->query($updateOwnerData);
-
-        if (!$result) {
-            throw new Exception("Error in update query: " . $this->mysqli->error);
-        }
-    } catch (Exception $e) {
-        throw new Exception("Error in update function: " . $e->getMessage());
-    }
-}
-
-
-function getOwnerImage($id)
-{
-    try {
-        $getOwnerImageQuery = "SELECT users.image FROM `users` WHERE users.id = '$id'";
-        $result = $this->mysqli->query($getOwnerImageQuery);
-        if (!$result) {
-            throw new Exception("Picture not found: " . $this->mysqli->error);
-        }
-
-        return $result->fetch_assoc();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-
-
-
-function gethostelimage($id)
-{
-    try {
-        $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
-        $result = $this->mysqli->query($gethostelimage);
-
-        if (!$result) {
-            throw new Exception("Error in login query: " . $this->mysqli->error);
-        }
-
-        return $result->fetch_assoc();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-
-
-public function update_hostel($hostelid, $hostelname, $location, $description, $image)
-{
-    try {
-        $hostelname = $this->mysqli->real_escape_string($hostelname);
-        $location = $this->mysqli->real_escape_string($location);
-        $description = $this->mysqli->real_escape_string($description);
-        $image = $this->mysqli->real_escape_string($image) ?? '';
-        $hostelid = $this->mysqli->real_escape_string($hostelid);
-
-        $picturequery = "";
-        if ($image) {
-            $picturequery = ", image = '$image'";
-        }
-
-        $updatehosteldata = "UPDATE hostels 
+            $updatehosteldata = "UPDATE hostels 
                              SET hostel_name = '$hostelname', 
                                  location = '$location',   
                                  description = '$description'" . $picturequery . " 
                              WHERE id = '$hostelid'";
 
-        $result = $this->mysqli->query($updatehosteldata);
-        if (!$result) {
-            throw new Exception("Error in update query: " . $this->mysqli->error);
+            $result = $this->mysqli->query($updatehosteldata);
+            if (!$result) {
+                throw new Exception("Error in update query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
         }
-    } catch (Exception $e) {
-        throw new Exception("Error in update function: " . $e->getMessage());
     }
-}
 
-public function deleteHostel($id)
-{
-    try {
-        $deleteQuery = "DELETE FROM hostels
+    public function deleteHostel($id)
+    {
+        try {
+            $deleteQuery = "DELETE FROM hostels
                         WHERE hostels.id = $id";
 
-        $result = $this->mysqli->query($deleteQuery);
+            $result = $this->mysqli->query($deleteQuery);
 
-        if (!$result) {
-            throw new Exception("Error in delete query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in delete query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
     }
-}
 
 
-public function deletecomplain($id)
-{
-    try {
-        $deleteQuery = "DELETE FROM complaint
+    public function deletecomplain($id)
+    {
+        try {
+            $deleteQuery = "DELETE FROM complaint
                         WHERE complaint.id = $id";
 
-        $result = $this->mysqli->query($deleteQuery);
+            $result = $this->mysqli->query($deleteQuery);
 
-        if (!$result) {
-            throw new Exception("Error in delete query: " . $this->mysqli->error);
+            if (!$result) {
+                throw new Exception("Error in delete query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
     }
-}
 
 
-public function deleteInquery($id)
-{
-    try {
-        $deleteQuery = "DELETE FROM inquiry
+    public function deleteInquery($id)
+    {
+        try {
+            $deleteQuery = "DELETE FROM inquiry
         WHERE id = $id";
 
-        $result = $this->mysqli->query($deleteQuery);
+            $result = $this->mysqli->query($deleteQuery);
 
-        if (!$result) {
-            throw new Exception("Error in delete query: " . $this->mysqli->error);
-        }
-
-        return $result;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return false;
-    }
-}
-
-
-public function getUserPassword($userId)
-{
-    try {
-        $getUserPassword = "SELECT password from users where id = '$userId'";
-        $result = $this->mysqli->query($getUserPassword);
-
-        if (!$result) {
-            throw new Exception("Error fetching password: " . $this->mysqli->error);
-        }
-        return $result;
-    } catch (Exception $e) {
-        throw new Exception("Error: " . $e->getMessage());
-    }
-}
-
-
-public function update_password($userId, $current_password, $new_password, $confirm_password)
-{
-    try {
-        $current_password = $this->mysqli->real_escape_string($current_password);
-        $new_password = $this->mysqli->real_escape_string($new_password);
-        $confirm_password = $this->mysqli->real_escape_string($confirm_password);
-
-        $userPasswordResult = $this->getUserPassword($userId);
-
-        if ($new_password !== $confirm_password) {
-            throw new Exception("New Password and Confirm New Password must be the same.");
-        }
-
-        if ($userPasswordResult->num_rows > 0) {
-            $userPassword = $userPasswordResult->fetch_assoc();
-            $actual_current_password = $userPassword['password'];
-
-            if ($current_password === $actual_current_password) {
-                $updatepassword = "UPDATE users SET `password` = '$new_password' WHERE id = '$userId'";
-                $result2 = $this->mysqli->query($updatepassword);
-
-                if (!$result2) {
-                    throw new Exception("Error in update query: " . $this->mysqli->error);
-                }
-            } else {
-                throw new Exception("Current password is incorrect");
+            if (!$result) {
+                throw new Exception("Error in delete query: " . $this->mysqli->error);
             }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
         }
-    } catch (Exception $e) {
-        throw new Exception("Error in update function: " . $e->getMessage());
     }
-}
 
 
+    public function getUserPassword($userId)
+    {
+        try {
+            $getUserPassword = "SELECT password from users where id = '$userId'";
+            $result = $this->mysqli->query($getUserPassword);
+
+            if (!$result) {
+                throw new Exception("Error fetching password: " . $this->mysqli->error);
+            }
+            return $result;
+        } catch (Exception $e) {
+            throw new Exception("Error: " . $e->getMessage());
+        }
+    }
+
+
+    public function update_password($userId, $current_password, $new_password, $confirm_password)
+    {
+        try {
+            $current_password = $this->mysqli->real_escape_string($current_password);
+            $new_password = $this->mysqli->real_escape_string($new_password);
+            $confirm_password = $this->mysqli->real_escape_string($confirm_password);
+
+            $userPasswordResult = $this->getUserPassword($userId);
+
+            if ($new_password !== $confirm_password) {
+                throw new Exception("New Password and Confirm New Password must be the same.");
+            }
+
+            if ($userPasswordResult->num_rows > 0) {
+                $userPassword = $userPasswordResult->fetch_assoc();
+                $actual_current_password = $userPassword['password'];
+
+                if ($current_password === $actual_current_password) {
+                    $updatepassword = "UPDATE users SET `password` = '$new_password' WHERE id = '$userId'";
+                    $result2 = $this->mysqli->query($updatepassword);
+
+                    if (!$result2) {
+                        throw new Exception("Error in update query: " . $this->mysqli->error);
+                    }
+                } else {
+                    throw new Exception("Current password is incorrect");
+                }
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
+        }
+    }
 }
