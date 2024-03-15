@@ -2,6 +2,7 @@
 <?php
 ob_start();
 include 'config/function.php';
+include 'config/constants.php';
 include 'config/UserModel.php';
 
 class UserController

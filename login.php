@@ -30,6 +30,7 @@ $UserController->Userlogin();
                             <div class="field-form field-submit">
                                 <button class="awe-btn awe-btn-13">Login</button>
                             </div>
+                            <span class="account-desc">I don’t  have account - <a href="register.php">Register Account</a></span>
                             <span class="account-desc">I don’t remember my Password - <a href="forgot_password.php">Forgot Password</a></span>
                         </form>
                     </div>

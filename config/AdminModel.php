@@ -36,7 +36,7 @@ class AdminModel
 
             // Check if the user exists
             if ($result->num_rows > 0) {
-                return true; // Login successful
+                return $result->fetch_assoc(); // Login successful
             } else {
                 return false; // Login failed
             }
@@ -56,7 +56,7 @@ class AdminModel
                 throw new Exception("Error in login query: " . $this->mysqli->error);
             }
 
-            return $result;
+            return $result->fetch_assoc();
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }

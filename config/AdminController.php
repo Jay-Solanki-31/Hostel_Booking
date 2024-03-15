@@ -2,6 +2,7 @@
 <?php
 ob_start();
 include '../config/function.php';
+include '../config/constants.php';
 include '../config/AdminModel.php';
 
 class AdminController
@@ -30,6 +31,7 @@ class AdminController
                 if ($loginResult) {
                     showToast('Login successful');
                     $_SESSION['user_email'] = $email;
+                    $_SESSION['user'] = $loginResult;
                     header("refresh:1;url=dashboard.php");
                 } else {
                     showToast('Login failed. Please check your credentials.', 'error');
@@ -44,13 +46,14 @@ class AdminController
     public function displayAdminDetails()
     {
         try {
-            return $this->adminModel->GetAdminDetails();
+            $profileData =  $this->adminModel->GetAdminDetails();
+            $_SESSION['user'] = $profileData;
+            return $profileData;
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
-
 
     public function updateAdminInfo()
     {
@@ -83,7 +86,12 @@ class AdminController
     
                 $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
                 showToast('Admin Information updated successfully!');
-                header("refresh:1;url=profile.php");
+                // Reload the page to display the updated image
+                header("Refresh:0");
+                // After a delay, refresh the page again
+                echo '<script>setTimeout(function(){ window.location.reload(); }, 1000);</script>';
+                exit();
+    
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');

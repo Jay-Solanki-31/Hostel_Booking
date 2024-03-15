@@ -70,13 +70,13 @@ $UserController->AddInquery($hostelId);
 
                             <form action="" method="post">
                                 <div class="room-detail_form">
-                                <input type="hidden" name="hostel_id" value="<?php echo $hostelId; ?>">
+                                    <input type="hidden" name="hostel_id" value="<?php echo $hostelId; ?>">
                                     <label>Name</label>
                                     <input type="text" name="name" id="name" class="form-control" placeholder="Enter Your Name ">
                                     <label>Email</label>
                                     <input type="email" name="email" id="email" class="form-control" placeholder="Enter your Email">
                                     <label>Phone No </label>
-                                    <input type="text" name="contactNo" id="contactNo"  class="form-control" placeholder="Enter Your Contact No">
+                                    <input type="text" name="contactNo" id="contactNo" class="form-control" placeholder="Enter Your Contact No">
                                     <label>Description</label>
                                     <input type="text" name="message" id="message" class="form-control" placeholder="Enter Your Desciption">
                                     <button class="awe-btn awe-btn-13">Inquery Now</button>
@@ -134,11 +134,25 @@ $UserController->AddInquery($hostelId);
                                                 <div class="row">
                                                     <?php
                                                     $amenitiesArray = explode(",", $hostel->amenities);
-                                                    foreach ($amenitiesArray as $amenity) { ?>
-                                                        <div class="col-xs-6 col-lg-4">
-                                                            <h6 style="font-weight: unset;"><?php echo trim($amenity); ?></h6>
-                                                        </div>
-                                                    <?php } ?>
+
+                                                    foreach (NORMAL_AMENITIES as $normalAmenity) {
+                                                        if (in_array($normalAmenity['value'], $amenitiesArray)) {
+                                                            echo '<div class="col-xs-6 col-lg-4">
+                <h6 style="font-weight: unset;">' . $normalAmenity['name'] . '</h6>
+              </div>';
+                                                        }
+                                                    } 
+                                                    
+                                                    foreach (PREMIUM_AMENITIES as $preAmenity) {
+                                                        if (in_array($preAmenity['value'], $amenitiesArray)) {
+                                                            echo '<div class="col-xs-6 col-lg-4">
+                <h6 style="font-weight: unset;">' . $preAmenity['name'] . '</h6>
+              </div>';
+                                                        }
+                                                    }
+                                                    
+                                                    
+                                                    ?>
                                                 </div>
                                                 <!-- End amenities -->
                                             </div>

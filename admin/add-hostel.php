@@ -81,7 +81,7 @@ $AdminController->add_hostel();
                                             </select>
                                         </div>
                                         <div id="normalHostelAmenities" style="display: none;">
-                                            <div class="form-check">
+                                            <!-- <div class="form-check">
                                                 <input type="checkbox" name="amenities[]" value="basic_bedding" class="form-check-input">
                                                 <label class="form-check-label">Basic Bedding</label>
                                             </div>
@@ -100,7 +100,13 @@ $AdminController->add_hostel();
                                             <div class="form-check">
                                                 <input type="checkbox" name="amenities[]" value="reception" class="form-check-input">
                                                 <label class="form-check-label">24/7 Reception</label>
-                                            </div>
+                                            </div> -->
+                                            <?php foreach (NORMAL_AMENITIES as $amenity) {
+    echo '<div class="form-check">
+            <input type="checkbox" name="amenities[]" value="' . $amenity['value'] . '" class="form-check-input">
+            <label class="form-check-label">' . $amenity['name'] . '</label>
+          </div>';
+} ?>
                                         </div>
 
                                         <div id="premiumHostelAmenities" style="display: none;">

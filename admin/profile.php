@@ -17,13 +17,13 @@
 
 <?php
 ob_start();
-
+session_start();
 require "main_header.php";
 require "main_sidebar.php";
 
 include "../config/AdminController.php";
 $AdminController = new AdminController();
-$AdminData = $AdminController->displayAdminDetails()->fetch_assoc();
+$AdminData = $AdminController->displayAdminDetails();
 
 if (isset($_POST['new_password'])) {
     $AdminController->updateAdminPassword();
