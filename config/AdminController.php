@@ -54,7 +54,6 @@ class AdminController
             echo "Error: " . $e->getMessage();
         }
     }
-
     public function updateAdminInfo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -86,10 +85,14 @@ class AdminController
     
                 $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
                 showToast('Admin Information updated successfully!');
-                // Reload the page to display the updated image
-                header("Refresh:0");
-                // After a delay, refresh the page again
-                echo '<script>setTimeout(function(){ window.location.reload(); }, 1000);</script>';
+                
+                // JavaScript to reload the current page after 2 seconds
+                echo '<script>
+                        setTimeout(function(){
+                            window.location.href = "'.$_SERVER['PHP_SELF'].'"; // Reload current page
+                        }, 2000);
+                      </script>';
+    
                 exit();
     
             } catch (Exception $e) {
@@ -98,6 +101,7 @@ class AdminController
             }
         }
     }
+    
     
 
     public function updateAdminPassword()

@@ -5,10 +5,10 @@ function isLoggedIn() {
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 
-if (!isLoggedIn()) {
-    header("Location: login.php");
-    exit();
-}
+// if (!isLoggedIn()) {
+//     header("Location: login.php");
+//     exit();
+// }
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
@@ -43,7 +43,7 @@ $hostelData = $UserController->get_hostel();
 
                                     <!-- Display hostel name -->
                                     <div class="room_item-forward">
-                                        <h2><a href="hostel-detail.php?id=<?php echo $hostel->id; ?>"><?php echo $hostel->hostel_name; ?></a></h2>
+                                        <h2><a href="hostels-detail.php"><?php echo $hostel->hostel_name; ?></a></h2>
                                     </div>
 
                                     <!-- Display hostel description and location -->
@@ -51,7 +51,7 @@ $hostelData = $UserController->get_hostel();
                                         <h3><?php echo $hostel->hostel_name; ?></h3>
                                         <p><?php echo $hostel->description; ?></p>
                                         <p><?php echo $hostel->location; ?></p>
-                                        <a href="hostel-detail.php?id=<?php echo $hostel->id; ?>" class="awe-btn awe-btn-13">VIEW DETAILS</a>
+                                        <a href="hostels-detail.php" class="awe-btn awe-btn-13">VIEW DETAILS</a>
                                     </div>
 
                                 </div>

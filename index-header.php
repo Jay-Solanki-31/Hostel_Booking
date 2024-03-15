@@ -90,7 +90,7 @@
                                 <a href="index.php">Home</a>
                             </li>
                             <li><a href="about.php">About</a></li>
-                            <li><a href="hostel.php">HOSTEL</a></li>
+                            <li><a href="hostels.php">HOSTELS</a></li>
                             <li><a href="contact.php">Contact</a></li>
                             <?php
                             if (isset($_SESSION['user_role'])) {

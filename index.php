@@ -92,52 +92,59 @@ $sliders = $UserController->displaysliders();
     </section>
     <!-- END / ACCOMMODATIONS -->
 
-    <!-- ABOUT -->
-    <section class="ot-about mt60">
-        <div class="container">
-            <div class="content">
-                <div class="row">
-                    <div class="col col-xs-12 col-lg-6 col-lg-offset-3">
-                        <div class="ot-heading mb40 row-20 text-center">
-                            <h2>ABOUT LOTUS HOSTEL</h2>
-                            <p class="sub pr10 pl10">
-
-                                "Where Every Adventure Begins: Your Home Away from Home!"
-                            </p>
-                        </div>
+  <!-- HOSTEL FINDER -->
+<section class="hostel-finder mt60">
+    <div class="container">
+        <div class="content">
+            <div class="row">
+                <div class="col col-xs-12 col-lg-6 col-lg-offset-3">
+                    <div class="heading mb40 row-20 text-center">
+                        <h2>HOSTEL FINDER</h2>
+                        <p class="sub pr10 pl10">
+                            Looking for a comfortable and affordable stay? Explore our selection of hostels
+                            in popular destinations.
+                        </p>
                     </div>
-                </div>
-                <div class="img-hover-box mb40">
-                    <div class="img">
-                        <img class="img-responsive" src="assets/pexels-adrian-falcon-3359250 (1).jpg" alt="">
-                    </div>
-                </div>
-                <div class="text-center mt40 mb30 featured">
-                    <p class="font-hind f-500 f20">At our student-friendly hostel, we cater to a vibrant community of young explorers and scholars. From solo student travelers to groups seeking affordable accommodations, our hostel is the perfect hub for academic adventures and social connections. </p>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                            <div class="details">
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-6">
-                                        <p class="font-hind f14 pr15">
-                                            Our hostel offers convenient booking options for travelers arriving at various airports. You can book your stay directly upon arrival at Chicago O’Hare International Airport, Los Angeles International Airport, New York City's JFK International Airport, Newark International Airport, and San Francisco International Airport. These airports are primary hubs for travelers arriving from different parts of the world, ensuring easy access to our hostel accommodations. Rest assured, our hostel staff is ready to assist you in making your stay comfortable and enjoyable.
-                                        </p>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <p class="font-hind f14 pl15">
-                                            Experience hassle-free booking with our hostel! We are partnered with the Centers for Disease Control & Prevention (CDC) to ensure the safety of our guests. Travelers arriving at airports directly from Hong Kong, Guangdong Province (People’s Republic of China), and Hanoi, Vietnam, are provided with information cards warning about potential health risks. At our hostel, we prioritize the well-being of our guests and maintain strict hygiene protocols to create a safe and welcoming environment for all travelers.
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-    </section>
-    <!-- END / ABOUT -->
+            <div class="img-hover-box mb40">
+                <div class="img">
+                    <img class="img-responsive" src="images/home-3/slider-1.png" alt="">
+                </div>
+            </div>
+            <div class="text-center mt40 mb30 featured">
+                <p class="font-hind f-500 f20">Find the perfect hostel for your next adventure.</p>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                    <div class="details">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <p class="font-hind f14 pr15">
+                                    Whether you're a solo traveler or part of a group, our hostel finder makes it easy
+                                    to discover budget-friendly accommodations. Search by location, price, amenities,
+                                    and more.
+                                </p>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <p class="font-hind f14 pl15">
+                                    With options available worldwide, you'll find hostels in bustling cities,
+                                    scenic countryside, and everywhere in between. Start planning your trip today
+                                    and book your stay with confidence.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <a href="hostel.php" class="btn btn-default mt30 mb30 font-hind f12 bold btn-medium"
+                                target="_blank">Explore Hostels</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / HOSTEL FINDER -->
 
     <!-- OUR BEST -->
     <section class="ot-out-best mt60">
@@ -201,77 +208,5 @@ $sliders = $UserController->displaysliders();
     </section>
     <!-- END / OUR BEST -->
 
-    <!-- HOME GUEST BOOK -->
-    <div class="section-home-guestbook home-guestbook-style-2 awe-parallax bg-22 mt90 pt100 pb100">
-        <div class="container">
-            <div class="home-guestbook pt0 pb0">
-                <div class="row">
-                    <div class="col-xs-12 col-lg-6 col-lg-offset-3">
-                        <div class="ot-heading mb40 row-20 text-center">
-                            <h2>Guest book</h2>
-                            <p class="sub">Your feedback means the world to us.</p>
-                        </div>
-                    </div>
-                    <div class="guestbook-content text-center owl-single">
-                        <!-- ITEM -->
-                        <div class="guestbook-item">
-                            <div class="text">
-                                <p class="f20">"This is the only place to stay in Catalina! I have stayed in the
-                                    cheaper hotels and they were fine, but this is just the icing on the cake! After
-                                    spending the day bike riding and hiking to come back and enjoy a glass of wine
-                                    while looking out your ocean view window and then to top it all off"</p>
-                            </div>
-                            <div class="img">
-                                <img src="images/avatar/img-15.png" alt="">
-                            </div>
-                            <div class="info-author">
-                                <span class="f20 c-main"><strong>Rosalind Cloer</strong></span><br>
-                                <span class="f14">Oxford</span>
-                            </div>
-                        </div>
-                        <!-- ITEM -->
-                        <!-- ITEM -->
-                        <div class="guestbook-item">
-                            <div class="text">
-                                <p class="f20">This is the only place to stay in Catalina! I have stayed in the
-                                    cheaper hotels and they were fine, but this is just the icing on the cake! After
-                                    spending the day bike riding and hiking to come back and enjoy a glass of wine
-                                    while looking out your ocean view window and then to top it all off...</p>
-                            </div>
-                            <div class="img">
-                                <img src="images/avatar/img-5.jpg" alt="">
-                            </div>
-                            <div class="info-author">
-                                <span class="f20 c-main"><strong>Seelentag</strong></span><br>
-                                <span class="f14">From Los Angeles, California</span>
-                            </div>
-                        </div>
-                        <!-- ITEM -->
-                        <!-- ITEM -->
-                        <div class="guestbook-item">
-                            <div class="text">
-                                <p class="f20">This is the only place to stay in Catalina! I have stayed in the
-                                    cheaper hotels and they were fine, but this is just the icing on the cake! After
-                                    spending the day bike riding and hiking to come back and enjoy a glass of wine
-                                    while looking out your ocean view window and then to top it all off...</p>
-                            </div>
-                            <div class="img">
-                                <img src="images/avatar/img-5.jpg" alt="">
-                            </div>
-                            <div class="info-author">
-                                <span class="f20 c-main"><strong>Seelentag</strong></span><br>
-                                <span class="f14">From Los Angeles, California</span>
-                            </div>
-                        </div>
-                        <!-- ITEM -->
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-    <!-- END / HOME GUEST BOOK -->
 
     <?php include "index-footer.php" ?>

@@ -136,7 +136,7 @@ public function GetHostelData()
     
             try {
                 $this->userModel->AddInquery($name, $email, $contactNo, $message, $userId, $hostelId);
-                header("refresh:1;url=hostel-detail.php?id=$hostelId");
+                header("refresh:1;url=hostels-detail.php?id=$hostelId");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
