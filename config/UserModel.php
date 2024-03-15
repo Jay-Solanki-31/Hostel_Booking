@@ -71,26 +71,30 @@ class UserModel
     }
 
 
-
     function GetHostelData()
     {
         try {
-            $GetHosteldata = "SELECT * FROM hostels";
+            $GetHosteldata = "SELECT id, hostel_name, image FROM hostels";
             $result = $this->mysqli->query($GetHosteldata);
-
+    
             if (!$result) {
                 throw new Exception("Error in query: " . $this->mysqli->error);
             }
-
-            $hostelImages = array();
+    
+            $hostelData = array();
             while ($row = $result->fetch_assoc()) {
-                $hostelImages[$row['hostel_name']] = $row['image'];
+                $hostelData[] = array(
+                    'id' => $row['id'],
+                    'hostel_name' => $row['hostel_name'],
+                    'image' => $row['image']
+                );
             }
-            return $hostelImages;
+            return $hostelData;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
+    
 
     function showHostelData()
     {

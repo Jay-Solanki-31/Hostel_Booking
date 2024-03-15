@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,13 +33,13 @@
         <div class="header header-one">
             <div class="header-left header-left-one">
                 <a href="index.php" class="logo">
-                    <img src="assets/img/logo.png" alt="Logo">
+                <img src="../uploads/owners/<?php echo $AdminData['image']; ?>" alt="Logo" width="30" height="30">
                 </a>
                 <a href="index.php" class="white-logo">
                     <img src="assets/img/logo-white.png" alt="Logo">
                 </a>
                 <a href="index.php" class="logo logo-small">
-                    <img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
+                  <img src="../uploads/owners/<?php echo $AdminData['image']; ?>" alt="Logo" width="30" height="30">
                 </a>
             </div>
             <a href="javascript:void(0);" id="toggle_btn">
@@ -48,7 +49,7 @@
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img src="assets/img/profiles/avatar-01.jpg" alt="">
+                        <img src="../uploads/owners/<?php echo $AdminData['image']; ?>" alt="Logo" width="30" height="30">
                             <span class="status online"></span>
                         </span>
                         <span>Admin</span>

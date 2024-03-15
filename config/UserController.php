@@ -67,25 +67,24 @@ class UserController
 }
 
 
+public function GetHostelData()
+{
+    try {
+        $hostelData = $this->userModel->GetHostelData();
 
-
-    public function GetHostelData()
-    {
-        try {
-            $hostelImages = $this->userModel->GetHostelData();
-
-            if (!is_array($hostelImages)) {
-                throw new Exception("Invalid data returned from the model");
-            }
-
-            $limitedHostelImages = array_slice($hostelImages, 0, 6);
-
-            return $limitedHostelImages;
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
-            return [];
+        if (!is_array($hostelData)) {
+            throw new Exception("Invalid data returned from the model");
         }
+
+        $limitedHostelData = array_slice($hostelData, 0, 6);
+
+        return $limitedHostelData;
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+        return [];
     }
+}
+
 
     public function get_hostel()
     {

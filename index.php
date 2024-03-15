@@ -45,35 +45,36 @@ $sliders = $UserController->displaysliders();
                 </div>
 
                 <div class="container">
-                    <div class="row">
-                        <?php
-                        $counter = 0;
-                        foreach ($hostelImages as $hostelName => $imagePath) :
-                        ?>
-                            <div class="col-xs-12 col-sm-4">
-                                <div class="item room-item text-center accomd-modifications-room_1">
-                                    <!-- Hostel image -->
-                                    <div class="img">
-                                        <!-- Set a fixed size for the image -->
-                                        <a href="#"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $imagePath; ?>" alt="<?php echo $hostelName; ?>" style="width: 100%; height: 250px;"></a>
-                                    </div>
-                                    <!-- Hostel name -->
-                                    <h2 class="title"><a href="#"><?php echo $hostelName; ?></a></h2>
-                                    <div class="info upper">
-                                        <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="room-detail.php">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?php
-                            $counter++;
-                            if ($counter % 3 == 0) {
-                                echo '</div><div class="row">';
-                            }
-                        endforeach;
-                        ?>
+    <div class="row">
+        <?php
+        $counter = 0;
+        foreach ($hostelImages as $hostel) :
+            $hostelId = $hostel['id'];
+        ?>
+            <div class="col-xs-12 col-sm-4">
+                <div class="item room-item text-center accomd-modifications-room_1">
+                    <!-- Hostel image -->
+                    <div class="img">
+                        <!-- Set a fixed size for the image -->
+                        <a href="hostel-detail.php?id=<?php echo $hostelId; ?>"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $hostel['image']; ?>" alt="<?php echo $hostel['hostel_name']; ?>" style="width: 100%; height: 250px;"></a>
+                    </div>
+                    <!-- Hostel name -->
+                    <h2 class="title"><a href="hostel-detail.php?id=<?php echo $hostelId; ?>"><?php echo $hostel['hostel_name']; ?></a></h2>
+                    <div class="info upper">
+                        <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="hostel-detail.php?id=<?php echo $hostelId; ?>">View Details</a>
                     </div>
                 </div>
+            </div>
+
+        <?php
+            $counter++;
+            if ($counter % 3 == 0) {
+                echo '</div><div class="row">';
+            }
+        endforeach;
+        ?>
+    </div>
+</div>
 
 
 
