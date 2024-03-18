@@ -65,7 +65,8 @@ require "main_sidebar.php";
                                                 <td><img src="../uploads/hostels/<?= $row['image']; ?>"  style="width:80%;"/></td>
                                            
                                                 <td> <?= $row['hostel_name']; ?> </td>
-                                                <td><?= $row['description']; ?></td>
+                                                <td><?= strlen($row['description']) > 50 ? substr($row['description'], 0, 50) . '...' : $row['description']; ?></td>
+
                                                 <td><?= $row['location']; ?></td>
                                                 <td>
                                                     <?= $row['status'] == 1 ? '<span class="badge badge-pill bg-success-light">Active</span>' : '<span class="badge badge-pill bg-danger-light">Inactive</span>'; ?>

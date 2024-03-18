@@ -664,6 +664,18 @@ class AdminController
         }
     }
 
+    public function GetAboutUsDetails($id)
+    {
+        try {
+            $this->adminModel->getAboutUs($id);
+            showToast(' Record delated successfully!');
+            header("location:about-us.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     public function deleteAboutUs($id)
     {
         try {

@@ -719,6 +719,23 @@ class AdminModel
     }
 
     
+    function getAboutUs($id)
+    {
+        try {
+            $query = "SELECT * FROM aboutus WHERE id=$id";
+            $result = $this->mysqli->query($query);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    
     function deleteAboutUs($id)
     {
         try {

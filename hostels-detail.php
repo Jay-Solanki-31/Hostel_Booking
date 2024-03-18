@@ -1,14 +1,6 @@
 <?php
 session_start();
-function isLoggedIn()
-{
-    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
-}
 
-// if (!isLoggedIn()) {
-//     header("Location: login.php");
-//     exit();
-// }
 include "main_header.php";
 include "config/UserController.php";
 
@@ -25,14 +17,19 @@ $UserController->AddInquery($hostelId);
     <div class="sub-banner">
         <div class="container">
             <div class="text text-center">
-                <h2>HOSTEL IMFORMATION </h2>
+                <!-- Display Hostel Name -->
+                <?php foreach ($hostelData as $hostel) {
+                    if ($hostel->id == $hostelId) {
+                        echo "<h2>{$hostel->hostel_name}</h2>";
+                        break;
+                    }
+                } ?>
             </div>
         </div>
-
     </div>
-
 </section>
 <!-- END / SUB BANNER -->
+
 
 <!-- ROOM DETAIL -->
 <section class="section-room-detail bg-white">
@@ -141,8 +138,8 @@ $UserController->AddInquery($hostelId);
                 <h6 style="font-weight: unset;">' . $normalAmenity['name'] . '</h6>
               </div>';
                                                         }
-                                                    } 
-                                                    
+                                                    }
+
                                                     foreach (PREMIUM_AMENITIES as $preAmenity) {
                                                         if (in_array($preAmenity['value'], $amenitiesArray)) {
                                                             echo '<div class="col-xs-6 col-lg-4">
@@ -150,8 +147,8 @@ $UserController->AddInquery($hostelId);
               </div>';
                                                         }
                                                     }
-                                                    
-                                                    
+
+
                                                     ?>
                                                 </div>
                                                 <!-- End amenities -->
