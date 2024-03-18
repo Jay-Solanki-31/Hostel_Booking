@@ -35,6 +35,8 @@ $hostelData = $UserController->get_hostel();
         margin-top: 30px;
         /* Adjust as needed */
     }
+
+
 </style>
 
 
@@ -81,8 +83,10 @@ $hostelData = $UserController->get_hostel();
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                       
                     </div>
                 </div>
+
             </div>
             <div class="col-lg-3">
                 <!-- FORM BOOK -->
@@ -110,3 +114,4 @@ $hostelData = $UserController->get_hostel();
 
 
 <?php include "main_footer.php" ?>
+

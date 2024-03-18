@@ -646,13 +646,14 @@ class AdminModel
         }
     }
 
-    public function add_slider($image){
+    public function add_slider($description,$image){
         try {
 
+            $description = $this->mysqli->real_escape_string($description);
             $image = $this->mysqli->real_escape_string($image) ?? '';
 
 
-            $query = "INSERT INTO sliders (picture) VALUES ('$image')";
+            $query = "INSERT INTO sliders (info,picture) VALUES (' $description','$image')";
             $result1 = $this->mysqli->query($query);
             if (!$result1) {
                   throw new Exception("Error in insert  query: " . $this->mysqli->error);

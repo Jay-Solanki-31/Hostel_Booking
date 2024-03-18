@@ -567,7 +567,7 @@ class AdminController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-           
+           $description = $_FILES['description'];
             $imageFILE = $_FILES['image'];
             $imageFILEDestination = "";
             $originalFileName = "";
@@ -589,7 +589,7 @@ class AdminController
                         $imageFILEDestination = $destination;
                     }
                 }
-                $this->adminModel->add_slider( $originalFileName);
+                $this->adminModel->add_slider( $description,$originalFileName);
                 showToast('slider  added successfully!');
                 header("refresh:2;url=slider.php");
             } catch (Exception $e) {

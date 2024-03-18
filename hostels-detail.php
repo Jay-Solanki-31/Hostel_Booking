@@ -12,6 +12,16 @@ $UserController = new UserController();
 $hostelData = $UserController->get_hostel($hostelId);
 $UserController->AddInquery($hostelId);
 ?>
+<style>
+    .bold-medium {
+        font-weight: bold;
+        font-size: xx-large;
+        /* You can adjust the size as needed */
+    }
+</style>
+
+
+
 <section class="section-sub-banner bg-16">
     <div class="awe-overlay"></div>
     <div class="sub-banner">
@@ -105,17 +115,14 @@ $UserController->AddInquery($hostelId);
                         <div class="room-detail_tab-content tab-content">
 
                             <!-- OVERVIEW -->
-                            <div class="tab-pane fade  active in" id="overview">
-
+                            <div class="tab-pane fade active in" id="overview">
                                 <?php foreach ($hostelData as $hostel) {
                                     if ($hostel->id == $hostelId) { ?>
                                         <div class="room-detail_overview">
-
-                                            <?php echo $hostel->description; ?>
+                                            <p class="bold-medium"><?php echo $hostel->description; ?></p>
                                         </div>
                                 <?php }
                                 } ?>
-
                             </div>
                             <!-- END / OVERVIEW -->
 
