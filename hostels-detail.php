@@ -65,7 +65,7 @@ $UserController->AddInquery($hostelId);
 
                             <div class="room-detail_total">
                                 <img src="images/icon-logo.png" alt="" class="icon-logo">
-                                <h5>Inquery Now </h5>
+                                <h5>Enquiry Now </h5>
                             </div>
 
                             <form action="" method="post">
@@ -79,7 +79,7 @@ $UserController->AddInquery($hostelId);
                                     <input type="text" name="contactNo" id="contactNo" class="form-control" placeholder="Enter Your Contact No">
                                     <label>Description</label>
                                     <input type="text" name="message" id="message" class="form-control" placeholder="Enter Your Desciption">
-                                    <button class="awe-btn awe-btn-13">Inquery Now</button>
+                                    <button class="awe-btn awe-btn-13">enquiry Now</button>
                                 </div>
                             </form>
 

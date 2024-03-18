@@ -1,14 +1,11 @@
 <?php
 session_start();
 
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 
-// if (!isLoggedIn()) {
-//     header("Location: login.php");
-//     exit();
-// }
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
@@ -20,7 +17,7 @@ $hostelData = $UserController->get_hostel();
     <div class="sub-banner">
         <div class="container">
             <div class="text text-center">
-                <h2>HOSTELS &amp; INFO </h2>
+                <h2>FIND HOSTELS </h2>
             </div>
         </div>
     </div>
@@ -62,22 +59,28 @@ $hostelData = $UserController->get_hostel();
                 </div>
                 <div class="col-lg-3">
 
+                    <!-- FORM BOOK -->
                     <div class="room-detail_book">
+
                         <div class="room-detail_total">
                             <img src="images/icon-logo.png" alt="" class="icon-logo">
-                            <h5>Filter Hostels</h5>
+                            <h5>Enquiry Now </h5>
                         </div>
 
-                        <div class="room-detail_form">
-                            <label>City Name</label>
-                            <input type="text" id="citySearch" class="awe-select" placeholder="Enter city name">
+                        <form action="" method="post">
+                            <div class="room-detail_form">
+                                <label>Hostels Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter Hostels Name ">
+                                <label>City</label>
+                                <input type="text" name="city name " id="city name " class="form-control" placeholder="Enter city name ">
+                               
+                                <button class="awe-btn awe-btn-13">enquiry Now</button>
+                            </div>
+                        </form>
 
-                            <label>Hostel Name</label>
-                            <input type="text" id="hostelSearch" class="awe-select" placeholder="Enter Hostel name">
 
-                            <button id="filterButton" class="awe-btn awe-btn-13">Filter</button>
-                        </div>
                     </div>
+                    <!-- END / FORM BOOK -->
 
                 </div>
             </div>
@@ -87,4 +90,3 @@ $hostelData = $UserController->get_hostel();
 </section>
 
 <?php include "main_footer.php" ?>
-

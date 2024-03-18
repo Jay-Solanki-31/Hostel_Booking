@@ -1,4 +1,6 @@
-<?php include 'main_header.php';
+<?php 
+session_start();
+include 'main_header.php';
 include "../config/AdminController.php";
 
 $AdminController = new AdminController();
@@ -54,7 +56,11 @@ include 'main_sidebar.php';
                             <div class="card-body">
                                 <form action="" method="post" id="EdithostelForm" enctype="multipart/form-data">
 
-                                    <h4 class="card-title mt-4">Image Upload</h4>
+                                    <h4 class="card-title mt-4"> Add About-Us</h4>
+                                    <div class="form-group">
+                                        <label for="Title">Add Title:</label>
+                                        <input type="text" id="Title" name="Title" class="form-control">
+                                    </div>
                                     <div class="form-group">
                                         <label for="image">Select Image:</label>
                                         <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)" class="form-control">

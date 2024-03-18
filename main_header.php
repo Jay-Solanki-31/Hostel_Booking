@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <?php
     $page_titles = array(
-        "about.php" => "About Us",
-        "contact.php" => "Contact Us",
-        "hostel.php" => "Hostel",
-        "login.php" => "Login",
-        "register.php" => "Register",
-        "room-detail.php" => "Rooms Details",
-        "studentProfile.php" => "Profile",
-        "hostelProfile.php" => "Profile",
+        "about.php" => "ABOUT US",
+        "contact.php" => "CONTACT US",
+        "hostels.php" => "HOSTELS",
+        "login.php" => "LOGIN",
+        "register.php" => "REGISTER",
+        "hostels-detail.php" => "HOSTELS DETAILS ",
+        "studentProfile.php" => "PROFILE",
+        "hostelProfile.php" => "PROFILE",
 
     );
 

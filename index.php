@@ -45,36 +45,36 @@ $sliders = $UserController->displaysliders();
                 </div>
 
                 <div class="container">
-    <div class="row">
-        <?php
-        $counter = 0;
-        foreach ($hostelImages as $hostel) :
-            $hostelId = $hostel['id'];
-        ?>
-            <div class="col-xs-12 col-sm-4">
-                <div class="item room-item text-center accomd-modifications-room_1">
-                    <!-- Hostel image -->
-                    <div class="img">
-                        <!-- Set a fixed size for the image -->
-                        <a href="hostel-detail.php?id=<?php echo $hostelId; ?>"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $hostel['image']; ?>" alt="<?php echo $hostel['hostel_name']; ?>" style="width: 100%; height: 250px;"></a>
-                    </div>
-                    <!-- Hostel name -->
-                    <h2 class="title"><a href="hostel-detail.php?id=<?php echo $hostelId; ?>"><?php echo $hostel['hostel_name']; ?></a></h2>
-                    <div class="info upper">
-                        <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="hostel-detail.php?id=<?php echo $hostelId; ?>">View Details</a>
+                    <div class="row">
+                        <?php
+                        $counter = 0;
+                        foreach ($hostelImages as $hostel) :
+                            $hostelId = $hostel['id'];
+                        ?>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="item room-item text-center accomd-modifications-room_1">
+                                    <!-- Hostel image -->
+                                    <div class="img">
+                                        <!-- Set a fixed size for the image -->
+                                        <a href="hostels-detail.php?id=<?php echo $hostelId; ?>"><img class="img-responsive img-full hostel-image" src="uploads/hostels/<?php echo $hostel['image']; ?>" alt="<?php echo $hostel['hostel_name']; ?>" style="width: 100%; height: 250px;"></a>
+                                    </div>
+                                    <!-- Hostel name -->
+                                    <h2 class="title"><a href="hostels-detail.php?id=<?php echo $hostelId; ?>"><?php echo $hostel['hostel_name']; ?></a></h2>
+                                    <div class="info upper">
+                                        <a class="awe-btn awe-btn-default btn-medium font-hind f12 bold" href="hostels-detail.php?id=<?php echo $hostelId; ?>">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php
+                            $counter++;
+                            if ($counter % 3 == 0) {
+                                echo '</div><div class="row">';
+                            }
+                        endforeach;
+                        ?>
                     </div>
                 </div>
-            </div>
-
-        <?php
-            $counter++;
-            if ($counter % 3 == 0) {
-                echo '</div><div class="row">';
-            }
-        endforeach;
-        ?>
-    </div>
-</div>
 
 
 
@@ -84,7 +84,7 @@ $sliders = $UserController->displaysliders();
     </section>
 
     <div class="text-center">
-        <a href="hostel.php" class="awe-btn awe-btn-13">VIEW MORE</a>
+        <a href="hostels.php" class="awe-btn awe-btn-13">VIEW MORE</a>
     </div>
 
     </div>
@@ -92,59 +92,58 @@ $sliders = $UserController->displaysliders();
     </section>
     <!-- END / ACCOMMODATIONS -->
 
-  <!-- HOSTEL FINDER -->
-<section class="hostel-finder mt60">
-    <div class="container">
-        <div class="content">
-            <div class="row">
-                <div class="col col-xs-12 col-lg-6 col-lg-offset-3">
-                    <div class="heading mb40 row-20 text-center">
-                        <h2>HOSTEL FINDER</h2>
-                        <p class="sub pr10 pl10">
-                            Looking for a comfortable and affordable stay? Explore our selection of hostels
-                            in popular destinations.
-                        </p>
+    <!-- HOSTEL FINDER -->
+    <section class="hostel-finder mt60">
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    <div class="col col-xs-12 col-lg-6 col-lg-offset-3">
+                        <div class="heading mb40 row-20 text-center">
+                            <h2>HOSTEL FINDER</h2>
+                            <p class="sub pr10 pl10">
+                                Looking for a comfortable and affordable stay? Explore our selection of hostels
+                                in popular destinations.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="img-hover-box mb40">
-                <div class="img">
-                    <img class="img-responsive" src="images/home-3/slider-1.png" alt="">
+                <div class="img-hover-box mb40">
+                    <div class="img">
+                        <img class="img-responsive" src="images/home-3/slider-1.png" alt="">
+                    </div>
                 </div>
-            </div>
-            <div class="text-center mt40 mb30 featured">
-                <p class="font-hind f-500 f20">Find the perfect hostel for your next adventure.</p>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                    <div class="details">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-                                <p class="font-hind f14 pr15">
-                                    Whether you're a solo traveler or part of a group, our hostel finder makes it easy
-                                    to discover budget-friendly accommodations. Search by location, price, amenities,
-                                    and more.
-                                </p>
+                <div class="text-center mt40 mb30 featured">
+                    <p class="font-hind f-500 f20">Find the perfect hostel for your next adventure.</p>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                        <div class="details">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <p class="font-hind f14 pr15">
+                                        Whether you're a solo traveler or part of a group, our hostel finder makes it easy
+                                        to discover budget-friendly accommodations. Search by location, price, amenities,
+                                        and more.
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <p class="font-hind f14 pl15">
+                                        With options available worldwide, you'll find hostels in bustling cities,
+                                        scenic countryside, and everywhere in between. Start planning your trip today
+                                        and book your stay with confidence.
+                                    </p>
+                                </div>
                             </div>
-                            <div class="col-xs-12 col-sm-6">
-                                <p class="font-hind f14 pl15">
-                                    With options available worldwide, you'll find hostels in bustling cities,
-                                    scenic countryside, and everywhere in between. Start planning your trip today
-                                    and book your stay with confidence.
-                                </p>
+                            <div class="text-center">
+                                <a href="hostels.php" class="btn btn-default mt30 mb30 font-hind f12 bold btn-medium">Explore Hostels</a>
                             </div>
-                        </div>
-                        <div class="text-center">
-                            <a href="hostel.php" class="btn btn-default mt30 mb30 font-hind f12 bold btn-medium"
-                                target="_blank">Explore Hostels</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- END / HOSTEL FINDER -->
+    </section>
+    <!-- END / HOSTEL FINDER -->
 
     <!-- OUR BEST -->
     <section class="ot-out-best mt60">

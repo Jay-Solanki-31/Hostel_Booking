@@ -53,6 +53,7 @@ if ($delateid) {
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Sr No</th>
+                                            <th>Title</th>
                                             <th>Picture</th>
                                             <th>description</th>
                                             <th class="text-end">Actions</th>
@@ -62,6 +63,7 @@ if ($delateid) {
                                         <?php while ($row = $aboutusList->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $row['id']; ?></td>
+                                                <td><?= $row['heading']; ?></td>
                                                 <td><img src="../uploads/about-us/<?= $row['picture']; ?>" style="width:50%;height:30%;" /></td>
                                                 <td><?= $row['info']; ?></td>
                                                 <td>

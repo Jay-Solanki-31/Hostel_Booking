@@ -187,7 +187,7 @@ class UserModel
     public function showAboutUsData()
     {
         try {
-            $sql = "SELECT info, picture FROM aboutus";
+            $sql = "SELECT * FROM aboutus";
             $result = $this->mysqli->query($sql);
             if (!$result) {
                 throw new Exception("Error in fetching about us data: " . $this->mysqli->error);

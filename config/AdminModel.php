@@ -697,14 +697,15 @@ class AdminModel
         }
     }
 
-    public function add_AboutUS($description, $image){
+    public function add_AboutUS($title,$description, $image){
         try {
 
+            $title = $this->mysqli->real_escape_string($title);
             $description = $this->mysqli->real_escape_string($description);
             $image = $this->mysqli->real_escape_string($image) ?? '';
 
 
-            $query = "INSERT INTO aboutus (picture, info) VALUES ('$image', '$description')";
+            $query = "INSERT INTO aboutus (heading,picture, info) VALUES ('$title','$image', '$description')";
 
             $result1 = $this->mysqli->query($query);
             if (!$result1) {

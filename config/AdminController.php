@@ -54,54 +54,60 @@ class AdminController
             echo "Error: " . $e->getMessage();
         }
     }
+
     public function updateAdminInfo()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['full_name'];
-            $email = $_POST['email'];
-            $contact_no = $_POST['phone'];
-            $imageFILE = $_FILES['profile_image'];
-            $imageFILEDestination = "";
-    
-            try {
-                $uploadDirectory = '../uploads/owners/';
-    
-                // Check if a new image is uploaded
-                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                    // If there's an existing image, delete it
-                    $oldImagePath = $this->adminModel->getAdminimage();
-                    if ($oldImagePath && file_exists($oldImagePath['image'])) {
-                        unlink($oldImagePath['image']);
-                    }
-    
-                    $uploadedFile = $imageFILE['tmp_name'];
-                    $originalFileName = $imageFILE['name'];
-                    $destination = $uploadDirectory . $originalFileName;
-    
-                    if (move_uploaded_file($uploadedFile, $destination)) {
-                        $imageFILEDestination = $destination;
-                    }
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST['full_name'];
+        $email = $_POST['email'];
+        $contact_no = $_POST['phone'];
+        $imageFILE = $_FILES['profile_image'];
+        $imageFILEDestination = "";
+
+        try {
+            $uploadDirectory = '../uploads/owners/';
+
+            // Check if a new image is uploaded
+            if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                // If there's an existing image, delete it
+                $oldImagePath = $this->adminModel->getAdminimage();
+                if ($oldImagePath && file_exists($oldImagePath['image'])) {
+                    unlink($oldImagePath['image']);
                 }
-    
-                $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
-                showToast('Admin Information updated successfully!');
-                
-                // JavaScript to reload the current page after 2 seconds
+
+                $uploadedFile = $imageFILE['tmp_name'];
+                $originalFileName = $imageFILE['name'];
+                $destination = $uploadDirectory . $originalFileName;
+
+                if (move_uploaded_file($uploadedFile, $destination)) {
+                    $imageFILEDestination = $destination;
+                }
+            }
+
+            $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
+            showToast('Admin Information updated successfully!');
+            
+            // Check if page has been refreshed already
+            if (!isset($_SESSION['page_refreshed'])) {
+                // JavaScript to reload the page after 2 seconds
                 echo '<script>
                         setTimeout(function(){
-                            window.location.href = "'.$_SERVER['PHP_SELF'].'"; // Reload current page
+                            window.location.reload(true); // Perform hard refresh
                         }, 2000);
                       </script>';
-    
-                exit();
-    
-            } catch (Exception $e) {
-                error_log('Error: ' . $e->getMessage());
-                showToast($e->getMessage(), 'error');
+
+                $_SESSION['page_refreshed'] = true; // Mark page as refreshed
             }
+
+            exit();
+
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
         }
     }
-    
+}
+
     
 
     public function updateAdminPassword()
@@ -623,6 +629,7 @@ class AdminController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+            $title = $_POST['Title'];
             $description = $_POST['description'];
             $imageFILE = $_FILES['image'];
             $imageFILEDestination = "";
@@ -646,7 +653,7 @@ class AdminController
                         $imageFILEDestination = $destination;
                     }
                 }
-                $this->adminModel->add_AboutUS($description, $originalFileName);
+                $this->adminModel->add_AboutUS($title,$description, $originalFileName);
                 showToast('about-us  added successfully!');
                 header("refresh:2;url=about-us.php");
             } catch (Exception $e) {
