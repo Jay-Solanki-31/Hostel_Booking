@@ -403,6 +403,16 @@ class UserModel
         }
     }
 
+
+    
+
+
+
+
+
+
+
+
     public function updateOwnerInfo($email, $contact_no, $name, $image, $hostelid)
     {
         try {
