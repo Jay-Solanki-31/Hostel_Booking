@@ -161,7 +161,7 @@ class UserModel
         }
     }
 
-    function showslider()
+    function showsliderWithDescription()
     {
         try {
             $sql = "SELECT * FROM sliders";
@@ -169,20 +169,21 @@ class UserModel
             if (!$result) {
                 throw new Exception("Error in fetching slider data: " . $this->mysqli->error);
             }
-
-            $slider = array();
+    
+            $sliders = array();
             while ($row = $result->fetch_object()) {
-                $slider[] = $row;
+                $sliders[] = $row;
             }
-
+    
             // Free result set
             $result->free();
-
-            return $slider;
+    
+            return $sliders;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
+    
 
     public function showAboutUsData()
     {

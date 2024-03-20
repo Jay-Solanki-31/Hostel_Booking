@@ -148,13 +148,14 @@ public function GetHostelData()
     public function displaysliders()
     {
         try {
-            $sliders = $this->userModel->showslider();
+            $sliders = $this->userModel->showsliderWithDescription(); // Call the method to fetch sliders with descriptions
             return $sliders;
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
+    
 
     public function showAboutUsData()
     {

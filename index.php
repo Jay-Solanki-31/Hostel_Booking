@@ -7,26 +7,78 @@ $UserController = new UserController();
 $hostelImages = $UserController->GetHostelData();
 $sliders = $UserController->displaysliders();
 ?>
+<style>
+/* Define keyframes for text popup animation */
+@keyframes textPopup {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
 
+/* Apply animation to slider description */
+.slider-description {
+    position: absolute;
+    bottom: 300px;
+    left: 40%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 40px;
+    text-align: center;
+    z-index: 1000;
+    animation: textPopup 0.5s ease-out forwards; /* Adjust duration and timing function as needed */
+}
+
+.slider-button {
+    position: absolute;
+    bottom: 250px; /* Adjust the distance from the bottom as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: wheat; /* Button background color */
+    color: black; /* Button text color */
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+}
+
+.slider-button:hover {
+    background-color: yellowgreen; /* Button background color on hover */
+}
+
+
+
+</style>
 <body>
-
-    <!-- BANNER SLIDER -->
-    <section class="section-slider slider-style-2 clearfix">
-        <h1 class="element-invisible">Slider</h1>
-        <div id="slider-revolution">
-            <ul>
-                <?php foreach ($sliders as $slider) : ?>
-                    <li data-transition="fade">
-                        <img src="uploads/slider/<?php echo $slider->picture; ?>" data-bgposition="left center" data-duration="14000" data-bgpositionend="right center" alt="">
-
-                    </li>
-                <?php endforeach; ?>
-
-            </ul>
-        </div>
-    </section>
-
-    <!-- END / BANNER SLIDER -->
+    
+<!-- BANNER SLIDER -->
+<section class="section-slider slider-style-2 clearfix">
+    <h1 class="element-invisible">Slider</h1>
+    <div id="slider-revolution">
+        <ul>
+            <?php foreach ($sliders as $slider) : ?>
+                <li data-transition="fade">
+                    <img src="uploads/slider/<?php echo $slider->picture; ?>" data-bgposition="left center" data-duration="14000" data-bgpositionend="right center" alt="">
+                    <div class="slider-description"><?php echo $slider->info; ?></div>
+                    <a href="hostels.php" class="slider-button">View Hostels</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</section>
+<!-- END / BANNER SLIDER -->
 
     <!-- ACCOMMODATIONS -->
 
