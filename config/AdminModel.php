@@ -653,7 +653,7 @@ class AdminModel
             $image = $this->mysqli->real_escape_string($image) ?? '';
 
 
-            $query = "INSERT INTO sliders (info,picture) VALUES (' $description','$image')";
+            $query = "INSERT INTO sliders (info,picture) VALUES ('$description','$image')";
             $result1 = $this->mysqli->query($query);
             if (!$result1) {
                   throw new Exception("Error in insert  query: " . $this->mysqli->error);

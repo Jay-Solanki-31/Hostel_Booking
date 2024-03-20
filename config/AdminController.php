@@ -567,7 +567,7 @@ class AdminController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-           $description = $_FILES['description'];
+           $description = $_POST['info'];
             $imageFILE = $_FILES['image'];
             $imageFILEDestination = "";
             $originalFileName = "";
