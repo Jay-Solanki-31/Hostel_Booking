@@ -71,18 +71,7 @@
             <div class="header_top">
                 <div class="container">
                 <div class="header_right float-right">
-                        <?php
-                        session_start(); // Start the session
-                        if (isset($_SESSION['user_email'])) {
-                            // User is logged in
-                            ?>
-                        <?php } else { ?>
-                            <span class="login-register">
-                                <!-- Add login and register links if user is not logged in -->
-                                <a href="login.php">Login</a>
-                                <a href="register.php">Register</a>
-                            </span>
-                        <?php } ?>
+                      
                     </div>
                 </div>
             </div>
