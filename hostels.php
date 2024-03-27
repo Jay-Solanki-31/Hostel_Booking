@@ -1,16 +1,15 @@
 <?php
 session_start();
 
-function isLoggedIn()
-{
-    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
-}
+// function isLoggedIn()
+// {
+//     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+// }
 
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
-
-
+$hosteldata = $UserController->get_hostel()
 ?>
 
 <section class="section-sub-banner bg-9">
@@ -44,8 +43,8 @@ $UserController = new UserController();
                     <div class="row" id="hostelList">
                         <?php
                         // Check if there's any data to display
-                        if (!empty($hostelData)) {
-                            foreach ($hostelData as $hostel) :
+                        if (!empty($hosteldata)) {
+                            foreach ($hosteldata as $hostel) :
                         ?>
                                 <div class="col-xs-6">
                                     <div class="room_item-5" data-background='uploads/hostels/<?php echo $hostel->image; ?>'>
@@ -82,9 +81,6 @@ $UserController = new UserController();
                                 </div>
                         <?php
                             endforeach;
-                        } else {
-                            // Display message if no hostels found or no data submitted
-                            echo '<div class="col-xs-12"><p>' . ($no_data_message ? $no_data_message : "No data submitted.") . '</p></div>';
                         }
                         ?>
                     </div>
@@ -97,20 +93,84 @@ $UserController = new UserController();
                         <img src="images/icon-logo.png" alt="" class="icon-logo">
                         <h5>Filter Hostels </h5>
                     </div>
-                    <form action="" method="post">
+                    <form id="filterForm" action="filter_hostels.php" method="post">
                         <div class="room-detail_form">
-                            <label>Hostels Name</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter Hostels Name">
+                            <label>Hostel Name</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter Hostel Name">
                             <label>City</label>
                             <input type="text" name="city_name" id="city_name" class="form-control" placeholder="Enter City Name">
                             <button type="submit" class="awe-btn awe-btn-13">Filter Now</button>
                         </div>
                     </form>
+
+
                 </div>
                 <!-- END / FORM BOOK -->
             </div>
         </div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#filterForm').submit(function(e){
+        e.preventDefault(); 
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                if(response.error) {
+                    alert(response.error);
+                } else {
+                    $('#hostelList').empty(); 
+                    $.each(response, function(index, hostel) {
+                        var hostelHtml = `
+                            <div class="col-xs-6">
+                                <div class="room_item-5" data-background='uploads/hostels/${hostel.image}'>
+
+                                    <!-- Display hostel image -->
+                                    <div class="img">
+                                        <a href="#"><img src="uploads/hostels/${hostel.image}" alt=""></a>
+                                    </div>
+
+                                    <!-- Display hostel name -->
+                                    <div class="room_item-forward">
+                                        <h2><a href="hostels-detail.php">${hostel.hostel_name}</a></h2>
+                                    </div>
+
+                                    <!-- Display hostel description and location -->
+                                    <div class="room_item-back">
+                                        <h3>
+                                            <i class="fas fa-map-marker-alt"></i> ${hostel.location}
+                                        </h3>
+                                        <p>
+                                            <i class="fas fa-info-circle"></i> ${hostel.description.substring(0, 100)}
+                                            ${hostel.description.length > 100 ? '...' : ''}
+                                        </p>
+                                        <div class="button-container">
+                                            <a href="hostels-detail.php?id=${hostel.id}" class="awe-btn awe-btn-13">VIEW DETAILS</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        `;
+                        $('#hostelList').append(hostelHtml); 
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        });
+    });
+});
+</script>
+
+
 
 <?php include "main_footer.php" ?>

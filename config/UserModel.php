@@ -119,6 +119,40 @@ class UserModel
         }
     }
 
+    public function filterHostels($name, $city)
+    {
+        try {
+            $query = "SELECT * FROM hostels WHERE hostel_name LIKE ? AND location LIKE ?";
+            $stmt = $this->mysqli->prepare($query);
+
+            if ($stmt === false) {
+                throw new Exception("Error preparing statement: " . $this->mysqli->error);
+            }
+
+            // Bind parameters
+            $name = '%' . $name . '%';
+            $city = '%' . $city . '%';
+            $stmt->bind_param('ss', $name, $city);
+
+            // Execute statement
+            if (!$stmt->execute()) {
+                throw new Exception("Error executing statement: " . $stmt->error);
+            }
+
+            $result = $stmt->get_result();
+
+            $hostels = array();
+            while ($row = $result->fetch_object()) {
+                $hostels[] = $row;
+            }
+
+            return $hostels;
+        } catch (Exception $e) {
+            throw new Exception("Error filtering hostels: " . $e->getMessage());
+        }
+    }
+    
+
     public function AddInquery($name, $email, $contactNo, $message, $userId, $hostelId)
     {
         try {
@@ -402,15 +436,6 @@ class UserModel
             echo "Error: " . $e->getMessage();
         }
     }
-
-
-    
-
-
-
-
-
-
 
 
     public function updateOwnerInfo($email, $contact_no, $name, $image, $hostelid)
