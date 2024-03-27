@@ -25,7 +25,7 @@
     // Echo the dynamic title
     echo "<title>$title</title>";
     ?>
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -53,7 +53,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 </head>
- <body>
+
+<style>
+    .menu li.active a {
+    color: goldenrod;
+}
+
+</style>
+
+<body>
 
     <!-- PRELOADER -->
     <!-- <div id="preloader">
@@ -70,8 +78,8 @@
             <!-- HEADER TOP -->
             <div class="header_top">
                 <div class="container">
-                <div class="header_right float-right">
-                      
+                    <div class="header_right float-right">
+
                     </div>
                 </div>
             </div>
@@ -86,24 +94,25 @@
                         <a href="index.php"><img src="images/logo-header.png" alt=""></a>
                     </div>
                     <!-- END / HEADER LOGO -->
-
                     <!-- HEADER MENU -->
                     <nav class="header_menu">
                         <ul class="menu">
-                            <li>
-                                <a href="index.php">Home</span></a>
-
+                            <li <?php if ($current_page == 'index.php') echo 'class="active"'; ?>>
+                                <a href="index.php">Home</a>
                             </li>
-                            <li><a href="about.php">About</a></li>
-
-                            <li>
-                                <a href="hostels.php">HOSTELS </span></a>
-
+                            <li <?php if ($current_page == 'about.php') echo 'class="active"'; ?>>
+                                <a href="about.php">About</a>
                             </li>
-                            <li><a href="contact.php">Contact</a></li>
+                            <li <?php if ($current_page == 'hostels.php' || $current_page == 'hostels-detail.php' || $current_page == 'hostelProfile.php') echo 'class="active"'; ?>>
+                                <a href="hostels.php">Hostels</a>
+                            </li>
+                            <li <?php if ($current_page == 'contact.php') echo 'class="active"'; ?>>
+                                <a href="contact.php">Contact</a>
+                            </li>
                         </ul>
                     </nav>
                     <!-- END / HEADER MENU -->
+
 
                     <!-- MENU BAR -->
                     <span class="menu-bars">

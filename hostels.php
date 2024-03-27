@@ -98,9 +98,9 @@ $hosteldata = $UserController->get_hostel()
                     <form id="filterForm" action="filter_hostels.php" method="post">
                         <div class="room-detail_form">
                             <label>Hostel Name</label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter Hostel Name">
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Filter by  Hostel Name">
                             <label>City</label>
-                            <input type="text" name="city_name" id="city_name" class="form-control" placeholder="Enter City Name">
+                            <input type="text" name="city_name" id="city_name" class="form-control" placeholder="Filter by  City Name">
                             <button type="submit" class="awe-btn awe-btn-13">Filter Now</button>
                         </div>
                     </form>
