@@ -49,7 +49,6 @@
     <!-- MAIN STYLE -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 </head>
@@ -57,6 +56,11 @@
 <style>
     .menu li.active a {
     color: goldenrod;
+
+    .error-message {
+            color: red;
+            font-size: 14px;
+        }
 }
 
 </style>

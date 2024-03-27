@@ -60,6 +60,10 @@ $sliders = $UserController->displaysliders();
 
 
 
+       
+    
+
+
 </style>
 <body>
     

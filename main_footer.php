@@ -54,24 +54,23 @@
     </div>
     <!-- END / PAGE WRAP -->
 
-
-    <!-- LOAD JQUERY -->
-    <script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/lib/bootstrap-select.js"></script>
-    <script type="text/javascript" src="js/lib/isotope.pkgd.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.themepunch.revolution.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.themepunch.tools.min.js"></script>
-    <script type="text/javascript" src="js/lib/owl.carousel.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.appear.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.countTo.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.countdown.min.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.parallax-1.1.3.js"></script>
-    <script type="text/javascript" src="js/lib/jquery.magnific-popup.min.js"></script>
-    <script type="text/javascript" src="js/lib/SmoothScroll.js"></script>
-    <script type="text/javascript" src="js/scripts.js"></script>
-    <script type="text/javascript" src="js/customUser.js"></script>
-    </body>
-
-
+<!-- LOAD JQUERY -->
+<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/lib/bootstrap-select.js"></script>
+<script type="text/javascript" src="js/lib/isotope.pkgd.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="js/lib/owl.carousel.js"></script>
+<script type="text/javascript" src="js/lib/jquery.appear.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.countTo.js"></script>
+<script type="text/javascript" src="js/lib/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.parallax-1.1.3.js"></script>
+<script type="text/javascript" src="js/lib/jquery.magnific-popup.min.js"></script>
+<script type="text/javascript" src="js/lib/SmoothScroll.js"></script>
+<script type="text/javascript" src="js/lib/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/lib/customeUser.js"></script>
+<!-- <script src="js/lib/jquery-3.6.0.min.js"></script> -->
+<script type="text/javascript" src="js/scripts.js"></script>
+</body>

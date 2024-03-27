@@ -81,39 +81,6 @@ $AdminController->Adminlogin();
 
 
 
-    <script>
-        $(document).ready(function() {
-            $('#loginForm').validate({
-                rules: {
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    password: {
-                        required: true
-                    }
-                },
-                messages: {
-                    email: {
-                        required: 'Please enter your email',
-                        email: 'Please enter a valid email address'
-                    },
-                    password: {
-                        required: 'Please enter your password'
-                    }
-                },
-                errorElement: 'span', // Wrap error messages in <span> tags
-                errorClass: 'error-message', // Custom class for error messages
-
-                submitHandler: function(form) {
-                    // Form is valid, submit it
-                    form.submit();
-                }
-            });
-        });
-    </script>
-
-
 
 
 </body>
