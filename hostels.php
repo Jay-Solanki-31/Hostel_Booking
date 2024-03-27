@@ -33,6 +33,8 @@ $hosteldata = $UserController->get_hostel()
         justify-content: flex-end;
         margin-top: 30px;
     }
+
+    
 </style>
 
 <section class="section-room bg-white">

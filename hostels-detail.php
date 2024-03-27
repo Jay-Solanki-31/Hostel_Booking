@@ -18,6 +18,10 @@ $UserController->AddInquery($hostelId);
         font-size: xx-large;
         /* You can adjust the size as needed */
     }
+
+    .room-detail {
+    margin-top: 40px;
+}
 </style>
 
 
