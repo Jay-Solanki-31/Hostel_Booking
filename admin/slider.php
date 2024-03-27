@@ -53,6 +53,7 @@ if ($delateid) {
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Sr No</th>
+                                            <th>Description</th>
                                             <th>Picture</th>
                                             <th class="text-end">Actions</th>
                                         </tr>
@@ -61,6 +62,7 @@ if ($delateid) {
                                         <?php while ($row = $sliderList->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $row['id']; ?></td>
+                                                <td><?= $row['info']; ?></td>
                                                 <td><img src="../uploads/slider/<?= $row['picture']; ?>" style="width:50%;height:30%;" /></td>
                                                 <td>
                                                     <a href="javascript:;" onclick="deleteSlider(<?= $row['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>

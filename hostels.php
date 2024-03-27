@@ -1,10 +1,10 @@
 <?php
-session_start();
+// session_start();
 
-// function isLoggedIn()
-// {
-//     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
-// }
+// // function isLoggedIn()
+// // {
+// //     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+// // }
 
 include "main_header.php";
 include "config/UserController.php";
