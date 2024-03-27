@@ -33,8 +33,6 @@ $hosteldata = $UserController->get_hostel()
         justify-content: flex-end;
         margin-top: 30px;
     }
-
-    
 </style>
 
 <section class="section-room bg-white">
@@ -115,22 +113,22 @@ $hosteldata = $UserController->get_hostel()
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function(){
-    $('#filterForm').submit(function(e){
-        e.preventDefault(); 
+    $(document).ready(function() {
+        $('#filterForm').submit(function(e) {
+            e.preventDefault();
 
-        $.ajax({
-            type: 'POST',
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                if(response.error) {
-                    alert(response.error);
-                } else {
-                    $('#hostelList').empty(); 
-                    $.each(response, function(index, hostel) {
-                        var hostelHtml = `
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.error) {
+                        alert(response.error);
+                    } else {
+                        $('#hostelList').empty();
+                        $.each(response, function(index, hostel) {
+                            var hostelHtml = `
                             <div class="col-xs-6">
                                 <div class="room_item-5" data-background='uploads/hostels/${hostel.image}'>
 
@@ -161,16 +159,25 @@ $(document).ready(function(){
                                 </div>
                             </div>
                         `;
-                        $('#hostelList').append(hostelHtml); 
-                    });
+                            $('#hostelList').append(hostelHtml);
+                            $('.room_item-6, .room_item-5').each(function(index, el) {
+                                var $this = $(this),
+                                    link_src = $this.data().background;
+
+                                if (link_src != undefined && link_src != '') {
+                                    $this.css('background-image', 'url(' + link_src + ')');
+                                }
+                            });
+
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
                 }
-            },
-            error: function(xhr, status, error) {
-                alert('Error: ' + error);
-            }
+            });
         });
     });
-});
 </script>
 
 

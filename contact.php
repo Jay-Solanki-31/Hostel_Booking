@@ -57,7 +57,7 @@ $UserController->Contact();
 
                 <div class="col-md-6 col-lg-6 col-lg-offset-1">
                     <div class="contact-form">
-                        <form action="" method="POST">
+                        <form action="" id="contact_form" method="POST">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <input type="text" class="field-text" name="name" id="name" placeholder="Name">
