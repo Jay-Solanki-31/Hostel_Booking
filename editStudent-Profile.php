@@ -9,9 +9,9 @@
 
 <?php
 session_start();
-function isLoggedIn() {
-    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
-}
+// function isLoggedIn() {
+//     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+// }
 
 // if (!isLoggedIn()) {
 //     header("Location: login.php");
@@ -32,7 +32,7 @@ $UserController->updateStudentInfo();
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="" method="post" id="EdithostelForm" enctype="multipart/form-data">
+                            <form action="" method="post" id="EditStudentForm" enctype="multipart/form-data">
                                 <h4 class="card-title">Owner Information</h4>
                                         <div class="form-group">
                                             <label>Profile Picture</label>

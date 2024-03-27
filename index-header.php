@@ -39,6 +39,13 @@
 
 </head>
 
+
+<style> 
+.error-message-red {
+    color: red;
+}
+
+</style>
 <body>
 
     <!-- PRELOADER -->

@@ -79,7 +79,7 @@ $UserController->AddInquery($hostelId);
                                 <h5>Enquiry Now </h5>
                             </div>
 
-                            <form action="" method="post">
+                            <form action="" id="inquery" method="post">
                                 <div class="room-detail_form">
                                     <input type="hidden" name="hostel_id" value="<?php echo $hostelId; ?>">
                                     <label>Name</label>

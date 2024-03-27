@@ -57,10 +57,10 @@
     .menu li.active a {
     color: goldenrod;
 
-    .error-message {
-            color: red;
-            font-size: 14px;
-        }
+    .error-message-red {
+    color: red;
+}
+
 }
 
 </style>

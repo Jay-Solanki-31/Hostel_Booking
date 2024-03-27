@@ -32,7 +32,7 @@ $UserController->updateOwnerInfo();
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="" method="post" id="EdithostelForm" enctype="multipart/form-data">
+                            <form action="" method="post" id="EditOwnerForm" enctype="multipart/form-data">
                                 <h4 class="card-title">Owner Information</h4>
                                         <div class="form-group">
                                             <label>Profile Picture</label>
