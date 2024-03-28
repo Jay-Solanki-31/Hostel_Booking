@@ -8,16 +8,6 @@
 </style>
 
 <?php
-session_start();
-function isLoggedIn() {
-    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
-}
-
-// if (!isLoggedIn()) {
-//     header("Location: login.php");
-//     exit();
-// }
-
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
@@ -66,7 +56,7 @@ $UserController->update_hostel();
                                 </div>
                                 <div class="text-end mt-4" style="text-align: left!important;">
                                     <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
-                                    <a href="hostels.php" style="margin-left: 5px;">Cancel</a>
+                                    <a href="hostelProfile.php" style="margin-left: 5px;">Cancel</a>
                                 </div>
                         </div>
                         </form>

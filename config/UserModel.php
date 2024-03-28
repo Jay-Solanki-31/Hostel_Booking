@@ -338,11 +338,12 @@ class UserModel
     function gethostelComplaint($id)
     {
         try {
-            $gethostelcomplaint = "SELECT complaint.*, users.full_name AS student_name
-        FROM complaint
-        JOIN users ON complaint.student_id = users.id
-        WHERE complaint.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id');
-        ";
+            $gethostelcomplaint = "SELECT complaint.*, users.full_name AS student_name, hostels.hostel_name
+            FROM complaint
+            JOIN users ON complaint.student_id = users.id
+            JOIN hostels ON complaint.hostel_id = hostels.id
+            WHERE complaint.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
+            
             $result = $this->mysqli->query($gethostelcomplaint);
 
             if (!$result) {
@@ -359,11 +360,12 @@ class UserModel
     function gethostelInquery($id)
     {
         try {
-            $gethostelinquery = "SELECT inquiry.*, users.full_name AS student_name
-        FROM inquiry
-        JOIN users ON inquiry.student_id = users.id
-        WHERE inquiry.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id');
-        ";
+            $gethostelinquery = "SELECT inquiry.*, users.full_name AS student_name, hostels.hostel_name
+            FROM inquiry
+            JOIN users ON inquiry.student_id = users.id
+            JOIN hostels ON inquiry.hostel_id = hostels.id
+            WHERE inquiry.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
+            
             $result = $this->mysqli->query($gethostelinquery);
 
             if (!$result) {

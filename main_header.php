@@ -1,3 +1,6 @@
+<?php
+ob_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +46,7 @@
     <link rel="stylesheet" type="text/css" href="css/lib/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="css/lib/settings.css">
     <link rel="stylesheet" type="text/css" href="css/lib/bootstrap-select.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-dCW/rbsauwUKzs2vBgOpkYZWZdOZ9dQT4vn9tn7C8MPwCuE7U80I8+3wBlgxJWKSk4tmS5gY8V5Nt4lzGv7ZCg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-dCW/rbsauwUKzs2vBgOpkYZWZdOZ9dQT4vn9tn7C8MPwCuE7U80I8+3wBlgxJWKSk4tmS5gY8V5Nt4lzGv7ZCg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 
 
     <!-- MAIN STYLE -->
@@ -55,21 +58,20 @@
 
 <style>
     .menu li.active a {
-    color: goldenrod;
+        color: goldenrod;
 
-    .error-message-red {
-    color: red;
-}
+        .error-message-red {
+            color: red;
+        }
 
-}
-
+    }
 </style>
 
 <body>
 
     <!-- PRELOADER -->
     <!-- <div id="preloader">
-        <span class="preloader-dot"></span>
+        <span class="preloader-dot"></span> 
     </div> -->
     <!-- END / PRELOADER -->
 

@@ -141,32 +141,27 @@ $(document).ready(function() {
     });
 });
 
-
 $(document).ready(function() {
     $('#hostelForm').validate({
         rules: {
-          
             image: {
                 required: true,
-                //  picture: true,
+                extension: "jpg|jpeg|png|gif"
             },
-        
             hostelName: {
                 required: true,
             },
-        
             description: {
                 required: true,
             },
-        
             location: {
                 required: true,
             }
         },
         messages: {
-          
             image: {
-                required: 'Please enter image'
+                required: 'Please select an image file',
+                extension: 'Please upload a valid image file (jpg, jpeg, png, gif)'
             },
             hostelName: {
                 required: 'Please enter hostel name'
@@ -178,38 +173,54 @@ $(document).ready(function() {
                 required: 'Please enter location'
             },
         },
-        
-        errorElement: 'span', // Wrap error messages in <span> tags
-        errorClass: 'error-message', // Custom class for error messages
-
+        errorElement: 'span',
+        errorClass: 'error-message',
         submitHandler: function(form) {
-            // Form is valid, submit it
             form.submit();
         }
     });
 });
 
+
+
+
+// $(document).ready(function() {
+//     $('#image').change(function() {
+//         var fileInput = $(this);
+//         var filePath = fileInput.val();
+        
+//         // Check if the selected file is an image
+//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+//         if (!allowedExtensions.exec(filePath)) {
+//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+//             fileInput.val('');
+//             return false;
+//         }
+//         return true;
+//     });
+// });
 
 $(document).ready(function() {
     $('#EdithostelForm').validate({
         rules: {
-           
+            image: {
+                required: true,
+                extension: "jpg|jpeg|png|gif"
+            },
             hostelName: {
                 required: true,
             },
-        
             description: {
                 required: true,
             },
-        
             location: {
                 required: true,
             }
         },
         messages: {
-           
-            picture: {
-                required: 'Please enter picture'
+            image: {
+                required: 'Please select an image file',
+                extension: 'Please upload a valid image file (jpg, jpeg, png, gif)'
             },
             hostelName: {
                 required: 'Please enter hostel name'
@@ -221,52 +232,13 @@ $(document).ready(function() {
                 required: 'Please enter location'
             },
         },
-        
-        errorElement: 'span', // Wrap error messages in <span> tags
-        errorClass: 'error-message', // Custom class for error messages
-
+        errorElement: 'span',
+        errorClass: 'error-message',
         submitHandler: function(form) {
-            // Form is valid, submit it
             form.submit();
         }
     });
 });
-
-
-$(document).ready(function() {
-    $('#image').change(function() {
-        var fileInput = $(this);
-        var filePath = fileInput.val();
-        
-        // Check if the selected file is an image
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        if (!allowedExtensions.exec(filePath)) {
-            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-            fileInput.val('');
-            return false;
-        }
-        return true;
-    });
-});
-
-
-$(document).ready(function() {
-    $('#picture').change(function() {
-        var fileInput = $(this);
-        var filePath = fileInput.val();
-        
-        // Check if the selected file is an image
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        if (!allowedExtensions.exec(filePath)) {
-            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-            fileInput.val('');
-            return false;
-        }
-        return true;
-    });
-});
-
-
 
 
 
@@ -324,21 +296,21 @@ $(document).ready(function() {
 });
 
 
-$(document).ready(function() {
-    $('#picture').change(function() {
-        var fileInput = $(this);
-        var filePath = fileInput.val();
+// $(document).ready(function() {
+//     $('#picture').change(function() {
+//         var fileInput = $(this);
+//         var filePath = fileInput.val();
         
-        // Check if the selected file is an image
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        if (!allowedExtensions.exec(filePath)) {
-            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-            fileInput.val('');
-            return false;
-        }
-        return true;
-    });
-});
+//         // Check if the selected file is an image
+//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+//         if (!allowedExtensions.exec(filePath)) {
+//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+//             fileInput.val('');
+//             return false;
+//         }
+//         return true;
+//     });
+// });
 
 
 $(document).ready(function() {
@@ -390,19 +362,19 @@ $(document).ready(function() {
 });
 
 
-$(document).ready(function() {
-    $('#picture').change(function() {
-        var fileInput = $(this);
-        var filePath = fileInput.val();
+// $(document).ready(function() {
+//     $('#picture').change(function() {
+//         var fileInput = $(this);
+//         var filePath = fileInput.val();
         
-        // Check if the selected file is an image
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-        if (!allowedExtensions.exec(filePath)) {
-            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-            fileInput.val('');
-            return false;
-        }
-        return true;
-    });
-});
+//         // Check if the selected file is an image
+//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+//         if (!allowedExtensions.exec(filePath)) {
+//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+//             fileInput.val('');
+//             return false;
+//         }
+//         return true;
+//     });
+// });
 

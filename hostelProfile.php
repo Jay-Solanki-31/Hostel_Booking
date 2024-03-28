@@ -1,13 +1,10 @@
 <?php
 session_start();
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 
-// if (!isLoggedIn()) {
-//     header("Location: login.php");
-//     exit();
-// }
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
@@ -79,8 +76,8 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#AddHostels" data-toggle="tab">Add Hostel</a></li>
-                            <li><a href="#complaints" data-toggle="tab">Compalints</a></li>
+                            <li><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
+                            <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#Inquery" data-toggle="tab">Inquery</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
@@ -122,9 +119,10 @@ $complaintStatus = [
                                 </form>
                             </div>
 
-                            <!-- Add Hostel TAB -->
-                            <div id="AddHostels" class="tab-pane fade">
-                                <h3>My Hostel's</h3>
+                            <!-- Manage Hostel TAB -->
+                            <div id="ManageHostels" class="tab-pane fade">
+                                <h3>My Hostel <a href="add-hostel.php" class="btn btn-primary" style="margin-left: 589px;">Add Hostel</a></h3>
+
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -141,7 +139,16 @@ $complaintStatus = [
                                         <?php while ($hostel = $hostellist->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $hostel['hostel_name'] ?></td>
-                                                <td><?= $hostel['description'] ?></td>
+                                                <td>
+                                                    <?php
+                                                    $description = $hostel['description'];
+                                                    $words = str_word_count($description, 2); // Tokenize the string into words
+                                                    $limitedWords = array_slice($words, 0, 100); // Get the first 100 words
+                                                    $limitedDescription = implode(' ', $limitedWords); // Join the limited words back into a string
+                                                    echo $limitedDescription;
+                                                    ?>
+                                                </td>
+
                                                 <td><?= $hostel['location'] ?></td>
                                                 <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" width="70px;"></td>
                                                 <td><?= $hostel['amenities'] ?></td>
@@ -155,8 +162,7 @@ $complaintStatus = [
                                     </tbody>
 
                                 </table>
-                                <a href="add-hostel.php" class="btn btn-primary">Add Hostel</a>
-                                <a href="index.php" style="margin-left: 5px">Cancel</a>
+
 
                                 <?php if ($hostellist->num_rows === 0) : ?>
                                     <p>No Hostel.</p>
@@ -173,6 +179,7 @@ $complaintStatus = [
                                     <thead>
                                         <tr>
                                             <th>Student Name </th>
+                                            <th>Hostel Name </th>
                                             <th>Description</th>
                                             <th>Status</th>
                                             <th>Date</th>
@@ -182,6 +189,7 @@ $complaintStatus = [
                                         <?php while ($complaint = $complaints->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $complaint['student_name'] ?></td>
+                                                <td><?= $complaint['hostel_name'] ?></td>
                                                 <td><?= $complaint['description'] ?></td>
                                                 <td>
                                                     <?php foreach ($complaintStatus as $status) : ?>
@@ -216,6 +224,7 @@ $complaintStatus = [
                                     <thead>
                                         <tr>
                                             <th>Student Name </th>
+                                            <th>Hostel Name </th>
                                             <th>Email </th>
                                             <th>Contact No</th>
                                             <th>Description</th>
@@ -227,6 +236,7 @@ $complaintStatus = [
                                         <?php while ($inquery = $inquerylist->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $inquery['student_name'] ?></td>
+                                                <td><?= $inquery['hostel_name'] ?></td>
                                                 <td><?= $inquery['email'] ?></td>
                                                 <td><?= $inquery['contact_no'] ?></td>
                                                 <td><?= $inquery['description'] ?></td>
