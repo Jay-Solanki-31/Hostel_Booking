@@ -1,6 +1,7 @@
 <?php
 session_start();
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 
@@ -16,6 +17,7 @@ $studentDetails = $UserController->getStudentsdetails($studentid);
 $student = $studentDetails->fetch_assoc();
 $complaints = $UserController->getStudentsComplaint($studentid);
 $UserController->updateStudentPassword($studentid);
+$UserController->insertComplaint();
 
 $complaintStatus = [
     [
@@ -114,17 +116,18 @@ $complaintStatus = [
                                 </form>
                             </div>
 
-                    
+
 
 
 
                             <!-- COMPLAINTS HISTORY TAB -->
                             <div id="complaints" class="tab-pane fade">
-                                <h3>Complaints History</h3>
+                                <h3>Complaints History <a href="#" class="btn btn-primary" style="margin-left: 485px;" data-toggle="modal" data-target="#addComplaintModal">Add Complaint</a></h3>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Student Name </th>
+                                            <th> Name </th>
+                                            <th>Hostel Name </th>
                                             <th>Description</th>
                                             <th>Status</th>
                                             <th>Date</th>
@@ -134,6 +137,7 @@ $complaintStatus = [
                                         <?php while ($complaint = $complaints->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $complaint['full_name'] ?></td>
+                                                <td><?= $complaint['hostel_name'] ?></td>
                                                 <td><?= $complaint['description'] ?></td>
                                                 <td>
                                                     <?php foreach ($complaintStatus as $status) : ?>
@@ -159,7 +163,7 @@ $complaintStatus = [
                             </div>
 
 
-                          
+
 
 
                             <!-- CHANGE PASSWORD TAB -->
@@ -173,20 +177,20 @@ $complaintStatus = [
                                             <div class="row form-group">
                                                 <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" require>
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" required>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" require>
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
                                                     <div class="mb-3">
-                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm="##new_password">
+                                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required confirm="#new_password">
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,6 +198,7 @@ $complaintStatus = [
                                                 <button type="submit" onclick="" class="btn btn-primary">Change Password</button>
                                             </div>
                                         </form>
+
 
                                     </div>
                                 </div>
@@ -208,6 +213,36 @@ $complaintStatus = [
         </div>
     </div>
 </section>
+
+
+<!-- Add Complaint Modal -->
+<div class="modal fade" id="addComplaintModal" tabindex="-1" role="dialog" aria-labelledby="addComplaintModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addComplaintModalLabel">Add Complaint</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="" method="post" action="">
+                    <div class="form-group">
+                        <label for="complaintDescription">Description*</label>
+                        <textarea rows="3" class="form-control" id="complaintDescription" name="complaintDescription" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostelName">Hostel Name*</label>
+                        <input type="text" class="form-control" id="hostelName" name="hostelName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 

@@ -238,6 +238,7 @@ public function updateStudentPassword($userId)
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
         $confirm_password = $_POST['confirm_password'];
+
         
         try {
             $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
@@ -494,5 +495,33 @@ public function updateStudentPassword($userId)
     }
 }
 
-   
+public function insertComplaint()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // session_start();
+        
+        $student_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+        // dd($student_id);
+        
+        // Retrieve other data from the POST request
+        $description = $_POST['complaintDescription'];
+        $hostel_name = $_POST['hostelName'];
+        
+        try {
+            // Call insertComplaint method from ComplaintModel
+            $this->userModel->insertComplaint($description, $student_id, $hostel_name);
+            
+            // Show success message and redirect
+            showToast('Complaint submitted successfully!');
+            header("refresh:1;url=studentProfile.php");
+            exit();
+        } catch (Exception $e) {
+            // Log error and show error message
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
+        }
+    }
+}
+
+
 }

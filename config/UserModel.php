@@ -261,7 +261,11 @@ class UserModel
     function getStudentsComplaint($id)
     {
         try {
-            $getStudentsdetails = "SELECT complaint.*, users.full_name FROM complaint JOIN users ON complaint.student_id = users.id WHERE complaint.student_id = $id";
+            $getStudentsdetails = "SELECT complaint.*, users.full_name, hostels.hostel_name
+            FROM complaint
+            JOIN users ON complaint.student_id = users.id
+            JOIN hostels ON complaint.hostel_id = hostels.id
+            WHERE complaint.student_id = $id";
             $result = $this->mysqli->query($getStudentsdetails);
 
             if (!$result) {
@@ -637,4 +641,34 @@ class UserModel
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
+
+
+    public function insertComplaint($description, $student_id, $hostel_name) {
+        try {
+            // Select the hostel id based on the hostel name
+            $query = "SELECT id FROM hostels WHERE hostel_name = '$hostel_name'";
+            $stmt = $this->mysqli->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            // If hostel_id is found, insert the complaint
+            if ($row = $result->fetch_assoc()) {
+                $hostel_id = $row['id'];
+    
+                // Prepare the SQL statement to insert the complaint
+                $query = "INSERT INTO complaint (description, student_id, hostel_id) VALUES ('$description', $student_id, $hostel_id)";
+
+                $stmt = $this->mysqli->prepare($query);
+                $stmt->execute();
+                
+                return true; // Successfully inserted complaint
+            } else {
+                throw new Exception("Hostel not found.");
+            }
+        } catch (Exception $e) {
+            // Handle exceptions
+            throw new Exception("Error inserting complaint: " . $e->getMessage());
+        }
+    }
+    
 }
