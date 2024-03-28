@@ -524,4 +524,26 @@ public function insertComplaint()
 }
 
 
+public function updatecomplaintStatus()
+{
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'); {
+
+        $complaintId = isset($_POST['complaintId']) ? $_POST['complaintId']  :  '';
+        $newStatus = isset($_POST['newStatus']) ? $_POST['newStatus']  :  '';
+
+
+        try {
+            $this->userModel->updateStatus($complaintId, $newStatus);
+            showToast('complaint status updated successfully!');
+            header("refresh:2;url=hostelProfile.php");
+        } catch (Exception $e) {
+
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
+        }
+    }
+}
+
+
 }

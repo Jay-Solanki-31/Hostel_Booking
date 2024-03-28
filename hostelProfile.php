@@ -17,6 +17,13 @@ $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
 
+
+$formName = isset($_POST['formName']) ? $_POST['formName']  :  '';
+if ($formName && $formName == "complaintStatus") {
+    $UserController->updatecomplaintStatus();
+}
+
+
 $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
 if ($delateid) {
     $delatehostel = $UserController->deleteHostel($delateid);
@@ -41,7 +48,6 @@ $complaintStatus = [
         "color" => "bg-success-light",
     ],
 ];
-
 ?>
 <style>
     .profile-picture {
@@ -142,9 +148,9 @@ $complaintStatus = [
                                                 <td>
                                                     <?php
                                                     $description = $hostel['description'];
-                                                    $words = str_word_count($description, 2); // Tokenize the string into words
-                                                    $limitedWords = array_slice($words, 0, 100); // Get the first 100 words
-                                                    $limitedDescription = implode(' ', $limitedWords); // Join the limited words back into a string
+                                                    $words = str_word_count($description, 2); 
+                                                    $limitedWords = array_slice($words, 0, 10); 
+                                                    $limitedDescription = implode(' ', $limitedWords); 
                                                     echo $limitedDescription;
                                                     ?>
                                                 </td>
@@ -266,31 +272,29 @@ $complaintStatus = [
                                             <div class="row form-group">
                                                 <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" require>
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" required>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" require>
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
-                                                    <div class="mb-3">
-                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm="##new_password">
-                                                    </div>
+                                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
                                                 </div>
                                             </div>
                                             <div class="text-end">
-                                                <button type="submit" onclick="" class="btn btn-primary">Change Password</button>
+                                                <button type="submit" class="btn btn-primary">Change Password</button>
                                             </div>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>
+
 
                         </div>
                     </div>
@@ -303,6 +307,29 @@ $complaintStatus = [
 </section>
 
 
+<div class="modal fade" id="editStatusModal" tabindex="-1" aria-labelledby="editStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editStatusModalLabel">Edit Complaint Status</h5>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+
+                <form action="" method="post">
+                    <input type="hidden" id="complaintId" name="complaintId" value="">
+                    <input type="hidden" name="formName" value="complaintStatus">
+                    <select class="form-select" name="newStatus" id="newStatus">
+                        <?php foreach ($complaintStatus as $status) : ?>
+                            <option value="<?= $status['value']; ?>"><?= $status['status']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-3">Update Status</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php include "main_footer.php" ?>
 
@@ -332,5 +359,21 @@ $complaintStatus = [
             // alert('delated');
             window.location.href = "hostelProfile.php?delateid=" + id;
         }
+    }
+
+
+    function openEditStatusModal(id, currentStatusValue, currentStatusText) {
+        $('#complaintId').val(id);
+        $('#newStatus').val(currentStatusValue);
+        $('#editStatusModal').modal('show');
+    }
+
+    function getStatusLabel(statusValue) {
+        for (let status of <?= json_encode($complaintStatus); ?>) {
+            if (status.value == statusValue) {
+                return status.value + ' = ' + status.status;
+            }
+        }
+        return '';
     }
 </script>

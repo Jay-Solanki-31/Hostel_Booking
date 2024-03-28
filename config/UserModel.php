@@ -670,5 +670,21 @@ class UserModel
             throw new Exception("Error inserting complaint: " . $e->getMessage());
         }
     }
+
+    public function updateStatus($complaintId, $newStatus)
+    {
+        try {
+            $upadetStatus = "UPDATE complaint set `status` = $newStatus  where id = $complaintId";
+            $result2 = $this->mysqli->query($upadetStatus);
+
+
+            if (!$result2) {
+                throw new Exception("Error in update  query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
+        }
+    }
+
     
 }
