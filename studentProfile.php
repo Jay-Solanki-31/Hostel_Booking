@@ -4,11 +4,17 @@ function isLoggedIn()
 {
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
+if (!isLoggedIn()) {
+    header("Location: login.php");
+    exit();
+}
 
-// if (!isLoggedIn()) {
-//     header("Location: login.php");
-//     exit();
-// }
+// Check if the logged-in user is a student
+if ($_SESSION['user_role'] !== 'student') {
+    header("Location:studentProfile.php");
+    exit();
+}
+
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();

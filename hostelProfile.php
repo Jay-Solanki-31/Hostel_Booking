@@ -4,6 +4,15 @@ function isLoggedIn()
 {
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
+if (!isLoggedIn()) {
+    header("Location: login.php");
+    exit();
+}
+
+if ($_SESSION['user_role'] !== 'hostel') {
+    header("Location:hostelProfile.php");
+    exit();
+}
 
 include "main_header.php";
 include "config/UserController.php";
