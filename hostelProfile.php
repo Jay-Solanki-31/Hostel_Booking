@@ -136,7 +136,7 @@ $complaintStatus = [
 
                             <!-- Manage Hostel TAB -->
                             <div id="ManageHostels" class="tab-pane fade">
-                                <h3>My Hostel <a href="add-hostel.php" class="btn btn-primary" style="margin-left: 589px;">Add Hostel</a></h3>
+                                <h3>My Hostel <a href="add-hostel.php" class="btn btn-primary" style="margin-left: 619px;">Add Hostel</a></h3>
 
                                 <table class="table">
                                     <thead>
@@ -146,7 +146,7 @@ $complaintStatus = [
                                             <th>location</th>
                                             <th>image</th>
                                             <th>amenities</th>
-                                            <th>Date</th>
+                                            <th>RegisterDate</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -157,16 +157,22 @@ $complaintStatus = [
                                                 <td>
                                                     <?php
                                                     $description = $hostel['description'];
-                                                    $words = str_word_count($description, 2); 
-                                                    $limitedWords = array_slice($words, 0, 10); 
-                                                    $limitedDescription = implode(' ', $limitedWords); 
+                                                    $words = str_word_count($description, 2);
+                                                    $limitedWords = array_slice($words, 0, 10);
+                                                    $limitedDescription = implode(' ', $limitedWords);
                                                     echo $limitedDescription;
                                                     ?>
                                                 </td>
-
                                                 <td><?= $hostel['location'] ?></td>
-                                                <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" width="70px;"></td>
-                                                <td><?= $hostel['amenities'] ?></td>
+                                                <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" height="5px" ,width="100px;"></td>
+                                                <td>
+                                                    <?php
+                                                    $amenities_array = explode(',', $hostel['amenities']);
+                                                    foreach ($amenities_array as $amenity) {
+                                                        echo $amenity . "<br>";
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td><?= $hostel['created_date'] ?></td>
                                                 <td>
                                                     <a href="edit-hostel.php?id=<?= $hostel['id']; ?>" class="btn btn-sm btn-white text-primary me-2"><i class="far fa-edit me-1"></i> Edit</a>
@@ -175,6 +181,7 @@ $complaintStatus = [
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
+
 
                                 </table>
 

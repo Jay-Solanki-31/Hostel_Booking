@@ -76,7 +76,7 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#complaints" data-toggle="tab">Compalints</a></li>
+                            <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
 

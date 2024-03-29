@@ -25,7 +25,7 @@ class UserController
                 $password = $_POST['password'];
                 $contact = $_POST['contact_no'];
 
-     
+
                 try {
                     $this->userModel->UserAccountRegister($account_type, $username, $email, $password, $contact);
                     showToast('Registration was successful!');
@@ -41,50 +41,50 @@ class UserController
     }
 
     public function Userlogin()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
 
-        try {
-            $user = $this->userModel->Userslogin($email, $password);
+            try {
+                $user = $this->userModel->Userslogin($email, $password);
 
-            if ($user) {
-                $_SESSION['user_email'] = $email;
-                $_SESSION['user_role'] = $user['role'];
-                $_SESSION['user_id'] = $user['id'];
+                if ($user) {
+                    $_SESSION['user_email'] = $email;
+                    $_SESSION['user_role'] = $user['role'];
+                    $_SESSION['user_id'] = $user['id'];
 
-                // Redirect users based on their role
-                $redirectUrl = ($user['role'] === 'hostel') ? 'index.php' : 'index.php';
-                header("Location: $redirectUrl");
-                exit();
-            } else {
-                showToast('Login failed. Please check your credentials.', 'error');
+                    // Redirect users based on their role
+                    $redirectUrl = ($user['role'] === 'hostel') ? 'index.php' : 'index.php';
+                    header("Location: $redirectUrl");
+                    exit();
+                } else {
+                    showToast('Login failed. Please check your credentials.', 'error');
+                }
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
             }
+        }
+    }
+
+
+    public function GetHostelData()
+    {
+        try {
+            $hostelData = $this->userModel->GetHostelData();
+
+            if (!is_array($hostelData)) {
+                throw new Exception("Invalid data returned from the model");
+            }
+
+            $limitedHostelData = array_slice($hostelData, 0, 6);
+
+            return $limitedHostelData;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
+            return [];
         }
     }
-}
-
-
-public function GetHostelData()
-{
-    try {
-        $hostelData = $this->userModel->GetHostelData();
-
-        if (!is_array($hostelData)) {
-            throw new Exception("Invalid data returned from the model");
-        }
-
-        $limitedHostelData = array_slice($hostelData, 0, 6);
-
-        return $limitedHostelData;
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-        return [];
-    }
-}
 
 
     public function get_hostel()
@@ -137,8 +137,8 @@ public function GetHostelData()
             $contactNo = $_POST['contactNo'];
             $message = $_POST['message'];
             $userId = $_SESSION['user_id'];
-            $hostelId = $_POST['hostel_id']; 
-    
+            $hostelId = $_POST['hostel_id'];
+
             try {
                 $this->userModel->AddInquery($name, $email, $contactNo, $message, $userId, $hostelId);
                 header("refresh:1;url=hostels-detail.php?id=$hostelId");
@@ -148,18 +148,18 @@ public function GetHostelData()
             }
         }
     }
-    
 
-  public function displaysliders()
-{
-    try {
-        $sliders = $this->userModel->showsliderWithDescription(); 
-        return $sliders;
-    } catch (Exception $e) {
-        // Handle exceptions or log errors
-        echo "Error: " . $e->getMessage();
+
+    public function displaysliders()
+    {
+        try {
+            $sliders = $this->userModel->showsliderWithDescription();
+            return $sliders;
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
     }
-}
 
 
 
@@ -184,11 +184,11 @@ public function GetHostelData()
         }
     }
 
-    
+
     public function getStudentscomplaint($id)
     {
         try {
-            return $this->userModel-> getStudentsComplaint($id);
+            return $this->userModel->getStudentsComplaint($id);
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
@@ -196,63 +196,63 @@ public function GetHostelData()
     }
 
     public function updateStudentInfo()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $email = $_POST['email'];
-        $contact_no = $_POST['phone']; 
-        $name = $_POST['name']; 
-        $address = $_POST['address'];
-        $imageFILE = $_FILES['picture']; 
-        $imageFILEDestination = "";
-        $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
-        $originalFileName = "";
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $contact_no = $_POST['phone'];
+            $name = $_POST['name'];
+            $address = $_POST['address'];
+            $imageFILE = $_FILES['picture'];
+            $imageFILEDestination = "";
+            $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+            $originalFileName = "";
 
-        try {
-            $uploadDirectory = 'uploads/students/'; 
-            $singleImageArray = $this->userModel->getStudentImage($studentid);
+            try {
+                $uploadDirectory = 'uploads/students/';
+                $singleImageArray = $this->userModel->getStudentImage($studentid);
 
-            if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                // Handle profile picture upload
-                $uploadedFile = $imageFILE['tmp_name'];
-                $originalFileName = $imageFILE['name'];
-                $destination = $uploadDirectory . $originalFileName;
+                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                    // Handle profile picture upload
+                    $uploadedFile = $imageFILE['tmp_name'];
+                    $originalFileName = $imageFILE['name'];
+                    $destination = $uploadDirectory . $originalFileName;
 
-                if (move_uploaded_file($uploadedFile, $destination)) {
-                    $imageFILEDestination = $destination;
+                    if (move_uploaded_file($uploadedFile, $destination)) {
+                        $imageFILEDestination = $destination;
+                    }
                 }
+
+                $this->userModel->updateStudentInfo($email, $contact_no, $name, $address, $originalFileName, $studentid);
+                showToast('Student Information updated successfully!');
+                header("refresh:1;url=studentProfile.php");
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
             }
-
-            $this->userModel->updateStudentInfo($email, $contact_no, $name, $address, $originalFileName, $studentid);
-            showToast('Student Information updated successfully!');
-            header("refresh:1;url=studentProfile.php");
-        } catch (Exception $e) {
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
         }
     }
-}
 
-public function updateStudentPassword($userId)
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
+    public function updateStudentPassword($userId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $current_password = $_POST['current_password'];
+            $new_password = $_POST['new_password'];
+            $confirm_password = $_POST['confirm_password'];
 
-        
-        try {
-            $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
-            showToast('Password updated successfully!');
-            header("refresh:1;url=studentProfile.php");
-            exit();
-        } catch (Exception $e) {
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
+
+            try {
+                $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
+                showToast('Password updated successfully!');
+                header("refresh:1;url=studentProfile.php");
+                exit();
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
         }
     }
-}
 
-// HOSTEL PART START
+    // HOSTEL PART START
     public function gethostelsdetails($id)
     {
         try {
@@ -266,7 +266,7 @@ public function updateStudentPassword($userId)
     public function gethostelcomplaint($id)
     {
         try {
-            return $this->userModel-> gethostelComplaint($id);
+            return $this->userModel->gethostelComplaint($id);
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
@@ -276,7 +276,7 @@ public function updateStudentPassword($userId)
     public function gethostelinquery($id)
     {
         try {
-            return $this->userModel-> gethostelInquery($id);
+            return $this->userModel->gethostelInquery($id);
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
@@ -286,13 +286,13 @@ public function updateStudentPassword($userId)
     public function gethostelInformation($id)
     {
         try {
-            return $this->userModel-> getHostel($id);
+            return $this->userModel->getHostel($id);
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
     }
 
-    
+
 
     public function gethosteldetails($id)
     {
@@ -310,23 +310,23 @@ public function updateStudentPassword($userId)
             $location = $_POST['location'];
             $description = $_POST['description'];
             $imageFILE = $_FILES['image'];
-    
+
             try {
-                $uploadDirectory = 'uploads/hostels/';  
-    
+                $uploadDirectory = 'uploads/hostels/';
+
                 if (!file_exists($uploadDirectory)) {
                     mkdir($uploadDirectory, 0777, true);
                 }
-    
+
                 $originalFileName = '';
                 $imageFILEDestination = '';
-    
+
                 // Check if an image file was uploaded
                 if ($imageFILE['error'] === UPLOAD_ERR_OK) {
                     $uploadedFile = $imageFILE['tmp_name'];
                     $originalFileName = $imageFILE['name'];
                     $destination = $uploadDirectory . $originalFileName;
-    
+
                     if (move_uploaded_file($uploadedFile, $destination)) {
                         $imageFILEDestination = $originalFileName;
                     }
@@ -335,10 +335,10 @@ public function updateStudentPassword($userId)
                 } else {
                     throw new Exception('File upload error: ' . $imageFILE['error']);
                 }
-    
+
                 $amenities = isset($_POST['amenities']) && is_array($_POST['amenities']) ? $_POST['amenities'] : array();
                 $this->userModel->add_hostel($hostelName, $location, $description, $imageFILEDestination, $amenities);
-    
+
                 showToast('Hostel added successfully!');
                 header("refresh:2;url=hostelProfile.php");
             } catch (Exception $e) {
@@ -347,51 +347,51 @@ public function updateStudentPassword($userId)
             }
         }
     }
-    
-    
+
+
 
     public function update_hostel()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $hostelid = isset($_GET['id']) ? $_GET['id'] : '';
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $hostelid = isset($_GET['id']) ? $_GET['id'] : '';
 
-        try {
-            $hostelname = $_POST['hostelName'];
-            $location = $_POST['location'];
-            $description = $_POST['description'];
-            $imageFILE = $_FILES['picture']['name'];
+            try {
+                $hostelname = $_POST['hostelName'];
+                $location = $_POST['location'];
+                $description = $_POST['description'];
+                $imageFILE = $_FILES['picture']['name'];
 
-            $uploadDirectory = 'uploads/hostels/';
-            $imageFILEDestination = "";
+                $uploadDirectory = 'uploads/hostels/';
+                $imageFILEDestination = "";
 
-            $currentHostelImage = $this->userModel->gethostelimage($hostelid)['image'];
+                $currentHostelImage = $this->userModel->gethostelimage($hostelid)['image'];
 
-            if (!empty($imageFILE)) {
-                $uploadedFile = $_FILES['picture']['tmp_name'];
-                $originalFileName = $_FILES['picture']['name'];
-                $destination = $uploadDirectory . $originalFileName;
+                if (!empty($imageFILE)) {
+                    $uploadedFile = $_FILES['picture']['tmp_name'];
+                    $originalFileName = $_FILES['picture']['name'];
+                    $destination = $uploadDirectory . $originalFileName;
 
-                if (move_uploaded_file($uploadedFile, $destination)) {
-                    $imageFILEDestination = $originalFileName;
+                    if (move_uploaded_file($uploadedFile, $destination)) {
+                        $imageFILEDestination = $originalFileName;
 
-                    if ($currentHostelImage && file_exists($uploadDirectory . $currentHostelImage)) {
-                        unlink($uploadDirectory . $currentHostelImage);
+                        if ($currentHostelImage && file_exists($uploadDirectory . $currentHostelImage)) {
+                            unlink($uploadDirectory . $currentHostelImage);
+                        }
                     }
+                } else {
+                    $imageFILEDestination = $currentHostelImage;
                 }
-            } else {
-                $imageFILEDestination = $currentHostelImage;
+
+                $this->userModel->update_hostel($hostelid, $hostelname, $location, $description, $imageFILEDestination);
+
+                showToast('Hostel updated successfully!');
+                header("refresh:2;url=hostelProfile.php");
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
             }
-
-            $this->userModel->update_hostel($hostelid, $hostelname, $location, $description, $imageFILEDestination);
-
-            showToast('Hostel updated successfully!');
-            header("refresh:2;url=hostelProfile.php");
-        } catch (Exception $e) {
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
         }
     }
-}
 
     public function deletehostel($id)
     {
@@ -433,37 +433,37 @@ public function updateStudentPassword($userId)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'];
-            $contact_no = $_POST['phone']; 
-            $name = $_POST['name']; 
-            $imageFILE = $_FILES['picture']; 
+            $contact_no = $_POST['phone'];
+            $name = $_POST['name'];
+            $imageFILE = $_FILES['picture'];
             $imageFILEDestination = "";
             $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
             $originalFileName = "";
 
-    
+
             try {
-                $uploadDirectory = 'uploads/owners/'; 
+                $uploadDirectory = 'uploads/owners/';
                 $singleImageArray = $this->userModel->getOwnerImage($hostelid);
-    
+
                 if ($singleImageArray) {
                     $oldImagePath = $singleImageArray['image'];
-    
+
                     if ($imageFILE['error'] === UPLOAD_ERR_OK) {
                         // Delete the old image
                         if (file_exists($oldImagePath)) {
                             unlink($oldImagePath);
                         }
-    
+
                         $uploadedFile = $imageFILE['tmp_name'];
                         $originalFileName = $imageFILE['name'];
                         $destination = $uploadDirectory . $originalFileName;
-    
+
                         if (move_uploaded_file($uploadedFile, $destination)) {
                             $imageFILEDestination = $destination;
                         }
                     }
                 }
-    
+
                 $this->userModel->updateOwnerInfo($email, $contact_no, $name, $originalFileName, $hostelid);
                 showToast('Owner Information updated successfully!');
                 header("refresh:2;url=hostelProfile.php");
@@ -475,73 +475,75 @@ public function updateStudentPassword($userId)
     }
 
     public function updateHostelPassword($userId)
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $current_password = $_POST['current_password'];
-        $new_password = $_POST['new_password'];
-        $confirm_password = $_POST['confirm_password'];
-        
-        try {
-            $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
-            showToast('Password updated successfully!');
-            header("refresh:1;url=hostelProfile.php");
-            exit();
-        } catch (Exception $e) {
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['current_password'], $_POST['new_password'], $_POST['confirm_password'])) {
+                $current_password = $_POST['current_password'];
+                $new_password = $_POST['new_password'];
+                $confirm_password = $_POST['confirm_password'];
+    
+                try {
+                    $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
+                    showToast('Password updated successfully!');
+                    header("refresh:1;url=hostelProfile.php");
+                    exit();
+                } catch (Exception $e) {
+                    error_log('Error: ' . $e->getMessage());
+                    showToast($e->getMessage(), 'error');
+                }
+            } else {
+                showToast("All fields are required", 'error');
+            }
         }
     }
-}
+    
 
-public function insertComplaint()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // session_start();
-        
-        $student_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
-        // dd($student_id);
-        
-        // Retrieve other data from the POST request
-        $description = $_POST['complaintDescription'];
-        $hostel_name = $_POST['hostelName'];
-        
-        try {
-            // Call insertComplaint method from ComplaintModel
-            $this->userModel->insertComplaint($description, $student_id, $hostel_name);
-            
-            // Show success message and redirect
-            showToast('Complaint submitted successfully!');
-            header("refresh:1;url=studentProfile.php");
-            exit();
-        } catch (Exception $e) {
-            // Log error and show error message
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
+    public function insertComplaint()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // session_start();
+
+            $student_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+            // dd($student_id);
+
+            // Retrieve other data from the POST request
+            $description = $_POST['complaintDescription'];
+            $hostel_name = $_POST['hostelName'];
+
+            try {
+                // Call insertComplaint method from ComplaintModel
+                $this->userModel->insertComplaint($description, $student_id, $hostel_name);
+
+                // Show success message and redirect
+                showToast('Complaint submitted successfully!');
+                header("refresh:1;url=studentProfile.php");
+                exit();
+            } catch (Exception $e) {
+                // Log error and show error message
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
         }
     }
-}
 
 
-public function updatecomplaintStatus()
-{
+    public function updatecomplaintStatus()
+    {
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST'); {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'); {
 
-        $complaintId = isset($_POST['complaintId']) ? $_POST['complaintId']  :  '';
-        $newStatus = isset($_POST['newStatus']) ? $_POST['newStatus']  :  '';
+            $complaintId = isset($_POST['complaintId']) ? $_POST['complaintId']  :  '';
+            $newStatus = isset($_POST['newStatus']) ? $_POST['newStatus']  :  '';
 
+            try {
+                $this->userModel->updateStatus($complaintId, $newStatus);
+                showToast('complaint status updated successfully!');
+                header("refresh:1;url=hostelProfile.php");
+            } catch (Exception $e) {
 
-        try {
-            $this->userModel->updateStatus($complaintId, $newStatus);
-            showToast('complaint status updated successfully!');
-            header("refresh:2;url=hostelProfile.php");
-        } catch (Exception $e) {
-
-            error_log('Error: ' . $e->getMessage());
-            showToast($e->getMessage(), 'error');
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
         }
     }
-}
-
-
 }

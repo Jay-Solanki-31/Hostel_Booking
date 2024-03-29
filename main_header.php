@@ -117,7 +117,9 @@ ob_start();
                             <li <?php if ($current_page == 'contact.php') echo 'class="active"'; ?>>
                                 <a href="contact.php">Contact</a>
                             </li>
+
                         </ul>
+
                     </nav>
                     <!-- END / HEADER MENU -->
 

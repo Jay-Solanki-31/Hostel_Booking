@@ -4,6 +4,7 @@ if (!isset($_SESSION['user_email'])) {
     header("Location: index.php");
     exit();
 }
+
 require "main_header.php";
 include "../config/AdminController.php";
 $AdminController = new AdminController();
