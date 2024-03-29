@@ -230,14 +230,14 @@ class UserModel
 
             $aboutUsData = array();
             while ($row = $result->fetch_object()) {
-                $aboutUsData[] = $row; // Append each row (object) to the array
+                $aboutUsData[] = $row; 
             }
 
             $result->free();
 
-            return $aboutUsData; // Return the array
+            return $aboutUsData;
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage(); // Return error message as string
+            return "Error: " . $e->getMessage(); 
         }
     }
 
@@ -648,23 +648,20 @@ class UserModel
 
     public function insertComplaint($description, $student_id, $hostel_name) {
         try {
-            // Select the hostel id based on the hostel name
             $query = "SELECT id FROM hostels WHERE hostel_name = '$hostel_name'";
             $stmt = $this->mysqli->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
     
-            // If hostel_id is found, insert the complaint
             if ($row = $result->fetch_assoc()) {
                 $hostel_id = $row['id'];
     
-                // Prepare the SQL statement to insert the complaint
                 $query = "INSERT INTO complaint (description, student_id, hostel_id) VALUES ('$description', $student_id, $hostel_id)";
 
                 $stmt = $this->mysqli->prepare($query);
                 $stmt->execute();
                 
-                return true; // Successfully inserted complaint
+                return true;
             } else {
                 throw new Exception("Hostel not found.");
             }

@@ -11,7 +11,6 @@ class UserController
 
     public function __construct()
     {
-        // Create an instance of UserModel
         $this->userModel = new UserModel();
     }
 
@@ -63,7 +62,6 @@ class UserController
                     header("refresh:1;url= $redirectUrl");
                     exit();
                 } else {
-                    // Display toast message for failed login
                     showToast('Login failed. Please check your credentials.', 'error');
                 }
             } catch (Exception $e) {
@@ -97,7 +95,6 @@ class UserController
         try {
             return $this->userModel->showHostelData();
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -163,7 +160,6 @@ class UserController
             $sliders = $this->userModel->showsliderWithDescription();
             return $sliders;
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -186,7 +182,6 @@ class UserController
         try {
             return $this->userModel->getStudentsdetails($id);
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -274,7 +269,6 @@ class UserController
         try {
             return $this->userModel->gethostelComplaint($id);
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -284,7 +278,6 @@ class UserController
         try {
             return $this->userModel->gethostelInquery($id);
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -305,7 +298,6 @@ class UserController
         try {
             return $this->userModel->gethosteldetails($id);
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -327,7 +319,6 @@ class UserController
                 $originalFileName = '';
                 $imageFILEDestination = '';
 
-                // Check if an image file was uploaded
                 if ($imageFILE['error'] === UPLOAD_ERR_OK) {
                     $uploadedFile = $imageFILE['tmp_name'];
                     $originalFileName = $imageFILE['name'];
@@ -406,7 +397,6 @@ class UserController
             showToast('Hostel delated successfully!');
             header("location:hostelProfile.php");
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -418,7 +408,6 @@ class UserController
             showToast('Complain delated successfully!');
             header("location:hostelProfile.php");
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
