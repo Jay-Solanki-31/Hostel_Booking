@@ -55,10 +55,10 @@ $UserController->update_hostel();
                                         </div>
                                         
                                     <div class="form-group">
-                                        <label>Hostel Type*</label>
+                                        <label>Hostel Amenities*</label>
                                         <select name="status" class="form-select" onchange="toggleAmenities(this)">
-                                            <option value="1">Normal Hostel</option>
-                                            <option value="0">Premium Hostel</option>
+                                            <option value="1">Normal Amenities</option>
+                                            <option value="0">Premium Amenities</option>
                                         </select>
                                     </div>
                                     <div id="normalHostelAmenities" style="display: none;">
