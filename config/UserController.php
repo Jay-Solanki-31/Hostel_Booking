@@ -45,20 +45,25 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'];
             $password = $_POST['password'];
-
+    
             try {
+                // Fetch user from UserModel
                 $user = $this->userModel->Userslogin($email, $password);
-
+             
                 if ($user) {
+                    showToast('Login Successful');
                     $_SESSION['user_email'] = $email;
                     $_SESSION['user_role'] = $user['role'];
                     $_SESSION['user_id'] = $user['id'];
-
-                    // Redirect users based on their role
+    
+                  
+                    
                     $redirectUrl = ($user['role'] === 'hostel') ? 'index.php' : 'index.php';
-                    header("Location: $redirectUrl");
+                 
+                    header("refresh:1;url= $redirectUrl");
                     exit();
                 } else {
+                    // Display toast message for failed login
                     showToast('Login failed. Please check your credentials.', 'error');
                 }
             } catch (Exception $e) {
@@ -66,7 +71,7 @@ class UserController
             }
         }
     }
-
+    
 
     public function GetHostelData()
     {
@@ -121,6 +126,7 @@ class UserController
             try {
 
                 $this->userModel->contact($name, $email, $contactNo, $message);
+                showToast('Contact Deatils Sent Sucessfully');
                 header("refresh:1;url=contact.php");
             } catch (Exception $e) {
 
@@ -141,6 +147,7 @@ class UserController
 
             try {
                 $this->userModel->AddInquery($name, $email, $contactNo, $message, $userId, $hostelId);
+                showToast('Inquery sent Sucessfuly');
                 header("refresh:1;url=hostels-detail.php?id=$hostelId");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
@@ -231,15 +238,13 @@ class UserController
             }
         }
     }
-
     public function updateStudentPassword($userId)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
             $current_password = $_POST['current_password'];
             $new_password = $_POST['new_password'];
             $confirm_password = $_POST['confirm_password'];
-
-
+    
             try {
                 $this->userModel->update_password($userId, $current_password, $new_password, $confirm_password);
                 showToast('Password updated successfully!');
@@ -251,6 +256,7 @@ class UserController
             }
         }
     }
+    
 
     // HOSTEL PART START
     public function gethostelsdetails($id)
@@ -340,7 +346,7 @@ class UserController
                 $this->userModel->add_hostel($hostelName, $location, $description, $imageFILEDestination, $amenities);
 
                 showToast('Hostel added successfully!');
-                header("refresh:2;url=hostelProfile.php");
+                header("refresh:1;url=hostelProfile.php");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
@@ -381,11 +387,11 @@ class UserController
                 } else {
                     $imageFILEDestination = $currentHostelImage;
                 }
-
-                $this->userModel->update_hostel($hostelid, $hostelname, $location, $description, $imageFILEDestination);
+                $amenities = isset($_POST['amenities']) && is_array($_POST['amenities']) ? $_POST['amenities'] : array();
+                $this->userModel->update_hostel($hostelid, $hostelname, $location, $description, $imageFILEDestination,$amenities);
 
                 showToast('Hostel updated successfully!');
-                header("refresh:2;url=hostelProfile.php");
+                header("refresh:1;url=hostelProfile.php");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
@@ -409,7 +415,7 @@ class UserController
     {
         try {
             $this->userModel->deletecomplain($id);
-            showToast('Hostel delated successfully!');
+            showToast('Complain delated successfully!');
             header("location:hostelProfile.php");
         } catch (Exception $e) {
             // Handle exceptions or log errors
@@ -466,7 +472,7 @@ class UserController
 
                 $this->userModel->updateOwnerInfo($email, $contact_no, $name, $originalFileName, $hostelid);
                 showToast('Owner Information updated successfully!');
-                header("refresh:2;url=hostelProfile.php");
+                header("refresh:1;url=hostelProfile.php");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
@@ -491,9 +497,7 @@ class UserController
                     error_log('Error: ' . $e->getMessage());
                     showToast($e->getMessage(), 'error');
                 }
-            } else {
-                showToast("All fields are required", 'error');
-            }
+            } 
         }
     }
     
@@ -501,25 +505,19 @@ class UserController
     public function insertComplaint()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // session_start();
 
             $student_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
-            // dd($student_id);
 
-            // Retrieve other data from the POST request
             $description = $_POST['complaintDescription'];
             $hostel_name = $_POST['hostelName'];
 
             try {
-                // Call insertComplaint method from ComplaintModel
                 $this->userModel->insertComplaint($description, $student_id, $hostel_name);
 
-                // Show success message and redirect
                 showToast('Complaint submitted successfully!');
                 header("refresh:1;url=studentProfile.php");
                 exit();
             } catch (Exception $e) {
-                // Log error and show error message
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }
@@ -540,7 +538,6 @@ class UserController
                 showToast('complaint status updated successfully!');
                 header("refresh:1;url=hostelProfile.php");
             } catch (Exception $e) {
-
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }

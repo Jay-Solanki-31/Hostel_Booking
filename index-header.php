@@ -43,6 +43,7 @@
 <style> 
 .error-message-red {
     color: red;
+    width: 14px;
 }
 
 </style>

@@ -144,8 +144,8 @@ $complaintStatus = [
                                             <th>Name </th>
                                             <th>Description </th>
                                             <th>location</th>
-                                            <th>image</th>
-                                            <th>amenities</th>
+                                            <th>Image</th>
+                                            <th style="width: 150px;">Amenities</th> 
                                             <th>RegisterDate</th>
                                             <th>Action</th>
                                         </tr>

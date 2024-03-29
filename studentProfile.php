@@ -1,6 +1,7 @@
 <?php
 session_start();
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 if (!isLoggedIn()) {
@@ -21,8 +22,15 @@ $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $studentDetails = $UserController->getStudentsdetails($studentid);
 $student = $studentDetails->fetch_assoc();
 $complaints = $UserController->getStudentsComplaint($studentid);
-$UserController->updateStudentPassword($studentid);
-$UserController->insertComplaint();
+
+if (isset($_POST['complaintDescription'])) {
+    $UserController->insertComplaint();
+}
+
+if (isset($_POST['new_password'])) {
+    $UserController->updateStudentPassword($studentid);
+}
+
 
 $complaintStatus = [
     [
@@ -195,12 +203,12 @@ $complaintStatus = [
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
                                                     <div class="mb-3">
-                                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required confirm="#new_password">
+                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="text-end">
-                                                <button type="submit" onclick="" class="btn btn-primary">Change Password</button>
+                                                <button type="submit" class="btn btn-primary" name="change_password">Change Password</button>
                                             </div>
                                         </form>
 

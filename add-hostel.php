@@ -44,11 +44,11 @@ $UserController->add_hostel();
                                     </div>
                                     <div id="normalHostelAmenities" style="display: none;">
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="basic_bedding" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Basic bedding" class="form-check-input">
                                             <label class="form-check-label">Basic Bedding</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="shared_bathroom" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Shared bathroom" class="form-check-input">
                                             <label class="form-check-label">Shared Bathroom</label>
                                         </div>
                                         <div class="form-check">
@@ -67,31 +67,31 @@ $UserController->add_hostel();
 
                                     <div id="premiumHostelAmenities" style="display: none;">
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="luxurious_bedding" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="luxurious bedding" class="form-check-input">
                                             <label class="form-check-label">Luxurious Bedding</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="ensuite_bathroom" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Ensuite bathroom" class="form-check-input">
                                             <label class="form-check-label">Ensuite Bathroom</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="lounge_area" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Lounge area" class="form-check-input">
                                             <label class="form-check-label">Lounge Area</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="gourmet_breakfast" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Gourmet breakfast" class="form-check-input">
                                             <label class="form-check-label">Gourmet Breakfast</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="concierge_service" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Concierge service" class="form-check-input">
                                             <label class="form-check-label">Concierge Service</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="premium_security" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Premium security" class="form-check-input">
                                             <label class="form-check-label">Security Features</label>
                                         </div>
                                         <div class="form-check">
-                                            <input type="checkbox" name="amenities[]" value="daily_housekeeping" class="form-check-input">
+                                            <input type="checkbox" name="amenities[]" value="Daily housekeeping" class="form-check-input">
                                             <label class="form-check-label">Daily Housekeeping</label>
                                         </div>
                                     </div>
@@ -131,14 +131,14 @@ $UserController->add_hostel();
 <?php require "main_footer.php" ?>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var selectElement = document.querySelector("select[name='status']");
-        toggleAmenities(selectElement);
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     var selectElement = document.querySelector("select[name='status']");
+    //     toggleAmenities(selectElement);
 
-        selectElement.addEventListener("change", function() {
-            toggleAmenities(this);
-        });
-    });
+    //     selectElement.addEventListener("change", function() {
+    //         toggleAmenities(this);
+    //     });
+    // });
 
     function toggleAmenities(selectElement) {
         var normalHostelAmenitiesDiv = document.getElementById("normalHostelAmenities");

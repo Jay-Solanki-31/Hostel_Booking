@@ -1,7 +1,3 @@
-<?php
-ob_start();
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +11,12 @@ ob_start();
         "login.php" => "LOGIN",
         "register.php" => "REGISTER",
         "hostels-detail.php" => "HOSTELS DETAILS ",
-        "studentProfile.php" => "PROFILE",
         "hostelProfile.php" => "PROFILE",
-
+        "studentProfile.php" => "PROFILE",
+        "editOwnerprofile.php" => "PROFILE",
+        "editStudent-Profile.php" => "PROFILE",
+        "edit-hostel.php" => "EDIT HOSTEL",
+        "add-hostel.php" => "ADD HOSTEL",
     );
 
     // Get the current page filename
@@ -49,32 +48,30 @@ ob_start();
     <link rel="stylesheet" type="text/css" href="css/lib/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
-
-
     <!-- MAIN STYLE -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-</head>
-
-<style>
-    .menu li.active a {
-        color: goldenrod;
+    <style>
+        .menu li.active a {
+            color: goldenrod;
+        }
 
         .error-message-red {
             color: red;
         }
-
-    }
-</style>
+    </style>
+</head>
 
 <body>
 
     <!-- PRELOADER -->
-    <!-- <div id="preloader">
-        <span class="preloader-dot"></span> 
-    </div> -->
+    <div id="preloader">
+        <span class="preloader-dot"></span>
+    </div>
     <!-- END / PRELOADER -->
 
     <!-- PAGE WRAP -->
@@ -87,7 +84,6 @@ ob_start();
             <div class="header_top">
                 <div class="container">
                     <div class="header_right float-right">
-
                     </div>
                 </div>
             </div>
@@ -95,7 +91,6 @@ ob_start();
 
             <!-- HEADER LOGO & MENU -->
             <div class="header_content" id="header_content">
-
                 <div class="container">
                     <!-- HEADER LOGO -->
                     <div class="header_logo">
@@ -117,22 +112,24 @@ ob_start();
                             <li <?php if ($current_page == 'contact.php') echo 'class="active"'; ?>>
                                 <a href="contact.php">Contact</a>
                             </li>
-
                         </ul>
-
                     </nav>
                     <!-- END / HEADER MENU -->
-
-
                     <!-- MENU BAR -->
                     <span class="menu-bars">
                         <span></span>
                     </span>
                     <!-- END / MENU BAR -->
-
                 </div>
             </div>
             <!-- END / HEADER LOGO & MENU -->
 
         </header>
         <!-- END / HEADER -->
+
+   
+
+
+</body>
+
+</html>

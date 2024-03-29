@@ -504,7 +504,7 @@ class UserModel
     }
 
 
-    public function update_hostel($hostelid, $hostelname, $location, $description, $image)
+    public function update_hostel($hostelid, $hostelname, $location, $description, $image, $amenities)
     {
         try {
             $hostelname = $this->mysqli->real_escape_string($hostelname);
@@ -512,6 +512,7 @@ class UserModel
             $description = $this->mysqli->real_escape_string($description);
             $image = $this->mysqli->real_escape_string($image) ?? '';
             $hostelid = $this->mysqli->real_escape_string($hostelid);
+            $amenitiesString = implode(',', $amenities);
 
             $picturequery = "";
             if ($image) {
@@ -521,8 +522,10 @@ class UserModel
             $updatehosteldata = "UPDATE hostels 
                              SET hostel_name = '$hostelname', 
                                  location = '$location',   
+                                 amenities = '$amenitiesString',
                                  description = '$description'" . $picturequery . " 
                              WHERE id = '$hostelid'";
+
 
             $result = $this->mysqli->query($updatehosteldata);
             if (!$result) {
