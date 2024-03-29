@@ -7,6 +7,10 @@
 </style>
 
 <?php
+session_start();
+function isLoggedIn() {
+    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+}
 
 include "main_header.php";
 include "config/UserController.php";
@@ -27,7 +31,7 @@ $UserController->add_hostel();
                                 <div class="col-md-6">
                                 <div class="form-group">
                                             <label> Hostel Image*</label>
-                                            <input class="form-control" name="image" id="image" type="file" accept="image/*" multiple>
+                                            <input class="form-control" name="image" id="image" type="file"multiple>
                                         </div>
 
 

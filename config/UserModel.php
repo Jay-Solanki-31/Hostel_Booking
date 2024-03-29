@@ -412,6 +412,7 @@ class UserModel
             $amenitiesString = implode(',', $amenities);
 
             $userID = $_SESSION['user_id'];
+            dd($userID);
 
             $query = "INSERT INTO hostels(user_id, hostel_name, description, location, image, amenities) 
                    VALUES ('$userID', '$hostelName', '$description', '$location', '$image', '$amenitiesString')";

@@ -135,7 +135,6 @@ $(document).ready(function() {
         errorClass: 'error-message',
 
         submitHandler: function(form) {
-            // Form is valid, submit it
             form.submit();
         }
     });
@@ -184,21 +183,21 @@ $(document).ready(function() {
 
 
 
-// $(document).ready(function() {
-//     $('#image').change(function() {
-//         var fileInput = $(this);
-//         var filePath = fileInput.val();
+$(document).ready(function() {
+    $('#image').change(function() {
+        var fileInput = $(this);
+        var filePath = fileInput.val();
         
-//         // Check if the selected file is an image
-//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-//         if (!allowedExtensions.exec(filePath)) {
-//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-//             fileInput.val('');
-//             return false;
-//         }
-//         return true;
-//     });
-// });
+        // Check if the selected file is an image
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+            fileInput.val('');
+            return false;
+        }
+        return true;
+    });
+});
 
 $(document).ready(function() {
     $('#EdithostelForm').validate({
@@ -285,8 +284,8 @@ $(document).ready(function() {
             },
         },
         
-        errorElement: 'span', // Wrap error messages in <span> tags
-        errorClass: 'error-message', // Custom class for error messages
+        errorElement: 'span', 
+        errorClass: 'error-message',
 
         submitHandler: function(form) {
             // Form is valid, submit it
@@ -296,21 +295,21 @@ $(document).ready(function() {
 });
 
 
-// $(document).ready(function() {
-//     $('#picture').change(function() {
-//         var fileInput = $(this);
-//         var filePath = fileInput.val();
+$(document).ready(function() {
+    $('#picture').change(function() {
+        var fileInput = $(this);
+        var filePath = fileInput.val();
         
-//         // Check if the selected file is an image
-//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-//         if (!allowedExtensions.exec(filePath)) {
-//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-//             fileInput.val('');
-//             return false;
-//         }
-//         return true;
-//     });
-// });
+        // Check if the selected file is an image
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+            fileInput.val('');
+            return false;
+        }
+        return true;
+    });
+});
 
 
 $(document).ready(function() {
@@ -362,19 +361,19 @@ $(document).ready(function() {
 });
 
 
-// $(document).ready(function() {
-//     $('#picture').change(function() {
-//         var fileInput = $(this);
-//         var filePath = fileInput.val();
+$(document).ready(function() {
+    $('#picture').change(function() {
+        var fileInput = $(this);
+        var filePath = fileInput.val();
         
-//         // Check if the selected file is an image
-//         var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-//         if (!allowedExtensions.exec(filePath)) {
-//             alert('Please upload a valid image file (jpg, jpeg, png, gif).');
-//             fileInput.val('');
-//             return false;
-//         }
-//         return true;
-//     });
-// });
+        // Check if the selected file is an image
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please upload a valid image file (jpg, jpeg, png, gif).');
+            fileInput.val('');
+            return false;
+        }
+        return true;
+    });
+});
 

@@ -331,10 +331,8 @@ public function updateStudentPassword($userId)
                         $imageFILEDestination = $originalFileName;
                     }
                 } elseif ($imageFILE['error'] === UPLOAD_ERR_NO_FILE) {
-                    // No file uploaded, set $imageFILEDestination to null or any other default value
                     $imageFILEDestination = null;
                 } else {
-                    // Handle other upload errors here
                     throw new Exception('File upload error: ' . $imageFILE['error']);
                 }
     

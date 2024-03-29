@@ -1,5 +1,6 @@
 <?php
 ob_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,8 @@ ob_start();
     <link rel="stylesheet" type="text/css" href="css/lib/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="css/lib/settings.css">
     <link rel="stylesheet" type="text/css" href="css/lib/bootstrap-select.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-dCW/rbsauwUKzs2vBgOpkYZWZdOZ9dQT4vn9tn7C8MPwCuE7U80I8+3wBlgxJWKSk4tmS5gY8V5Nt4lzGv7ZCg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
 
 
     <!-- MAIN STYLE -->
