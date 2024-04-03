@@ -102,6 +102,9 @@ $(document).ready(function() {
             },
             contactNo: {
                 required: true,
+                digits: true,
+                maxlength: 10,
+                number: true,
             },
         
             message: {
@@ -121,9 +124,10 @@ $(document).ready(function() {
                 email: 'Please enter a valid email address',
             },
             contactNo: {
-                required: 'Please Enter ContactNo'
+                required: 'Please enter  phone no',
+                digits: "Please enter only numerical values.",
+                maxlength: "Please enter a 10-digit phone number."
             },
-            
             message: {
                 required: 'Please Enter  Message'
             },
@@ -377,3 +381,39 @@ $(document).ready(function() {
     });
 });
 
+
+    $(document).ready(function() {
+        $('#passwordForm').validate({
+            rules: {
+                current_password: {
+                    required: true,
+                },
+                new_password: {
+                    required: true,
+                },
+                confirm_password: {
+                    required: true,
+                    equalTo: "#new_password" // Ensure new password and confirm password match
+                }
+            },
+            messages: {
+                current_password: {
+                    required: 'Please enter your current password.'
+                },
+                new_password: {
+                    required: 'Please enter a new password.',
+                },
+                confirm_password: {
+                    required: 'Please confirm your new password.',
+                    equalTo: 'Passwords do not match. Please enter the same password as above.'
+                }
+            },
+            errorElement: 'span', // Wrap error messages in <span> tags
+            errorClass: 'error-message-red', // Custom class for error messages
+
+            submitHandler: function(form) {
+                // Form is valid, submit it
+                form.submit();
+            }
+        });
+    });

@@ -600,9 +600,9 @@ class AdminModel
     function GetBookinginquery()
     {
         try {
-            $getbookinginquery = "SELECT inquiry.*, hostels.hostel_name
-            FROM inquiry
-            JOIN hostels ON inquiry.hostel_id = hostels.id;
+            $getbookinginquery = "SELECT inquery.*, hostels.hostel_name
+            FROM inquery
+            JOIN hostels ON inquery.hostel_id = hostels.id;
             ";
             $getbookinginquery = $this->mysqli->query($getbookinginquery);
 

@@ -308,6 +308,7 @@ class UserController
             $location = $_POST['location'];
             $description = $_POST['description'];
             $imageFILE = $_FILES['image'];
+            dd($imageFILE);
 
             try {
                 $uploadDirectory = 'uploads/hostels/';

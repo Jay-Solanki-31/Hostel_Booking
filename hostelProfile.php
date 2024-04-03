@@ -142,10 +142,8 @@ $complaintStatus = [
                                     <thead>
                                         <tr>
                                             <th>Name </th>
-                                            <th>Description </th>
                                             <th>location</th>
                                             <th>Image</th>
-                                            <th style="width: 150px;">Amenities</th> 
                                             <th>RegisterDate</th>
                                             <th>Action</th>
                                         </tr>
@@ -153,30 +151,16 @@ $complaintStatus = [
                                     <tbody>
                                         <?php while ($hostel = $hostellist->fetch_assoc()) : ?>
                                             <tr>
+                                            <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" style="max-height: 100px; max-width: 100px;"></td>
                                                 <td><?= $hostel['hostel_name'] ?></td>
-                                                <td>
-                                                    <?php
-                                                    $description = $hostel['description'];
-                                                    $words = str_word_count($description, 2);
-                                                    $limitedWords = array_slice($words, 0, 10);
-                                                    $limitedDescription = implode(' ', $limitedWords);
-                                                    echo $limitedDescription;
-                                                    ?>
-                                                </td>
                                                 <td><?= $hostel['location'] ?></td>
-                                                <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" height="5px" ,width="100px;"></td>
-                                                <td>
-                                                    <?php
-                                                    $amenities_array = explode(',', $hostel['amenities']);
-                                                    foreach ($amenities_array as $amenity) {
-                                                        echo $amenity . "<br>";
-                                                    }
-                                                    ?>
-                                                </td>
                                                 <td><?= $hostel['created_date'] ?></td>
                                                 <td>
-                                                    <a href="edit-hostel.php?id=<?= $hostel['id']; ?>" class="btn btn-sm btn-white text-primary me-2"><i class="far fa-edit me-1"></i> Edit</a>
-                                                    <a href="javascript:;" onclick="deletehostel(<?= $hostel['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
+                                                    <a href="edit-hostel.php?id=<?= $hostel['id']; ?>" class="btn btn-sm btn-white text-primary me-2"><i class="bi bi-pencil"></i></a>
+                                                    <a href="javascript:;" onclick="deletehostel(<?= $hostel['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="bi bi-trash"></i></a>
+                                                    <a href="hostels-detail.php?id=<?= $hostel['id']; ?>" class="btn btn-sm btn-white text-success me-2"><i class="bi bi-eye"></i></a>
+
+
                                                 </td>
                                             </tr>
                                         <?php endwhile; ?>
@@ -284,23 +268,23 @@ $complaintStatus = [
                                         <h5 class="card-title" style="margin-bottom:25px;">Change Password</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form method="POST" action="">
+                                        <form method="POST" id="passwordForm" action="">
                                             <div class="row form-group">
                                                 <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" required>
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password">
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password">
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
+                                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password">
                                                 </div>
                                             </div>
                                             <div class="text-end">

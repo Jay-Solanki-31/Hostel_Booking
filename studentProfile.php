@@ -186,24 +186,24 @@ $complaintStatus = [
                                         <h5 class="card-title" style="margin-bottom:25px;">Change Password</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form method="POST" action="">
+                                        <form method="POST" id="passwordForm" action="">
                                             <div class="row form-group">
                                                 <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" required>
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" >
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" >
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
                                                     <div class="mb-3">
-                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" required>
+                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" >
                                                     </div>
                                                 </div>
                                             </div>
