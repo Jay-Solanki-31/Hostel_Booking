@@ -72,5 +72,6 @@
 <script type="text/javascript" src="js/lib/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/lib/customeUser.js"></script>
 <!-- <script src="js/lib/jquery-3.6.0.min.js"></script> -->
+
 <script type="text/javascript" src="js/scripts.js"></script>
 </body>

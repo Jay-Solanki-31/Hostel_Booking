@@ -20,6 +20,16 @@ $UserController = new UserController();
 $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
+
+if (isset($_POST['email'])) {
+    $UserController->updateOwnerInfo();
+}
+
+
+if (isset($_POST['hostelName'])) {
+    $UserController->add_hostel();
+}
+
 $UserController->updateHostelPassword($hostelid);
 
 $complaints = $UserController->gethostelcomplaint($hostelid);
@@ -70,6 +80,21 @@ $complaintStatus = [
         object-fit: cover;
         margin-bottom: 20px;
     }
+
+    #hostelFormWrapper {
+        display: none;
+        animation: fadeInOut 0.7s ease;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
 </style>
 
 <section class="section-sub-banner bg-16">
@@ -93,7 +118,7 @@ $complaintStatus = [
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
                             <li><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
                             <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
-                            <li><a href="#Inquery" data-toggle="tab">Inquery</a></li>
+                            <li><a href="#Inquery" data-toggle="tab">inquiry</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
 
@@ -110,33 +135,33 @@ $complaintStatus = [
                                 <div class="profile-picture">
                                     <img src="uploads/owners/<?= $hostel['image'] ?? 'N/A' ?>" alt="Profile Picture" class="rounded-circle">
                                 </div>
-                                <form>
+                                <form action="" method="post" id="EditOwnerForm" enctype="multipart/form-data">
+                                    <h4 class="card-title">Owner Information</h4>
                                     <div class="form-group">
-                                        <label for="hostel_name">Name</label>
-                                        <input type="text" class="form-control" id="full_name" value="<?= $hostel['full_name'] ?? 'N/A' ?>" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="location">Email</label>
-                                        <input type="text" class="form-control" id="location" value="<?= $hostel['email'] ?? 'N/A' ?>" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="contact_no">Contact No</label>
-                                        <input type="text" class="form-control" id="contact_no" value="<?= $hostel['contact_no'] ?? 'N/A' ?>" readonly>
+                                        <label>Profile Picture</label>
+                                        <input class="form-control" name="picture" id="picture" type="file"">
+                                        </div>
+                                        <div class=" form-group">
+                                        <label>Name*</label>
+                                        <input type="text" name="name" value="<?= $hostel['full_name']; ?>" id="name" class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <label for="created_date">Date of Registration</label>
-                                        <input type="text" class="form-control" id="created_date" value="<?= $hostel['created_date'] ?? 'N/A' ?>" readonly>
+                                        <label>Phone*</label>
+                                        <input type="text" name="phone" value="<?= $hostel['contact_no']; ?>" id="phone" class="form-control">
                                     </div>
-                                    <div class="text-end mt-4" style="text-align: left!important;">
-                                        <a href="editOwnerprofile.php" class="btn btn-primary">Edit Profile</a>
-                                        <a href="index.php" style="margin-left: 5px">Cancel</a>
+                                    <div class="form-group">
+                                        <label>Email*</label>
+                                        <input type="email" name="email" value="<?= $hostel['email']; ?>" id="email" class="form-control">
                                     </div>
+                                    <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
+                                    <a href="hostelProfile.php" class="btn btn-secondary">Cancel</a>
                                 </form>
+
                             </div>
 
                             <!-- Manage Hostel TAB -->
                             <div id="ManageHostels" class="tab-pane fade">
-                                <h3>My Hostel <a href="add-hostel.php" class="btn btn-primary" style="margin-left: 619px;">Add Hostel</a></h3>
+                                <h3>My Hostel <button id="addHostelBtn" class="btn btn-primary" style="margin-left: 619px;">Add Hostel</button></h3>
 
                                 <table class="table">
                                     <thead>
@@ -151,7 +176,7 @@ $complaintStatus = [
                                     <tbody>
                                         <?php while ($hostel = $hostellist->fetch_assoc()) : ?>
                                             <tr>
-                                            <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" style="max-height: 100px; max-width: 100px;"></td>
+                                                <td><img src="uploads/hostels/<?= $hostel['image'] ?>" alt="Hostel Image" style="max-height: 100px; max-width: 100px;"></td>
                                                 <td><?= $hostel['hostel_name'] ?></td>
                                                 <td><?= $hostel['location'] ?></td>
                                                 <td><?= $hostel['created_date'] ?></td>
@@ -175,6 +200,106 @@ $complaintStatus = [
                                 <?php endif; ?>
                             </div>
 
+
+
+                            <!-- Add Hostel Form Container -->
+                            <div id="hostelFormWrapper" style="display: none;">
+                                <!-- Your Add Hostel form goes here -->
+                                <form method="post" id="hostelForm" enctype="multipart/form-data">
+                                    <h4 class="card-title mt-4">Hostel Information </h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label> Hostel Image*</label>
+                                                <input class="form-control" name="image" id="image" type="file" multiple>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label>Hostel Amenities*</label>
+                                                <select name="status" class="form-select" onchange="toggleAmenities(this)">
+                                                    <option value="1">Normal Amenities</option>
+                                                    <option value="0">Premium Amenities</option>
+                                                </select>
+                                            </div>
+                                            <div id="normalHostelAmenities" style="display: none;">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Basic bedding" class="form-check-input">
+                                                    <label class="form-check-label">Basic Bedding</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Shared bathroom" class="form-check-input">
+                                                    <label class="form-check-label">Shared Bathroom</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="wifi" class="form-check-input">
+                                                    <label class="form-check-label">Wi-Fi</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="security" class="form-check-input">
+                                                    <label class="form-check-label">Security</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="reception" class="form-check-input">
+                                                    <label class="form-check-label">24/7 Reception</label>
+                                                </div>
+                                            </div>
+
+                                            <div id="premiumHostelAmenities" style="display: none;">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="luxurious bedding" class="form-check-input">
+                                                    <label class="form-check-label">Luxurious Bedding</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Ensuite bathroom" class="form-check-input">
+                                                    <label class="form-check-label">Ensuite Bathroom</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Lounge area" class="form-check-input">
+                                                    <label class="form-check-label">Lounge Area</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Gourmet breakfast" class="form-check-input">
+                                                    <label class="form-check-label">Gourmet Breakfast</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Concierge service" class="form-check-input">
+                                                    <label class="form-check-label">Concierge Service</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Premium security" class="form-check-input">
+                                                    <label class="form-check-label">Security Features</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="amenities[]" value="Daily housekeeping" class="form-check-input">
+                                                    <label class="form-check-label">Daily Housekeeping</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description*</label>
+                                                <textarea rows="3" cols="3" class="form-control" name="description" id="description"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label> Hostel Name*</label>
+                                                <input type="text" name="hostelName" id="hostelName" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Location*</label>
+                                                <input type="text" name="location" id="location" class="form-control">
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-12 text-end mt-4">
+                                        <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
+                                            <a style="margin-left: 5px" class="btn btn-secondary">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
 
 
 
@@ -330,6 +455,24 @@ $complaintStatus = [
     </div>
 </div>
 
+
+<div id="hostelFormWrapper" style="display: none;">
+    <div class="main-wrapper">
+        <div class="content container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <?php include "main_footer.php" ?>
 
 <script>
@@ -375,4 +518,55 @@ $complaintStatus = [
         }
         return '';
     }
+
+
+    function toggleAmenities(selectElement) {
+        var normalHostelAmenitiesDiv = document.getElementById("normalHostelAmenities");
+        var premiumHostelAmenitiesDiv = document.getElementById("premiumHostelAmenities");
+
+        if (selectElement.value === "1") { // Normal Hostel selected
+            normalHostelAmenitiesDiv.style.display = "block";
+            premiumHostelAmenitiesDiv.style.display = "none";
+        } else if (selectElement.value === "0") { // Premium Hostel selected
+            normalHostelAmenitiesDiv.style.display = "none";
+            premiumHostelAmenitiesDiv.style.display = "block";
+        }
+    }
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const addHostelBtn = document.getElementById("addHostelBtn");
+        const manageHostelTab = document.getElementById("ManageHostels");
+        const hostelFormWrapper = document.getElementById("hostelFormWrapper");
+        const tabContent = document.querySelector(".room-detail_tab-content");
+
+        addHostelBtn.addEventListener("click", function() {
+            // Toggle Add Hostel form visibility
+            if (hostelFormWrapper.style.display === "block") {
+                hostelFormWrapper.style.display = "none";
+            } else {
+                hostelFormWrapper.style.display = "block";
+                // Move the Manage Hostel tab below the Add Hostel form
+                tabContent.insertBefore(manageHostelTab, hostelFormWrapper.nextElementSibling);
+            }
+        });
+
+        // Function to hide the Add Hostel form when Cancel is clicked
+        const cancelBtn = document.querySelector('#hostelFormWrapper .btn-secondary');
+        cancelBtn.addEventListener('click', function() {
+            hostelFormWrapper.style.display = "none";
+        });
+
+        // Hide the Add Hostel form when other tabs are clicked
+        const tabLinks = document.querySelectorAll('.room-detail_tab-header a');
+
+        tabLinks.forEach(function(tabLink) {
+            tabLink.addEventListener('click', function() {
+                if (!this.href.includes('#ManageHostels')) {
+                    hostelFormWrapper.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
+

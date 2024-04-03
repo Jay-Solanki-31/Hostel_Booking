@@ -301,6 +301,7 @@ class UserController
             echo "Error: " . $e->getMessage();
         }
     }
+
     public function add_hostel()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -308,8 +309,6 @@ class UserController
             $location = $_POST['location'];
             $description = $_POST['description'];
             $imageFILE = $_FILES['image'];
-            dd($imageFILE);
-
             try {
                 $uploadDirectory = 'uploads/hostels/';
 
@@ -462,7 +461,7 @@ class UserController
 
                 $this->userModel->updateOwnerInfo($email, $contact_no, $name, $originalFileName, $hostelid);
                 showToast('Owner Information updated successfully!');
-                header("refresh:1;url=hostelProfile.php");
+                echo "<script>setTimeout(function(){window.location.href='hostelProfile.php';}, 2000);</script>";
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');

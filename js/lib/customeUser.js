@@ -177,7 +177,7 @@ $(document).ready(function() {
             },
         },
         errorElement: 'span',
-        errorClass: 'error-message-red-red',
+        errorClass: 'error-message-red',
         submitHandler: function(form) {
             form.submit();
         }
@@ -417,3 +417,30 @@ $(document).ready(function() {
             }
         });
     });
+
+
+// add hostel ajex part will hear 
+
+
+    $(document).ready(function() {
+        $('#submitHostel').click(function() {
+            var formData = new FormData($('#hostelForm')[0]);
+
+            $.ajax({
+                url: 'UserController.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                    alert("Hostel added successfully!");
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Error adding hostel. Please try again later.");
+                }
+            });
+        });
+    });
+
