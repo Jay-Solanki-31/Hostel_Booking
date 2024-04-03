@@ -1,7 +1,8 @@
 <?php
 
 session_start();
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 include "main_header.php";
@@ -42,6 +43,11 @@ $hosteldata = $UserController->get_hostel()
                         <?php
                         // Check if there's any data to display
                         if (!empty($hosteldata)) {
+                            // Sort the array in descending order based on the hostel ID
+                            usort($hosteldata, function ($a, $b) {
+                                return $b->id - $a->id;
+                            });
+
                             foreach ($hosteldata as $hostel) :
                         ?>
                                 <div class="col-xs-6">

@@ -600,12 +600,73 @@ class AdminController
         }
     }
 
+    
+    public function update_slider()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+           
+            $description = $_POST['description'];
+            $imageFILE = $_FILES['picture'];
+            $imageFILEDestination = "";
+            $originalFileName = "";
+
+            $sliderid = isset($_GET['id']) ? $_GET['id']  :  '';
+
+            try {
+
+
+
+                $uploadDirectory = '../uploads/sliders/'; 
+                $singleImageArray = $this->adminModel->getsliderimage($sliderid);
+
+                if ($singleImageArray) {
+                    $oldImagePath = $singleImageArray['image'];
+
+                    $imageFILE = $_FILES['picture'];
+                    if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                        // Delete the old image
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+
+                        $uploadedFile = $imageFILE['tmp_name'];
+                        $originalFileName = $imageFILE['name'];
+                        $destination = $uploadDirectory . $originalFileName;
+
+                        if (move_uploaded_file($uploadedFile, $destination)) {
+                            $imageFILEDestination = $destination;
+                        }
+                    }
+                }
+                $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
+                showToast('Hostel updated successfully!');
+                header("refresh:1;url=hostels.php");
+            } catch (Exception $e) {
+
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
+        }
+    }
+
+
     public function deleteSlider($id)
     {
         try {
             $this->adminModel->delete_slider($id);
             showToast('Slider Record delated successfully!');
             header("location:slider.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function getsliderldetails($id)
+    {
+        try {
+            return $this->adminModel->get_slider($id);
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();

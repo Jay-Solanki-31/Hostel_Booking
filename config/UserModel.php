@@ -153,7 +153,7 @@ class UserModel
     }
     
 
-    public function AddInquery($name, $email, $contactNo, $message, $userId, $hostelId)
+    public function AddInquery($name, $email, $contactNo, $message, $hostelId)
     {
         try {
             $name = $this->mysqli->real_escape_string($name);
@@ -161,15 +161,15 @@ class UserModel
             $contactNo = $this->mysqli->real_escape_string($contactNo);
             $message = $this->mysqli->real_escape_string($message);
             
-            $query = "INSERT INTO inquiry (name, email, contact_no, description, student_id, hostel_id)
-                      VALUES ('$name', '$email', '$contactNo', '$message', '$userId', '$hostelId')";
+            $query = "INSERT INTO inquery (name, email, contact_no, description, hostel_id)
+                      VALUES ('$name', '$email', '$contactNo', '$message','$hostelId')";
             $result1 = $this->mysqli->query($query);
             
             if (!$result1) {
                 throw new Exception("Error in insert query: " . $this->mysqli->error);
             }
         } catch (Exception $e) {
-            throw new Exception("Error in contact function: " . $e->getMessage());
+            throw new Exception("Error in insert function: " . $e->getMessage());
         }
     }
     
@@ -364,11 +364,11 @@ class UserModel
     function gethostelInquery($id)
     {
         try {
-            $gethostelinquery = "SELECT inquiry.*, users.full_name AS student_name, hostels.hostel_name
-            FROM inquiry
-            JOIN users ON inquiry.student_id = users.id
-            JOIN hostels ON inquiry.hostel_id = hostels.id
-            WHERE inquiry.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
+            $gethostelinquery = "SELECT inquery.*, hostels.hostel_name
+            FROM inquery
+            -- JOIN users ON inquery.student_id = users.id
+            JOIN hostels ON inquery.hostel_id = hostels.id
+            WHERE inquery.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
             
             $result = $this->mysqli->query($gethostelinquery);
 
@@ -579,7 +579,7 @@ class UserModel
     public function deleteInquery($id)
     {
         try {
-            $deleteQuery = "DELETE FROM inquiry
+            $deleteQuery = "DELETE FROM inquery
         WHERE id = $id";
 
             $result = $this->mysqli->query($deleteQuery);

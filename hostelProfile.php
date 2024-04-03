@@ -257,7 +257,7 @@ $complaintStatus = [
                                     <tbody>
                                         <?php while ($inquery = $inquerylist->fetch_assoc()) : ?>
                                             <tr>
-                                                <td><?= $inquery['student_name'] ?></td>
+                                                <td><?= $inquery['name'] ?></td>
                                                 <td><?= $inquery['hostel_name'] ?></td>
                                                 <td><?= $inquery['email'] ?></td>
                                                 <td><?= $inquery['contact_no'] ?></td>
@@ -271,7 +271,7 @@ $complaintStatus = [
 
                                     </tbody>
                                 </table>
-                                <?php if ($complaints->num_rows === 0) : ?>
+                                <?php if ($inquerylist->num_rows === 0) : ?>
                                     <p>No Inquery found.</p>
                                 <?php endif; ?>
                             </div>
@@ -328,7 +328,6 @@ $complaintStatus = [
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editStatusModalLabel">Edit Complaint Status</h5>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
 

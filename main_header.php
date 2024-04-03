@@ -29,6 +29,16 @@
     echo "<title>$title</title>";
     ?>
 
+
+    <style>
+        .menu li.active a {
+            color: goldenrod;
+        }
+
+        .error-message-red {
+            color: red;
+        }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -55,15 +65,6 @@
     <!-- Toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-    <style>
-        .menu li.active a {
-            color: goldenrod;
-        }
-
-        .error-message-red {
-            color: red;
-        }
-    </style>
 </head>
 
 <body>
@@ -127,7 +128,7 @@
         </header>
         <!-- END / HEADER -->
 
-   
+
 
 
 </body>

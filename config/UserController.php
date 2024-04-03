@@ -139,11 +139,11 @@ class UserController
             $email = $_POST['email'];
             $contactNo = $_POST['contactNo'];
             $message = $_POST['message'];
-            $userId = $_SESSION['user_id'];
+            // $userId = $_SESSION['user_id'];
             $hostelId = $_POST['hostel_id'];
 
             try {
-                $this->userModel->AddInquery($name, $email, $contactNo, $message, $userId, $hostelId);
+                $this->userModel->AddInquery($name, $email, $contactNo, $message, $hostelId);
                 showToast('Inquery sent Sucessfuly');
                 header("refresh:1;url=hostels-detail.php?id=$hostelId");
             } catch (Exception $e) {

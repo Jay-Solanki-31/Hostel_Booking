@@ -600,7 +600,10 @@ class AdminModel
     function GetBookinginquery()
     {
         try {
-            $getbookinginquery = "SELECT * from inquiry";
+            $getbookinginquery = "SELECT inquiry.*, hostels.hostel_name
+            FROM inquiry
+            JOIN hostels ON inquiry.hostel_id = hostels.id;
+            ";
             $getbookinginquery = $this->mysqli->query($getbookinginquery);
 
             if (!$getbookinginquery) {
@@ -628,6 +631,21 @@ class AdminModel
         }
     }
 
+    function getsliderimage($id)
+    {
+        try {
+            $getsliderimage = "SELECT sliders.picture FROM `sliders`  where sliders.id = '$id'";
+            $result = $this->mysqli->query($getsliderimage);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 
     
     function showSlider()
@@ -665,6 +683,44 @@ class AdminModel
         }
     }
 
+    
+    public function update_slider($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $image, $status)
+    {
+        try {
+            $email = $this->mysqli->real_escape_string($email);
+            $password = $this->mysqli->real_escape_string($password);
+            $phone = $this->mysqli->real_escape_string($phone);
+            $name = $this->mysqli->real_escape_string($name);
+            $hostelname = $this->mysqli->real_escape_string($hostelname);
+            $location = $this->mysqli->real_escape_string($location);
+            $description = $this->mysqli->real_escape_string($description);
+            $status = $this->mysqli->real_escape_string($status);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+            $hostelid = $this->mysqli->real_escape_string($hostelid);
+
+            if ($image) {
+                $picturequery = ",hostels.image = '$image'";
+            } else {
+                $picturequery = "";
+            }
+
+
+            $updatehosteldata = "UPDATE hostels JOIN users ON users.id = hostels.user_id
+             SET users.full_name = '$name', users.email = '$email' , users.contact_no = '$phone' ,users.password = '$password',
+             hostels.hostel_name = '$hostelname', hostels.location = '$location',   hostels.description = ' $description',   hostels.status = ' $status'" . $picturequery . " 
+            WHERE hostels.id = '$hostelid'";
+
+
+            $result2 = $this->mysqli->query($updatehosteldata);
+            if (!$result2) {
+                throw new Exception("Error in update  query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
+        }
+    }
+
+
     function delete_slider($id)
     {
         try {
@@ -681,6 +737,21 @@ class AdminModel
         }
     }
 
+    function get_slider($id)
+    {
+        try {
+            $query = "SELECT * FROM sliders WHERE id=$id";
+            $result = $this->mysqli->query($query);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
     
     function showrAboutUS()
     {

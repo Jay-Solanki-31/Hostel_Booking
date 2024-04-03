@@ -79,7 +79,7 @@ $(document).ready(function() {
         },
         
         errorElement: 'span', 
-        errorClass: 'error-message',
+        errorClass: 'error-message-red',
 
         submitHandler: function(form) {
             // Form is valid, submit it
@@ -132,7 +132,7 @@ $(document).ready(function() {
         },
         
         errorElement: 'span', 
-        errorClass: 'error-message',
+        errorClass: 'error-message-red',
 
         submitHandler: function(form) {
             form.submit();
@@ -173,7 +173,7 @@ $(document).ready(function() {
             },
         },
         errorElement: 'span',
-        errorClass: 'error-message',
+        errorClass: 'error-message-red-red',
         submitHandler: function(form) {
             form.submit();
         }
@@ -232,7 +232,7 @@ $(document).ready(function() {
             },
         },
         errorElement: 'span',
-        errorClass: 'error-message',
+        errorClass: 'error-message-red',
         submitHandler: function(form) {
             form.submit();
         }
@@ -285,7 +285,7 @@ $(document).ready(function() {
         },
         
         errorElement: 'span', 
-        errorClass: 'error-message',
+        errorClass: 'error-message-red',
 
         submitHandler: function(form) {
             // Form is valid, submit it
@@ -351,7 +351,7 @@ $(document).ready(function() {
         },
         
         errorElement: 'span', // Wrap error messages in <span> tags
-        errorClass: 'error-message', // Custom class for error messages
+        errorClass: 'error-message-red', // Custom class for error messages
 
         submitHandler: function(form) {
             // Form is valid, submit it

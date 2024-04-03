@@ -1,6 +1,7 @@
 <?php
 session_start();
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
 }
 include "main_header.php";
@@ -22,8 +23,8 @@ $UserController->AddInquery($hostelId);
     }
 
     .room-detail {
-    margin-top: 40px;
-}
+        margin-top: 40px;
+    }
 </style>
 
 
@@ -90,7 +91,7 @@ $UserController->AddInquery($hostelId);
                                     <input type="email" name="email" id="email" class="form-control" placeholder="Enter your Email">
                                     <label>Phone No </label>
                                     <input type="text" name="contactNo" id="contactNo" class="form-control" placeholder="Enter Your Contact No">
-                                    <label>Description</label>
+                                    <label>Message</label>
                                     <input type="text" name="message" id="message" class="form-control" placeholder="Enter Your Desciption">
                                     <button class="awe-btn awe-btn-13">enquiry Now</button>
                                 </div>

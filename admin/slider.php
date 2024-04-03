@@ -65,6 +65,7 @@ if ($delateid) {
                                                 <td><?= $row['info']; ?></td>
                                                 <td><img src="../uploads/slider/<?= $row['picture']; ?>" style="width:50%;height:30%;" /></td>
                                                 <td>
+                                                <a href="edit-slider.php?id=<?= $row['id']; ?>"class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</a>
                                                     <a href="javascript:;" onclick="deleteSlider(<?= $row['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
                                                 </td>
                                             </tr>
