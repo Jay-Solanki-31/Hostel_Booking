@@ -31,10 +31,12 @@
 
 
     <style>
-        .menu li.active a {
-            color: goldenrod;
+        .menu li.active a,
+        .menu li:hover>a {
+            background-color: #ecd8b9;
         }
 
+       
         .error-message-red {
             color: red;
         }
@@ -107,12 +109,25 @@
                             <li <?php if ($current_page == 'about.php') echo 'class="active"'; ?>>
                                 <a href="about.php">About</a>
                             </li>
-                            <li <?php if ($current_page == 'hostels.php' || $current_page == 'hostels-detail.php' || $current_page == 'hostelProfile.php') echo 'class="active"'; ?>>
+                            <li <?php if ($current_page == 'hostels.php' || $current_page == 'hostels-detail.php') echo 'class="active"'; ?>>
                                 <a href="hostels.php">Hostels</a>
                             </li>
                             <li <?php if ($current_page == 'contact.php') echo 'class="active"'; ?>>
                                 <a href="contact.php">Contact</a>
                             </li>
+                            <?php
+                            if (isset($_SESSION['user_role'])) {
+                                if ($_SESSION['user_role'] == 'student') {
+                                    echo '<li ';
+                                    if ($current_page == 'studentProfile.php') echo 'class="active"';
+                                    echo '><a href="studentProfile.php">My Account</a></li>';
+                                } elseif ($_SESSION['user_role'] == 'hostel') {
+                                    echo '<li ';
+                                    if ($current_page == 'hostelProfile.php') echo 'class="active"';
+                                    echo '><a href="hostelProfile.php">My Account</a></li>';
+                                }
+                            }
+                            ?>
                         </ul>
                     </nav>
                     <!-- END / HEADER MENU -->
@@ -128,8 +143,7 @@
         </header>
         <!-- END / HEADER -->
 
-
-
+    </div>
 
 </body>
 
