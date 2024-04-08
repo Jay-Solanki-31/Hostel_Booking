@@ -83,7 +83,7 @@ $complaintStatus = [
 
     #hostelFormWrapper {
         display: none;
-        animation: fadeInOut 0.7s ease;
+        animation: fadeInOut 0.8s ease;
     }
 
     @keyframes fadeInOut {

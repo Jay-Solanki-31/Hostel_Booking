@@ -425,6 +425,7 @@ $(document).ready(function() {
     $(document).ready(function() {
         $('#submitHostel').click(function() {
             var formData = new FormData($('#hostelForm')[0]);
+            print_r(formData);
 
             $.ajax({
                 url: 'UserController.php',
@@ -434,7 +435,6 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(response) {
                     console.log(response);
-                    alert("Hostel added successfully!");
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

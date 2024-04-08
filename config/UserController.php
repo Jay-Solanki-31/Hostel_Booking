@@ -337,7 +337,6 @@ class UserController
                 $this->userModel->add_hostel($hostelName, $location, $description, $imageFILEDestination, $amenities);
 
                 showToast('Hostel added successfully!');
-                header("refresh:1;url=hostelProfile.php");
             } catch (Exception $e) {
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');

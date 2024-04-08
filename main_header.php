@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <?php
+    ob_start();
     $page_titles = array(
         "about.php" => "ABOUT US",
         "contact.php" => "CONTACT US",
