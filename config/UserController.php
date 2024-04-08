@@ -291,6 +291,17 @@ class UserController
         }
     }
 
+    
+    public function getregisterStudentInfo()
+    {
+        try {
+            return $this->userModel->getregisterStudentData();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
 
 
     public function gethosteldetails($id)

@@ -400,6 +400,22 @@ class UserModel
         }
     }
 
+    function getregisterStudentData()
+    {
+        try {
+            $getstudentData = "SELECT * FROM `users` WHERE role = 'student'";
+            $result = $this->mysqli->query($getstudentData);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 
     public function add_hostel($hostelName, $location, $description, $image, $amenities)
     {

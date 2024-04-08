@@ -35,6 +35,7 @@ $UserController->updateHostelPassword($hostelid);
 $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
+$registerStudentlist = $UserController->getregisterStudentInfo();
 
 
 $formName = isset($_POST['formName']) ? $_POST['formName']  :  '';
@@ -95,6 +96,21 @@ $complaintStatus = [
             opacity: 1;
         }
     }
+
+    #AssignhostelFormWrapper {
+        display: none;
+        animation: fadeInOut 0.8s ease;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
 </style>
 
 <section class="section-sub-banner bg-16">
@@ -119,6 +135,7 @@ $complaintStatus = [
                             <li><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
                             <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#Inquery" data-toggle="tab">inquiry</a></li>
+                            <li><a href="#assignBooking" data-toggle="tab">Assign Booking</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
 
@@ -294,7 +311,7 @@ $complaintStatus = [
 
 
                                         <div class="col-md-12 text-end mt-4">
-                                        <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
+                                            <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
                                             <a style="margin-left: 5px" class="btn btn-secondary">Cancel</a>
                                         </div>
                                     </div>
@@ -386,6 +403,71 @@ $complaintStatus = [
                             </div>
 
 
+                            <!-- Assign Booking TAB -->
+                            <div id="assignBooking" class="tab-pane fade">
+                                <h3>Assign Booking List <button id="assignHostelBtn" style="margin-left: 433px;" class="btn btn-primary">Assign Hostel</button></h3>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Hostel Name</th>
+                                            <th>Student Name</th>
+                                            <th>Email</th>
+                                            <th>Contact No</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Your PHP loop to display booking list goes here -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Assign Hostel Form Container -->
+                            <div id="AssignhostelFormWrapper" style="display: none;">
+                                <!-- Your Assign Hostel form goes here -->
+                                <form method="post" id="hostelForm">
+                                    <h4 class="card-title mt-4">Assign Hostel: </h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="hostelDropdown">Select Hostel:</label>
+                                                <select id="hostelDropdown" name="hostel">
+                                                    <?php foreach ($hostellist as $hostel) { ?>
+                                                        <option value="<?php echo $hostel['hostel_name']; ?>"><?php echo $hostel['hostel_name']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="studentDropdown">Select Student Email:</label>
+                                                <select id="studentDropdown" name="student">
+                                                    <?php foreach ($registerStudentlist as $student) { ?>
+                                                        <option value="<?php echo $student['email']; ?>"><?php echo $student['email']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-left: 1px;">
+                                            <div class="form-group">
+                                                <label for="studentDropdown">Select Student Name:</label>
+                                                <select id="studentDropdown" name="student">
+                                                    <?php foreach ($registerStudentlist as $student) { ?>
+                                                        <option value="<?php echo $student['full_name']; ?>"><?php echo $student['full_name']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="col-md-12 text-end mt-4">
+                                            <button type="submit" id="AssignHostel" class="btn btn-primary">Assign</button>
+                                            <a style="margin-left: 5px" class="btn btn-secondary">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+
                             <!-- CHANGE PASSWORD TAB -->
                             <div id="password" class="tab-pane fade">
                                 <div class="card">
@@ -455,22 +537,7 @@ $complaintStatus = [
     </div>
 </div>
 
-
-<div id="hostelFormWrapper" style="display: none;">
-    <div class="main-wrapper">
-        <div class="content container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--  -->
 
 
 <?php include "main_footer.php" ?>
@@ -569,4 +636,39 @@ $complaintStatus = [
         });
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const assignHostelBtn = document.getElementById("assignHostelBtn");
+        const assignBookingTab = document.getElementById("assignBooking");
+        const assignFormWrapper = document.getElementById("AssignhostelFormWrapper");
+        const tabContent = document.querySelector(".room-detail_tab-content");
 
+        assignHostelBtn.addEventListener("click", function() {
+            // Toggle Assign Hostel form visibility
+            if (assignFormWrapper.style.display === "block") {
+                assignFormWrapper.style.display = "none";
+            } else {
+                assignFormWrapper.style.display = "block";
+                // Move the Assign Booking tab below the Assign Hostel form
+                tabContent.insertBefore(assignBookingTab, assignFormWrapper.nextElementSibling);
+            }
+        });
+
+        // Function to hide the Assign Hostel form when Cancel is clicked
+        const cancelBtn = document.querySelector('#AssignhostelFormWrapper .btn-secondary');
+        cancelBtn.addEventListener('click', function() {
+            assignFormWrapper.style.display = "none";
+        });
+
+        // Hide the Assign Hostel form when other tabs are clicked
+        const tabLinks = document.querySelectorAll('.room-detail_tab-header a');
+
+        tabLinks.forEach(function(tabLink) {
+            tabLink.addEventListener('click', function() {
+                if (!this.href.includes('#assignBooking')) {
+                    assignFormWrapper.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
