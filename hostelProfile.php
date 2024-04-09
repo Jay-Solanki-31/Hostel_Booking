@@ -21,10 +21,11 @@ $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
 
-if (isset($_POST['email'])) {
+$UserController->assignHostel();
+
+if (isset($_POST['name'])) {
     $UserController->updateOwnerInfo();
 }
-
 
 if (isset($_POST['hostelName'])) {
     $UserController->add_hostel();
@@ -34,6 +35,7 @@ $UserController->updateHostelPassword($hostelid);
 
 $complaints = $UserController->gethostelcomplaint($hostelid);
 $inquerylist = $UserController->gethostelinquery($hostelid);
+$assignbookinglist = $UserController->getassiggnhosteldata($hostelid);
 $hostellist = $UserController->gethostelInformation($hostelid);
 $registerStudentlist = $UserController->getregisterStudentInfo();
 
@@ -48,6 +50,7 @@ $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
 if ($delateid) {
     $delatehostel = $UserController->deleteHostel($delateid);
     $delateComplain = $UserController->deleteComplain($delateid);
+    $delateassignHostel = $UserController->deleteassignHostel($delateid);
     $delateInquey = $UserController->deleteInquery($delateid);
 }
 
@@ -157,7 +160,7 @@ $complaintStatus = [
                                     <div class="form-group">
                                         <label>Profile Picture</label>
                                         <input class="form-control" name="picture" id="picture" type="file"">
-                                        </div>
+                                  </div>
                                         <div class=" form-group">
                                         <label>Name*</label>
                                         <input type="text" name="name" value="<?= $hostel['full_name']; ?>" id="name" class="form-control">
@@ -405,7 +408,7 @@ $complaintStatus = [
 
                             <!-- Assign Booking TAB -->
                             <div id="assignBooking" class="tab-pane fade">
-                                <h3>Assign Booking List <button id="assignHostelBtn" style="margin-left: 433px;" class="btn btn-primary">Assign Hostel</button></h3>
+                                <h3>Assign Booking List <button id="assignHostelBtn" style="margin-left: 502px;" class="btn btn-primary">Assign Hostel</button></h3>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -418,20 +421,32 @@ $complaintStatus = [
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Your PHP loop to display booking list goes here -->
+                                        <?php while ($assign = $assignbookinglist->fetch_assoc()) : ?>
+                                            <tr>
+                                                <td><?= $assign['hostel_name'] ?></td>
+                                                <td><?= $assign['student_name'] ?></td>
+                                                <td><?= $assign['student_email'] ?></td>
+                                                <td><?= $assign['student_contactno'] ?></td>
+                                                <td><?= $assign['created_date'] ?></td>
+                                                <td>
+                                                    <a href="javascript:;" onclick="deleteassignHostel(<?= $assign['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
+                                                </td>
+
+                                            </tr>
+                                        <?php endwhile; ?>
+
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Assign Hostel Form Container -->
+                            <!-- assign hostel tab -->
                             <div id="AssignhostelFormWrapper" style="display: none;">
-                                <!-- Your Assign Hostel form goes here -->
-                                <form method="post" id="hostelForm">
+                                <form method="post" id="assignhostelForm">
                                     <h4 class="card-title mt-4">Assign Hostel: </h4>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="hostelDropdown">Select Hostel:</label>
+                                                <input type="hidden" name="action" value="assign_hostel">
                                                 <select id="hostelDropdown" name="hostel">
                                                     <?php foreach ($hostellist as $hostel) { ?>
                                                         <option value="<?php echo $hostel['hostel_name']; ?>"><?php echo $hostel['hostel_name']; ?></option>
@@ -439,27 +454,17 @@ $complaintStatus = [
                                                 </select>
                                             </div>
                                             <div class="form-group">
-                                                <label for="studentDropdown">Select Student Email:</label>
-                                                <select id="studentDropdown" name="student">
+                                                <label for="studentEmailDropdown">Select Student Email:</label>
+                                                <select id="studentEmailDropdown" name="student_email">
                                                     <?php foreach ($registerStudentlist as $student) { ?>
                                                         <option value="<?php echo $student['email']; ?>"><?php echo $student['email']; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="margin-left: 1px;">
-                                            <div class="form-group">
-                                                <label for="studentDropdown">Select Student Name:</label>
-                                                <select id="studentDropdown" name="student">
-                                                    <?php foreach ($registerStudentlist as $student) { ?>
-                                                        <option value="<?php echo $student['full_name']; ?>"><?php echo $student['full_name']; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                           
-                                        </div>
+
                                         <div class="col-md-12 text-end mt-4">
-                                            <button type="submit" id="AssignHostel" class="btn btn-primary">Assign</button>
+                                            <button type="button" id="AssignHostel" class="btn btn-primary">Assign</button>
                                             <a style="margin-left: 5px" class="btn btn-secondary">Cancel</a>
                                         </div>
                                     </div>
@@ -562,6 +567,16 @@ $complaintStatus = [
     }
 
     function deleteComplain(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostelProfile.php?delateid=" + id;
+        }
+    }
+
+
+    function deleteassignHostel(id) {
         // alert(id);
         let conform = window.confirm("Are you sure want to delete this record?");
         if (conform) {

@@ -1,7 +1,7 @@
 <?php
 
 // Include the database configuration file
-include 'config/db.php';
+include 'db.php';
 
 class UserModel
 {
@@ -76,11 +76,11 @@ class UserModel
         try {
             $GetHosteldata = "SELECT id, hostel_name, image FROM hostels";
             $result = $this->mysqli->query($GetHosteldata);
-    
+
             if (!$result) {
                 throw new Exception("Error in query: " . $this->mysqli->error);
             }
-    
+
             $hostelData = array();
             while ($row = $result->fetch_assoc()) {
                 $hostelData[] = array(
@@ -94,7 +94,7 @@ class UserModel
             throw new Exception("Error: " . $e->getMessage());
         }
     }
-    
+
 
     function showHostelData()
     {
@@ -151,7 +151,7 @@ class UserModel
             throw new Exception("Error filtering hostels: " . $e->getMessage());
         }
     }
-    
+
 
     public function AddInquery($name, $email, $contactNo, $message, $hostelId)
     {
@@ -160,11 +160,11 @@ class UserModel
             $email = $this->mysqli->real_escape_string($email);
             $contactNo = $this->mysqli->real_escape_string($contactNo);
             $message = $this->mysqli->real_escape_string($message);
-            
+
             $query = "INSERT INTO inquery (name, email, contact_no, description, hostel_id)
                       VALUES ('$name', '$email', '$contactNo', '$message','$hostelId')";
             $result1 = $this->mysqli->query($query);
-            
+
             if (!$result1) {
                 throw new Exception("Error in insert query: " . $this->mysqli->error);
             }
@@ -172,8 +172,8 @@ class UserModel
             throw new Exception("Error in insert function: " . $e->getMessage());
         }
     }
-    
-    
+
+
 
     public function contact($name, $email, $contactNo, $message)
     {
@@ -203,21 +203,21 @@ class UserModel
             if (!$result) {
                 throw new Exception("Error in fetching slider data: " . $this->mysqli->error);
             }
-    
+
             $sliders = array();
             while ($row = $result->fetch_object()) {
                 $sliders[] = $row;
             }
-    
+
             // Free result set
             $result->free();
-    
+
             return $sliders;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
-    
+
 
     public function showAboutUsData()
     {
@@ -230,14 +230,14 @@ class UserModel
 
             $aboutUsData = array();
             while ($row = $result->fetch_object()) {
-                $aboutUsData[] = $row; 
+                $aboutUsData[] = $row;
             }
 
             $result->free();
 
             return $aboutUsData;
         } catch (Exception $e) {
-            return "Error: " . $e->getMessage(); 
+            return "Error: " . $e->getMessage();
         }
     }
 
@@ -258,6 +258,11 @@ class UserModel
         }
     }
 
+
+    
+ 
+
+
     function getStudentsComplaint($id)
     {
         try {
@@ -277,7 +282,6 @@ class UserModel
             echo "Error: " . $e->getMessage();
         }
     }
-
     public function updateStudentInfo($email, $contact_no, $name, $address, $image, $studentid)
     {
         try {
@@ -286,12 +290,12 @@ class UserModel
             $name = $this->mysqli->real_escape_string($name);
             $address = $this->mysqli->real_escape_string($address);
             $image = $this->mysqli->real_escape_string($image) ?? '';
-
+    
             $picturequery = $image ? ", image = '$image'" : "";
-
+    
             $updateOwnerData = "UPDATE users SET email='$email', contact_no='$contact_no', full_name='$name', address='$address' $picturequery WHERE id ='$studentid'";
             $result = $this->mysqli->query($updateOwnerData);
-
+    
             if (!$result) {
                 throw new Exception("Error in update query: " . $this->mysqli->error);
             }
@@ -299,6 +303,7 @@ class UserModel
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
+    
 
 
 
@@ -316,6 +321,25 @@ class UserModel
             echo "Error: " . $e->getMessage();
         }
     }
+
+    
+
+    function getRegisterStudentsdetails($id)
+    {
+        try {
+            $getStudentsdetails = "SELECT booking_assign.*, hostels.hostel_name, hostels.image, hostels.location FROM booking_assign JOIN hostels ON booking_assign.hostel_id = hostels.id WHERE booking_assign.student_id = '$id'";
+            $result = $this->mysqli->query($getStudentsdetails);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 
 
 
@@ -347,7 +371,7 @@ class UserModel
             JOIN users ON complaint.student_id = users.id
             JOIN hostels ON complaint.hostel_id = hostels.id
             WHERE complaint.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
-            
+
             $result = $this->mysqli->query($gethostelcomplaint);
 
             if (!$result) {
@@ -369,7 +393,7 @@ class UserModel
             -- JOIN users ON inquery.student_id = users.id
             JOIN hostels ON inquery.hostel_id = hostels.id
             WHERE inquery.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
-            
+
             $result = $this->mysqli->query($gethostelinquery);
 
             if (!$result) {
@@ -662,21 +686,22 @@ class UserModel
     }
 
 
-    public function insertComplaint($description, $student_id, $hostel_name) {
+    public function insertComplaint($description, $student_id)
+    {
         try {
-            $query = "SELECT id FROM hostels WHERE hostel_name = '$hostel_name'";
+            $query = "SELECT hostel_id FROM `booking_assign` WHERE student_id = '$student_id'";
             $stmt = $this->mysqli->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
-    
+
             if ($row = $result->fetch_assoc()) {
-                $hostel_id = $row['id'];
-    
+                $hostel_id = $row['hostel_id'];
+
                 $query = "INSERT INTO complaint (description, student_id, hostel_id) VALUES ('$description', $student_id, $hostel_id)";
 
                 $stmt = $this->mysqli->prepare($query);
                 $stmt->execute();
-                
+
                 return true;
             } else {
                 throw new Exception("Hostel not found.");
@@ -702,5 +727,127 @@ class UserModel
         }
     }
 
-    
+    public function assignHostel($hostelName, $studentEmail)
+    {
+        try {
+
+
+            $hostelId = $this->getHostelIdByName($hostelName);
+
+            $studentId = $this->getStudentIdByEmail($studentEmail);
+            if ($hostelId && $studentId) {
+                $query = "INSERT INTO booking_assign (hostel_id,student_id) VALUES ('$hostelId', '$studentId')";
+                $stmt = $this->mysqli->query($query);
+
+                if (!$stmt) {
+                    throw new Exception("Error in update  query: " . $this->mysqli->error);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in insert function: " . $e->getMessage());
+        }
+    }
+    private function getHostelIdByName($hostelName)
+    {
+        try {
+            $query = "SELECT id FROM `hostels` WHERE hostel_name = '$hostelName'";
+            $stmt = $this->mysqli->prepare($query);
+
+            if (!$stmt) {
+                throw new Exception("Error in prepare statement: " . $this->mysqli->error);
+            }
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                return $row['id'];
+            } else {
+                throw new Exception("Hostel ID not found for name: $hostelName");
+            }
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    private function getStudentIdByEmail($studentEmail)
+    {
+        try {
+            $query = "SELECT id FROM users WHERE email = '$studentEmail'";
+            $stmt = $this->mysqli->prepare($query);
+
+            if (!$stmt) {
+                throw new Exception("Error in prepare statement: " . $this->mysqli->error);
+            }
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                return $row['id'];
+            } else {
+                throw new Exception("Student ID not found for email: $studentEmail");
+            }
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+
+    function getAssignHostelStudentdata($id)
+    {
+        try {
+            $getAssignHostelStudentdata = "SELECT 
+                booking_assign.*,
+                users.full_name AS student_name,
+                users.email AS student_email,
+                users.contact_no AS student_contactno,
+                hostels.hostel_name
+            FROM 
+                booking_assign
+            JOIN 
+                users ON booking_assign.student_id = users.id
+            JOIN 
+                hostels ON booking_assign.hostel_id = hostels.id
+            WHERE 
+                booking_assign.hostel_id IN (SELECT id FROM hostels WHERE user_id = '$id')";
+
+            $result = $this->mysqli->query($getAssignHostelStudentdata);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
+    public function deleteAssignHostelData($id)
+    {
+        try {
+            $deleteQuery = "DELETE FROM booking_assign
+        WHERE id = $id";
+
+            $result = $this->mysqli->query($deleteQuery);
+
+            if (!$result) {
+                throw new Exception("Error in delete query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
 }

@@ -1,9 +1,9 @@
 
 <?php
 ob_start();
-include 'config/function.php';
-include 'config/constants.php';
-include 'config/UserModel.php';
+include 'function.php';
+include 'constants.php';
+include 'UserModel.php';
 
 class UserController
 {
@@ -200,30 +200,31 @@ class UserController
     public function updateStudentInfo()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $contact_no = $_POST['phone'];
-            $name = $_POST['name'];
-            $address = $_POST['address'];
-            $imageFILE = $_FILES['picture'];
+            $email = $_POST['email'] ;
+            $contact_no = $_POST['contact_no'] ;
+            $name = $_POST['full_name'] ;
+            $address = $_POST['address'] ;
+            $imageFILE = $_FILES['picture'] ;
             $imageFILEDestination = "";
             $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
             $originalFileName = "";
 
+    
             try {
                 $uploadDirectory = 'uploads/students/';
                 $singleImageArray = $this->userModel->getStudentImage($studentid);
-
+            
                 if ($imageFILE['error'] === UPLOAD_ERR_OK) {
                     // Handle profile picture upload
                     $uploadedFile = $imageFILE['tmp_name'];
                     $originalFileName = $imageFILE['name'];
                     $destination = $uploadDirectory . $originalFileName;
-
+            
                     if (move_uploaded_file($uploadedFile, $destination)) {
                         $imageFILEDestination = $destination;
                     }
                 }
-
+            
                 $this->userModel->updateStudentInfo($email, $contact_no, $name, $address, $originalFileName, $studentid);
                 showToast('Student Information updated successfully!');
                 header("refresh:1;url=studentProfile.php");
@@ -231,8 +232,10 @@ class UserController
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }
+            
         }
     }
+    
     public function updateStudentPassword($userId)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
@@ -252,6 +255,16 @@ class UserController
         }
     }
     
+    
+    public function getregisterStudentsdetails($id)
+    {
+        try {
+            return $this->userModel->getRegisterStudentsdetails($id);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
 
     // HOSTEL PART START
     public function gethostelsdetails($id)
@@ -259,7 +272,6 @@ class UserController
         try {
             return $this->userModel->gethostelsdetails($id);
         } catch (Exception $e) {
-            // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
@@ -506,12 +518,11 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $student_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
-
             $description = $_POST['complaintDescription'];
-            $hostel_name = $_POST['hostelName'];
+
 
             try {
-                $this->userModel->insertComplaint($description, $student_id, $hostel_name);
+                $this->userModel->insertComplaint($description, $student_id);
 
                 showToast('Complaint submitted successfully!');
                 header("refresh:1;url=studentProfile.php");
@@ -540,6 +551,51 @@ class UserController
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }
+        }
+    }
+
+    public function assignHostel()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $hostelName = $_POST['hostel'];
+            $studentEmail = $_POST['student_email']; 
+
+
+            try {
+            
+               $sucess= $this->userModel->assignHostel($hostelName, $studentEmail);
+                if($sucess){
+                    echo json_encode(array('sucess' => true, 'message'=>'Hostel Assign Sucessfully!'));
+                }else{
+                    echo json_encode(array('sucess' => false, 'message'=>'failed to  Assign Sucessfully!'));  
+                }
+                exit();
+            } catch (Exception $e) {
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
+        }
+    }
+
+    public function getassiggnhosteldata($id)
+    {
+        try {
+            return $this->userModel->getAssignHostelStudentdata($id);
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    
+
+    public function deleteassignHostel($id)
+    {
+        try {
+            $this->userModel->deleteAssignHostelData($id);
+            showToast('assign Hostel  delated successfully!');
+            header("location:hostelProfile.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
         }
     }
 }

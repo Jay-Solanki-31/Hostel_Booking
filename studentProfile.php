@@ -21,6 +21,14 @@ $UserController = new UserController();
 $studentid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $studentDetails = $UserController->getStudentsdetails($studentid);
 $student = $studentDetails->fetch_assoc();
+$registerStudentlist = $UserController->getregisterStudentsdetails($studentid);
+
+
+if (isset($_POST['full_name'])) {
+    $UserController->updateStudentInfo();
+}
+
+
 $complaints = $UserController->getStudentsComplaint($studentid);
 
 if (isset($_POST['complaintDescription'])) {
@@ -84,6 +92,7 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+                            <li><a href="#myassignBooking" data-toggle="tab">My Bookings</a></li>
                             <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
                             <li><a href="logout.php">Logout</a></li>
@@ -101,34 +110,76 @@ $complaintStatus = [
                                 <div class="profile-picture">
                                     <img src="uploads/students/<?= $student['image'] ?? 'N/A' ?>" alt="Profile Picture" class="rounded-circle">
                                 </div>
-                                <form>
+                                <form action="" method="POST" id="EditStudentForm" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label>Profile Picture</label>
+                                        <input class="form-control" name="picture" id="picture" type="file">
+                                    </div>
                                     <div class="form-group">
                                         <label for="full_name">Name</label>
-                                        <input type="text" class="form-control" id="full_name" value="<?= $student['full_name'] ?? 'N/A' ?>" readonly>
+                                        <input type="text" class="form-control" id="full_name" name="full_name" value="<?= $student['full_name'] ?? 'N/A' ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="text" class="form-control" id="location" value="<?= $student['email'] ?? 'N/A' ?>" readonly>
+                                        <input type="text" class="form-control" id="email" name="email" value="<?= $student['email'] ?? 'N/A' ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="contact_no">Contact No</label>
-                                        <input type="text" class="form-control" id="contact_no" value="<?= $student['contact_no'] ?? 'N/A' ?>" readonly>
+                                        <input type="text" class="form-control" id="contact_no" name="contact_no" value="<?= $student['contact_no'] ?? 'N/A' ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label for="address">address </label>
-                                        <input type="text" class="form-control" id="address" value="<?= $student['address'] ?? 'N/A' ?>" readonly>
+                                        <label for="address">Address</label>
+                                        <input type="text" class="form-control" id="address" name="address" value="<?= $student['address'] ?? 'N/A' ?>">
                                     </div>
                                     <div class="form-group">
                                         <label for="created_date">Date of Registration</label>
-                                        <input type="text" class="form-control" id="created_date" value="<?= $student['created_date'] ?? 'N/A' ?>" readonly>
+                                        <input type="text" class="form-control" id="created_date" name="created_date" value="<?= $student['created_date'] ?? 'N/A' ?>">
                                     </div>
                                     <div class="text-end mt-4" style="text-align: left!important;">
-                                        <a href="editStudent-Profile.php" class="btn btn-primary">Edit Profile</a>
+                                        <button type="submit" id="updateinfo" class="btn btn-primary">Save</button>
                                         <a href="index.php" style="margin-left: 5px">Cancel</a>
                                     </div>
                                 </form>
+
                             </div>
 
+
+
+                            <!-- My Assign Booking  -->
+                            <div id="myassignBooking" class="tab-pane fade">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Hostel Picture</th>
+                                            <th>Hostel Name</th>
+                                            <th>Location</th>
+                                            <th>Register Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $rows = [];
+                                        while ($student = $registerStudentlist->fetch_assoc()) {
+                                            $rows[] = $student;
+                                        }
+
+                                        $rows = array_reverse($rows);
+                                        ?>
+
+                                    <tbody>
+                                        <?php foreach ($rows as $student) : ?>
+                                            <tr>
+                                                <td><img src="uploads/hostels/<?= $student['image'] ?>" alt="Hostel Image" style="max-height: 183px;max-width: 151px;"></td>
+                                                <td><?= $student['hostel_name'] ?></td>
+                                                <td><?= $student['location'] ?></td>
+                                                <td><?= $student['created_date'] ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
 
 
 
@@ -139,17 +190,17 @@ $complaintStatus = [
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th> Name </th>
                                             <th>Hostel Name </th>
                                             <th>Description</th>
                                             <th>Status</th>
-                                            <th>Date</th>
+                                            <th>Registe Date</th>
+                                            <th>Resolve Date</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php while ($complaint = $complaints->fetch_assoc()) : ?>
                                             <tr>
-                                                <td><?= $complaint['full_name'] ?></td>
                                                 <td><?= $complaint['hostel_name'] ?></td>
                                                 <td><?= $complaint['description'] ?></td>
                                                 <td>
@@ -162,6 +213,7 @@ $complaintStatus = [
                                                     <?php endforeach; ?>
                                                 </td>
                                                 <td><?= $complaint['created_date'] ?></td>
+                                                <td><?= $complaint['modified_date'] ?></td>
 
                                             </tr>
                                         <?php endwhile; ?>
@@ -190,20 +242,20 @@ $complaintStatus = [
                                             <div class="row form-group">
                                                 <label for="current_password" class="col-sm-3 col-form-label input-label">Current Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password" >
+                                                    <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter current password">
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="new_password" class="col-sm-3 col-form-label input-label">New Password</label>
                                                 <div class="col-sm-9">
-                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" >
+                                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password">
                                                 </div>
                                             </div>
                                             <div class="row form-group">
                                                 <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                                 <div class="col-sm-9">
                                                     <div class="mb-3">
-                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" >
+                                                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password">
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,10 +296,7 @@ $complaintStatus = [
                         <label for="complaintDescription">Description*</label>
                         <textarea rows="3" class="form-control" id="complaintDescription" name="complaintDescription" required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="hostelName">Hostel Name*</label>
-                        <input type="text" class="form-control" id="hostelName" name="hostelName" required>
-                    </div>
+                   
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

@@ -425,7 +425,6 @@ $(document).ready(function() {
     $(document).ready(function() {
         $('#submitHostel').click(function() {
             var formData = new FormData($('#hostelForm')[0]);
-            print_r(formData);
 
             $.ajax({
                 url: 'UserController.php',
@@ -444,3 +443,35 @@ $(document).ready(function() {
         });
     });
 
+// add-assign booking  part 
+$(document).ready(function() {
+    $('#AssignHostel').click(function() {
+        var formData = new FormData($('#assignhostelForm')[0]);
+
+        $.ajax({
+            url: 'config/ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    var responseData = JSON.parse(response);
+                    if (responseData.sucess) { // Corrected from responseData.success
+                        showToast(responseData.message, 'success');
+                        window.location.href = 'hostelProfile.php';
+                    } else {
+                        showToast(responseData.message, 'error');
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON response: " + error);
+                    showToast("Error parsing response. Please try again later.", 'error');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Error assigning hostel. Please try again later.");
+            }
+        });
+    });
+});
