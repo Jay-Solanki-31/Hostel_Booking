@@ -21,13 +21,13 @@ $hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
 $hostelDetails = $UserController->gethostelsdetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
 
-$UserController->assignHostel();
+// $UserController->assignHostel(); 
 
 if (isset($_POST['name'])) {
     $UserController->updateOwnerInfo();
 }
 
-if (isset($_POST['hostelName'])) {
+if (isset($_POST['location'])) {
     $UserController->add_hostel();
 }
 
@@ -135,7 +135,7 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><i class="fa-thin fa-user-secret"></i><a href="#ManageHostels"  data-toggle="tab">Manage Hostel</a></li>
+                            <li><i class="fa-thin fa-user-secret"></i><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
                             <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#Inquery" data-toggle="tab">inquiry</a></li>
                             <li><a href="#assignBooking" data-toggle="tab">Assign Booking</a></li>
@@ -144,7 +144,7 @@ $complaintStatus = [
 
                         </ul>
 
-                    </div>  
+                    </div>
 
                     <div class="col-md-9">
                         <div class="room-detail_tab-content tab-content">
@@ -243,58 +243,23 @@ $complaintStatus = [
                                                 </select>
                                             </div>
                                             <div id="normalHostelAmenities" style="display: none;">
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Basic bedding" class="form-check-input">
-                                                    <label class="form-check-label">Basic Bedding</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Shared bathroom" class="form-check-input">
-                                                    <label class="form-check-label">Shared Bathroom</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="wifi" class="form-check-input">
-                                                    <label class="form-check-label">Wi-Fi</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="security" class="form-check-input">
-                                                    <label class="form-check-label">Security</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="reception" class="form-check-input">
-                                                    <label class="form-check-label">24/7 Reception</label>
-                                                </div>
+                                                <?php foreach (NORMAL_AMENITIES as $amenity) { ?>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" name="amenities[]" value="<?= $amenity['value'] ?>" class="form-check-input">
+                                                        <label class="form-check-label"><?= $amenity['name'] ?></label>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
 
                                             <div id="premiumHostelAmenities" style="display: none;">
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="luxurious bedding" class="form-check-input">
-                                                    <label class="form-check-label">Luxurious Bedding</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Ensuite bathroom" class="form-check-input">
-                                                    <label class="form-check-label">Ensuite Bathroom</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Lounge area" class="form-check-input">
-                                                    <label class="form-check-label">Lounge Area</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Gourmet breakfast" class="form-check-input">
-                                                    <label class="form-check-label">Gourmet Breakfast</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Concierge service" class="form-check-input">
-                                                    <label class="form-check-label">Concierge Service</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Premium security" class="form-check-input">
-                                                    <label class="form-check-label">Security Features</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" name="amenities[]" value="Daily housekeeping" class="form-check-input">
-                                                    <label class="form-check-label">Daily Housekeeping</label>
-                                                </div>
+                                                <?php foreach (PREMIUM_AMENITIES as $amenity) { ?>
+                                                    <div class="form-check">
+                                                        <input type="checkbox" name="amenities[]" value="<?= $amenity['value'] ?>" class="form-check-input">
+                                                        <label class="form-check-label"><?= $amenity['name'] ?></label>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
+
                                             <div class="form-group">
                                                 <label>Description*</label>
                                                 <textarea rows="3" cols="3" class="form-control" name="description" id="description"></textarea>

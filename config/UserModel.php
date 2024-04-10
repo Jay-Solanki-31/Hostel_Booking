@@ -104,20 +104,21 @@ class UserModel
             if (!$result) {
                 throw new Exception("Error in fetching hostel data: " . $this->mysqli->error);
             }
-
+    
             $hostels = array();
             while ($row = $result->fetch_object()) {
                 $hostels[] = $row;
             }
-
+    
             // Free result set
             $result->free();
-
+    
             return $hostels;
         } catch (Exception $e) {
             throw new Exception("Error: " . $e->getMessage());
         }
     }
+    
 
     public function filterHostels($name, $city)
     {
@@ -455,7 +456,6 @@ class UserModel
 
             $query = "INSERT INTO hostels(user_id, hostel_name, description, location, image, amenities) 
                    VALUES ('$userID', '$hostelName', '$description', '$location', '$image', '$amenitiesString')";
-
             $result = $this->mysqli->query($query);
 
             if (!$result) {

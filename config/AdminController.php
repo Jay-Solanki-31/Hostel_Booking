@@ -639,7 +639,7 @@ class AdminController
                         }
                     }
                 }
-                $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
+                // $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
                 showToast('Hostel updated successfully!');
                 header("refresh:1;url=hostels.php");
             } catch (Exception $e) {

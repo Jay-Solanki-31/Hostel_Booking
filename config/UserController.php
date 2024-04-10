@@ -88,16 +88,15 @@ class UserController
             return [];
         }
     }
-
-
     public function get_hostel()
     {
         try {
             return $this->userModel->showHostelData();
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            throw new Exception("Error get  hostels: " . $e->getMessage());
         }
     }
+    
 
     public function filterHostels($name, $city)
     {
@@ -559,15 +558,13 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hostelName = $_POST['hostel'];
             $studentEmail = $_POST['student_email']; 
-
-
+    
             try {
-            
-               $sucess= $this->userModel->assignHostel($hostelName, $studentEmail);
-                if($sucess){
-                    echo json_encode(array('sucess' => true, 'message'=>'Hostel Assign Sucessfully!'));
-                }else{
-                    echo json_encode(array('sucess' => false, 'message'=>'failed to  Assign Sucessfully!'));  
+                $success = $this->userModel->assignHostel($hostelName, $studentEmail);
+                if ($success) {
+                    echo json_encode(array('success' => true, 'message'=>'Hostel assigned successfully!'));
+                } else {
+                    echo json_encode(array('success' => false, 'message'=>'Failed to assign hostel!'));  
                 }
                 exit();
             } catch (Exception $e) {
@@ -576,6 +573,7 @@ class UserController
             }
         }
     }
+    
 
     public function getassiggnhosteldata($id)
     {

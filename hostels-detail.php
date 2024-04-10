@@ -134,12 +134,12 @@ $UserController->AddInquery($hostelId);
                             <!-- END / OVERVIEW -->
 
 
-
                             <!-- AMENITIES -->
                             <div class="tab-pane fade" id="amenities">
                                 <div class="room-detail_amenities">
                                     <?php foreach ($hostelData as $hostel) {
-                                        if ($hostel->id == $hostelId) { ?>
+                                        // Ensure $hostel->id is set and matches the expected $hostelId
+                                        if (isset($hostel->id) && $hostel->id == $hostelId) { ?>
                                             <div class="room-detail_overview">
                                                 <!-- amenities -->
                                                 <div class="row">
@@ -149,20 +149,18 @@ $UserController->AddInquery($hostelId);
                                                     foreach (NORMAL_AMENITIES as $normalAmenity) {
                                                         if (in_array($normalAmenity['value'], $amenitiesArray)) {
                                                             echo '<div class="col-xs-6 col-lg-4">
-                <h6 style="font-weight: unset;">' . $normalAmenity['name'] . '</h6>
-              </div>';
+                                    <h6 style="font-weight: unset;">' . $normalAmenity['name'] . '</h6>
+                                </div>';
                                                         }
                                                     }
 
                                                     foreach (PREMIUM_AMENITIES as $preAmenity) {
                                                         if (in_array($preAmenity['value'], $amenitiesArray)) {
                                                             echo '<div class="col-xs-6 col-lg-4">
-                <h6 style="font-weight: unset;">' . $preAmenity['name'] . '</h6>
-              </div>';
+                                    <h6 style="font-weight: unset;">' . $preAmenity['name'] . '</h6>
+                                </div>';
                                                         }
                                                     }
-
-
                                                     ?>
                                                 </div>
                                                 <!-- End amenities -->
@@ -170,9 +168,9 @@ $UserController->AddInquery($hostelId);
                                     <?php }
                                     } ?>
                                 </div>
-
                             </div>
                             <!-- END / AMENITIES -->
+
 
                             <!-- location -->
                             <div class="tab-pane fade" id="location">

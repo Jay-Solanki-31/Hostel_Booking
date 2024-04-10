@@ -419,59 +419,58 @@ $(document).ready(function() {
     });
 
 
-// add hostel ajex part will hear 
+// // add hostel ajex part will hear 
 
 
+//     $(document).ready(function() {
+//         $('#submitHostel').click(function() {
+//             var formData = new FormData($('#hostelForm')[0]);
+
+//             $.ajax({
+//                 url: 'UserController.php',
+//                 type: 'POST',
+//                 data: formData,
+//                 processData: false,
+//                 contentType: false,
+//                 success: function(response) {
+//                     console.log(response);
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error(xhr.responseText);
+//                     alert("Error adding hostel. Please try again later.");
+//                 }
+//             });
+//         });
+//     });
     $(document).ready(function() {
-        $('#submitHostel').click(function() {
-            var formData = new FormData($('#hostelForm')[0]);
-
+        $('#AssignHostel').click(function() {
+            var formData = new FormData($('#assignhostelForm')[0]);
+    
             $.ajax({
-                url: 'UserController.php',
+                url: 'config/ajax.php',
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
+                    try {
+                        var responseData = JSON.parse(response);
+                        if (responseData.success) { 
+                            alert(responseData.message); 
+                            // window.location.href = 'success.php';
+                        } else {
+                            alert(responseData.message); 
+                        }
+                    } catch (error) {
+                        console.error("Error parsing JSON response: " + error);
+                        alert("Error parsing response. Please try again later.");
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
-                    alert("Error adding hostel. Please try again later.");
+                    alert("Error assigning hostel. Please try again later.");
                 }
             });
         });
     });
-
-// add-assign booking  part 
-$(document).ready(function() {
-    $('#AssignHostel').click(function() {
-        var formData = new FormData($('#assignhostelForm')[0]);
-
-        $.ajax({
-            url: 'config/ajax.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                try {
-                    var responseData = JSON.parse(response);
-                    if (responseData.sucess) { // Corrected from responseData.success
-                        showToast(responseData.message, 'success');
-                        window.location.href = 'hostelProfile.php';
-                    } else {
-                        showToast(responseData.message, 'error');
-                    }
-                } catch (error) {
-                    console.error("Error parsing JSON response: " + error);
-                    showToast("Error parsing response. Please try again later.", 'error');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                alert("Error assigning hostel. Please try again later.");
-            }
-        });
-    });
-});
+    
