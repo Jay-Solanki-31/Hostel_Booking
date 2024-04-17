@@ -135,7 +135,7 @@ $complaintStatus = [
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
                             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><i class="fa-thin fa-user-secret"></i><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
+                            <li><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
                             <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
                             <li><a href="#Inquery" data-toggle="tab">inquiry</a></li>
                             <li><a href="#assignBooking" data-toggle="tab">Assign Booking</a></li>

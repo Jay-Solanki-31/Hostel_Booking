@@ -165,7 +165,7 @@ $sliders = $UserController->displaysliders();
                 </div>
                 <div class="img-hover-box mb40">
                     <div class="img">
-                        <img class="img-responsive" src="images/home-3/slider-1.png" alt="">
+                        <img class="img-responsive" src="images/slider/img-4.jpg" alt="">
                     </div>
                 </div>
                 <div class="text-center mt40 mb30 featured">
