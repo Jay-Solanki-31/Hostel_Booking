@@ -76,11 +76,11 @@ $AdminController->update_hostel();
                                 <h4 class="card-title mt-4">Hostel Information </h4>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Hostel Pictures</label>
-                                            <input class="form-control" name="picture" id="picture" type="file" onchange="previewHostelImage()">
-                                            <img id="hostelImagePreview" src="../uploads/hostels/<?= $hostel['image']; ?>" class="img-thumbnail mt-2" style="width:30%;" alt="Hostel Image Preview">
-                                        </div>
+                                    <div class="form-group">
+                <label>Hostel Pictures</label>
+                <input class="form-control" name="pictures[]" id="pictures" type="file" multiple onchange="previewHostelImage()">
+                <div id="hostelImagesPreview" class="mt-2"></div>
+            </div>
                                         <div class="form-group">
                                             <label>Description*</label>
                                             <textarea rows="3" cols="4" class="form-control" name="description" id="description"><?= $hostel['description']; ?></textarea>
@@ -111,8 +111,8 @@ $AdminController->update_hostel();
                                     <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
                                     <a href="hostels.php" style="margin-left: 5px;">Cancel</a>
                                 </div>
+                            </form>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -124,19 +124,28 @@ $AdminController->update_hostel();
 </div>
 
 
-
 <script>
     function previewHostelImage() {
-        const input = document.getElementById('picture');
-        const preview = document.getElementById('hostelImagePreview');
+        const input = document.getElementById('pictures'); // Change to 'pictures' for multiple file inputs
+        const preview = document.getElementById('hostelImagesPreview');
+        preview.innerHTML = ''; // Clear previous previews
 
-        const file = input.files[0];
-        const reader = new FileReader();
+        const files = input.files;
 
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-        };
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
 
-        reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('img-thumbnail', 'mt-2');
+                img.style.width = '30%';
+                img.alt = 'Hostel Image Preview';
+                preview.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        }
     }
 </script>

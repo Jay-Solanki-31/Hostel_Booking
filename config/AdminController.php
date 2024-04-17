@@ -129,7 +129,6 @@ class AdminController
         }
     }
 
-
     public function add_hostel()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -142,7 +141,7 @@ class AdminController
             $location = $_POST['location'];
             $status = $_POST['status'];
             $description = $_POST['description'];
-            $imageFILE = $_FILES['image'];
+            $imageFILES = $_FILES['images']; 
     
             try {
                 $uploadDirectory = '../uploads/hostels/';
@@ -151,22 +150,24 @@ class AdminController
                     mkdir($uploadDirectory, 0777, true);
                 }
     
-                $originalFileName = '';
-                $imageFILEDestination = '';
+                $imageFILEDestinations = array(); 
+
     
-                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                    $uploadedFile = $imageFILE['tmp_name'];
-                    $originalFileName = $imageFILE['name'];
-                    $destination = $uploadDirectory . $originalFileName;
+                foreach ($imageFILES['tmp_name'] as $key => $tmp_name) {
+                    if ($imageFILES['error'][$key] === UPLOAD_ERR_OK) {
+                        $uploadedFile = $imageFILES['tmp_name'][$key];
+                        $originalFileName = $imageFILES['name'][$key];
+                        $destination = $uploadDirectory . $originalFileName;
     
-                    if (move_uploaded_file($uploadedFile, $destination)) {
-                        $imageFILEDestination = $originalFileName;
+                        if (move_uploaded_file($uploadedFile, $destination)) {
+                            $imageFILEDestinations[] = $originalFileName;
+                        }
                     }
                 }
     
-                $amenities = isset($_POST['amenities']) ? $_POST['amenities'] : array(); 
+                $amenities = isset($_POST['amenities']) ? $_POST['amenities'] : array();
     
-                $this->adminModel-> add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $imageFILEDestination, $amenities);
+                $this->adminModel->add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $imageFILEDestinations, $amenities);
     
                 showToast('Hostel added successfully!');
                 header("refresh:2;url=hostels.php");
@@ -176,6 +177,7 @@ class AdminController
             }
         }
     }
+    
     
 
 
@@ -191,59 +193,57 @@ class AdminController
 
 
     public function update_hostel()
-    {
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve form data
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $phone = $_POST['phone'];
+        $name = $_POST['name'];
+        $hostelname = $_POST['hostelName'];
+        $location = $_POST['location'];
+        $description = $_POST['description'];
+        $status = $_POST['status'];
+        $imageFILES = $_FILES['pictures'];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $phone = $_POST['phone'];
-            $name = $_POST['name'];
-            $hostelname = $_POST['hostelName'];
-            $location = $_POST['location'];
-            $description = $_POST['description'];
-            $status = $_POST['status'];
-            $imageFILE = $_FILES['picture'];
-            $imageFILEDestination = "";
-            $originalFileName = "";
+        $hostelid = isset($_GET['id']) ? $_GET['id'] : '';
 
-            $hostelid = isset($_GET['id']) ? $_GET['id']  :  '';
+        try {
+            $uploadDirectory = '../uploads/hostels/';
+            $imageFILEDestination = [];
+            $originalFileNames = [];
 
-            try {
+            $singleImageArray = $this->adminModel->gethostelimage($hostelid);
+            $currentPictures = [$singleImageArray['image']];
 
 
-
-                $uploadDirectory = '../uploads/hostels/'; 
-                $singleImageArray = $this->adminModel->gethostelimage($hostelid);
-
-                if ($singleImageArray) {
-                    $oldImagePath = $singleImageArray['image'];
-
-                    $imageFILE = $_FILES['picture'];
-                    if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                        // Delete the old image
-                        if (file_exists($oldImagePath)) {
-                            unlink($oldImagePath);
-                        }
-
-                        $uploadedFile = $imageFILE['tmp_name'];
-                        $originalFileName = $imageFILE['name'];
-                        $destination = $uploadDirectory . $originalFileName;
-
-                        if (move_uploaded_file($uploadedFile, $destination)) {
-                            $imageFILEDestination = $destination;
-                        }
+            foreach ($imageFILES['tmp_name'] as $key => $tmp_name) {
+                if ($imageFILES['error'][$key] === UPLOAD_ERR_OK) {
+                    $originalFileName = uniqid() . '_' . $imageFILES['name'][$key];
+                    $destination = $uploadDirectory . $originalFileName;
+                    
+                    if (move_uploaded_file($imageFILES['tmp_name'][$key], $destination)) {
+                        $imageFILEDestination[] = $destination;
+                        $originalFileNames[] = $originalFileName;
                     }
                 }
-                $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
-                showToast('Hostel updated successfully!');
-                header("refresh:1;url=hostels.php");
-            } catch (Exception $e) {
-
-                error_log('Error: ' . $e->getMessage());
-                showToast($e->getMessage(), 'error');
             }
+
+            $mergedPictures = array_merge($currentPictures, $originalFileNames);    
+
+
+
+            $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $mergedPictures, $status);
+            
+            showToast('Hostel updated successfully!');
+            header("refresh:1;url=hostels.php");
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
         }
     }
+}
+
 
 
     public function gethosteldetails($id)

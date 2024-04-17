@@ -68,10 +68,12 @@ $AdminController->add_hostel();
                                 <h4 class="card-title mt-4">Hostel Information </h4>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label> Hostel Image*</label>
-                                            <input class="form-control" name="image" id="image" type="file" accept="image/*" multiple>
-                                        </div>
+                                    <div class="form-group">
+    <label> Hostel Images*</label>
+    <input class="form-control" name="images[]" id="images" type="file" accept="image/*" multiple>
+</div>
+
+
 
                                         <div class="form-group">
                                             <label>Hostel Type*</label>
@@ -87,17 +89,17 @@ $AdminController->add_hostel();
                                                 <input type="checkbox" name="amenities[]" value="' . $amenity['value'] . '" class="form-check-input">
                                                 <label class="form-check-label">' . $amenity['name'] . '</label>
                                             </div>';
-                                                                                } ?>
+                                            } ?>
                                         </div>
 
                                         <div id="premiumHostelAmenities" style="display: none;">
-    <?php foreach (PREMIUM_AMENITIES as $amenity) {
-        echo '<div class="form-check">
-                <input type="checkbox" name="amenities[]" value="' . $amenity['value'] . '" class="form-check-input">
-                <label class="form-check-label">' . $amenity['name'] . '</label>
-            </div>';
-    } ?>
-</div>
+                                            <?php foreach (PREMIUM_AMENITIES as $amenity) {
+                                                echo '<div class="form-check">
+                                    <input type="checkbox" name="amenities[]" value="' . $amenity['value'] . '" class="form-check-input">
+                                    <label class="form-check-label">' . $amenity['name'] . '</label>
+                                </div>';
+                                            } ?>
+                                        </div>
 
                                         <div class="form-group">
                                             <label>Description*</label>

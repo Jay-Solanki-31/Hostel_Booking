@@ -152,10 +152,9 @@ class AdminModel
         }
     }
 
-    public function add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $image, $amenities)
+    public function add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $images, $amenities)
     {
         try {
-            // Insert user data into the users table
             $email = $this->mysqli->real_escape_string($email);
             $password = $this->mysqli->real_escape_string($password);
             $role = $this->mysqli->real_escape_string($role);
@@ -165,7 +164,9 @@ class AdminModel
             $location = $this->mysqli->real_escape_string($location);
             $status = $this->mysqli->real_escape_string($status);
             $description = $this->mysqli->real_escape_string($description);
-            $image = $this->mysqli->real_escape_string($image) ?? '';
+    
+            $imagesString = implode(',', $images); 
+            
     
             $amenitiesString = implode(',', $amenities);
     
@@ -175,8 +176,8 @@ class AdminModel
             if ($result1) {
                 $lastInsertedID = $this->mysqli->insert_id;
     
-                $query2 = "INSERT INTO hostels(user_id, hostel_name, description, location, status, image, amenities) VALUES ('$lastInsertedID', '$hostelname', '$description', '$location', '$status', '$image', '$amenitiesString')";
-             
+                $query2 = "INSERT INTO hostels(user_id, hostel_name, description, location, status, image, amenities) VALUES ('$lastInsertedID', '$hostelname', '$description', '$location', '$status', '$imagesString', '$amenitiesString')";
+
                 $result2 = $this->mysqli->query($query2);
     
                 if (!$result2) {
@@ -189,6 +190,7 @@ class AdminModel
             throw new Exception("Error in add_hostel function: " . $e->getMessage());
         }
     }
+    
     
     function showHostelData()
     {
@@ -206,8 +208,7 @@ class AdminModel
         }
     }
 
-
-    public function update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $image, $status)
+    public function update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $pictures, $status)
     {
         try {
             $email = $this->mysqli->real_escape_string($email);
@@ -218,32 +219,36 @@ class AdminModel
             $location = $this->mysqli->real_escape_string($location);
             $description = $this->mysqli->real_escape_string($description);
             $status = $this->mysqli->real_escape_string($status);
-            $image = $this->mysqli->real_escape_string($image) ?? '';
             $hostelid = $this->mysqli->real_escape_string($hostelid);
-
-            if ($image) {
-                $picturequery = ",hostels.image = '$image'";
-            } else {
-                $picturequery = "";
+    
+            $picturesQuery = '';
+    
+            foreach ($pictures as $picture) {
+                $picture = $this->mysqli->real_escape_string($picture);
+                $picturesQuery .= "'$picture', "; 
             }
-
-
+    
+            // Remove the trailing comma and space
+            $picturesQuery = rtrim($picturesQuery, ', ');
+    
+            $picturesUpdateQuery = "hostels.image = CONCAT(hostels.image, $picturesQuery)";
+    
+            // Prepare update query
             $updatehosteldata = "UPDATE hostels JOIN users ON users.id = hostels.user_id
-             SET users.full_name = '$name', users.email = '$email' , users.contact_no = '$phone' ,users.password = '$password',
-             hostels.hostel_name = '$hostelname', hostels.location = '$location',   hostels.description = ' $description',   hostels.status = ' $status'" . $picturequery . " 
-            WHERE hostels.id = '$hostelid'";
-
+                SET users.full_name = '$name', users.email = '$email', users.contact_no = '$phone', users.password = '$password',
+                hostels.hostel_name = '$hostelname', hostels.location = '$location', hostels.description = '$description',
+                hostels.status = '$status', $picturesUpdateQuery
+                WHERE hostels.id = '$hostelid'";
 
             $result2 = $this->mysqli->query($updatehosteldata);
             if (!$result2) {
-                throw new Exception("Error in update  query: " . $this->mysqli->error);
+                throw new Exception("Error in update query: " . $this->mysqli->error);
             }
         } catch (Exception $e) {
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
-
-
+    
 
 
     function gethosteldetails($id)
@@ -280,21 +285,21 @@ class AdminModel
         }
     }
 
-    function gethostelimage($id)
-    {
-        try {
-            $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
-            $result = $this->mysqli->query($gethostelimage);
+        function gethostelimage($id)
+        {
+            try {
+                $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
+                $result = $this->mysqli->query($gethostelimage);
 
-            if (!$result) {
-                throw new Exception("Error in login query: " . $this->mysqli->error);
+                if (!$result) {
+                    throw new Exception("Error in login query: " . $this->mysqli->error);
+                }
+
+                return $result->fetch_assoc();
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
             }
-
-            return $result->fetch_assoc();
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
         }
-    }
 
 
 

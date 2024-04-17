@@ -3,19 +3,19 @@ session_start();
 if (!isset($_SESSION['user_email'])) {
     header("Location: index.php");
     exit();
-} 
- 
+}
 
-require "main_header.php"; 
+
+require "main_header.php";
 include "../config/AdminController.php";
 $AdminController = new AdminController();
 $hostellist = $AdminController->get_hostel();
 
 $delateid = isset($_GET['delateid']) ? $_GET['delateid']  :  '';
-if($delateid){
-$delatehostel = $AdminController->delatehostel($delateid);
+if ($delateid) {
+    $delatehostel = $AdminController->delatehostel($delateid);
 }
-require "main_sidebar.php"; 
+require "main_sidebar.php";
 ?>
 
 <div class="main-wrapper">
@@ -62,8 +62,16 @@ require "main_sidebar.php";
                                         <?php while ($row = $hostellist->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $row['id']; ?></td>
-                                                <td><img src="../uploads/hostels/<?= $row['image']; ?>"  style="width:80%;"/></td>
-                                           
+                                                <td>
+                                                    <?php
+                                                    $imageArray = explode(',', $row['image']);
+                                                    if (!empty($imageArray[0])) {
+                                                        echo '<img src="../uploads/hostels/' . $imageArray[0] . '" style="width:80%;" />';
+                                                    }
+                                                    ?>
+                                                </td>
+
+
                                                 <td> <?= $row['hostel_name']; ?> </td>
                                                 <td><?= strlen($row['description']) > 50 ? substr($row['description'], 0, 50) . '...' : $row['description']; ?></td>
 
@@ -97,12 +105,12 @@ require "main_sidebar.php";
 <?php require "main_footer.php"; ?>
 
 <script>
-   function deletehostel(id){
-    // alert(id);
-    let conform = window.confirm("Are you sure want to delete this record?");
-     if(conform){
-        // alert('delated');
-        window.location.href = "hostels.php?delateid="+id;
-     }
-   }
+    function deletehostel(id) {
+        // alert(id);
+        let conform = window.confirm("Are you sure want to delete this record?");
+        if (conform) {
+            // alert('delated');
+            window.location.href = "hostels.php?delateid=" + id;
+        }
+    }
 </script>
