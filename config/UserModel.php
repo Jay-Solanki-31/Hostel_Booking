@@ -442,20 +442,22 @@ class UserModel
     }
 
 
-    public function add_hostel($hostelName, $location, $description, $image, $amenities)
+    public function add_hostel($hostelName, $location, $description, $images, $amenities)
     {
         try {
             // Sanitize and escape input
             $hostelName = $this->mysqli->real_escape_string($hostelName);
             $location = $this->mysqli->real_escape_string($location);
             $description = $this->mysqli->real_escape_string($description);
-            $image = $this->mysqli->real_escape_string($image) ?? '';
+            $imagesString = implode(',', $images); 
+
             $amenitiesString = implode(',', $amenities);
 
             $userID = $_SESSION['user_id'];
 
             $query = "INSERT INTO hostels(user_id, hostel_name, description, location, image, amenities) 
-                   VALUES ('$userID', '$hostelName', '$description', '$location', '$image', '$amenitiesString')";
+                   VALUES ('$userID', '$hostelName', '$description', '$location', '$imagesString', '$amenitiesString')";
+
             $result = $this->mysqli->query($query);
 
             if (!$result) {

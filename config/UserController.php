@@ -330,33 +330,29 @@ class UserController
             $hostelName = $_POST['hostelName'];
             $location = $_POST['location'];
             $description = $_POST['description'];
-            $imageFILE = $_FILES['image'];
+            $imageFILES = $_FILES['images']; 
             try {
                 $uploadDirectory = 'uploads/hostels/';
 
                 if (!file_exists($uploadDirectory)) {
                     mkdir($uploadDirectory, 0777, true);
                 }
+                $imageFILEDestinations = array(); 
 
-                $originalFileName = '';
-                $imageFILEDestination = '';
-
-                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                    $uploadedFile = $imageFILE['tmp_name'];
-                    $originalFileName = $imageFILE['name'];
-                    $destination = $uploadDirectory . $originalFileName;
-
-                    if (move_uploaded_file($uploadedFile, $destination)) {
-                        $imageFILEDestination = $originalFileName;
+    
+                foreach ($imageFILES['tmp_name'] as $key => $tmp_name) {
+                    if ($imageFILES['error'][$key] === UPLOAD_ERR_OK) {
+                        $uploadedFile = $imageFILES['tmp_name'][$key];
+                        $originalFileName = $imageFILES['name'][$key];
+                        $destination = $uploadDirectory . $originalFileName;
+    
+                        if (move_uploaded_file($uploadedFile, $destination)) {
+                            $imageFILEDestinations[] = $originalFileName;
+                        }
                     }
-                } elseif ($imageFILE['error'] === UPLOAD_ERR_NO_FILE) {
-                    $imageFILEDestination = null;
-                } else {
-                    throw new Exception('File upload error: ' . $imageFILE['error']);
                 }
-
                 $amenities = isset($_POST['amenities']) && is_array($_POST['amenities']) ? $_POST['amenities'] : array();
-                $this->userModel->add_hostel($hostelName, $location, $description, $imageFILEDestination, $amenities);
+                $this->userModel->add_hostel($hostelName, $location, $description, $imageFILEDestinations, $amenities);
 
                 showToast('Hostel added successfully!');
             } catch (Exception $e) {

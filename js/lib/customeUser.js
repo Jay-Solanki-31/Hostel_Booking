@@ -149,7 +149,6 @@ $(document).ready(function() {
         rules: {
             image: {
                 required: true,
-                extension: "jpg|jpeg|png|gif"
             },
             hostelName: {
                 required: true,

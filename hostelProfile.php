@@ -230,8 +230,8 @@ $complaintStatus = [
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label> Hostel Image*</label>
-                                                <input class="form-control" name="image" id="image" type="file" multiple>
+                                                <label> Hostel Images*</label>
+                                                <input class="form-control" name="images[]" id="images" type="file" multiple>
                                             </div>
 
 

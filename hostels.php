@@ -33,7 +33,6 @@ $hosteldata = $UserController->get_hostel()
         margin-top: 30px;
     }
 </style>
-
 <section class="section-room bg-white">
     <div class="container">
         <div class="row">
@@ -48,6 +47,18 @@ $hosteldata = $UserController->get_hostel()
                                 return $b->id - $a->id;
                             });
 
+                            // Variable to hold all the first images
+                            $firstImages = [];
+
+                            foreach ($hosteldata as $hostel) {
+                                // Get the first image of each hostel
+                                $firstImage = 'uploads/hostels/' . explode(',', $hostel->image)[0];
+                                // Add the first image to the array
+                                $firstImages[] = $firstImage;
+                            }
+                            // Output all the first images in a single <img> tag
+                            echo '<img src="' . implode(',', $firstImages) . '" alt="">';
+
                             foreach ($hosteldata as $hostel) :
                         ?>
                                 <div class="col-xs-6">
@@ -55,7 +66,7 @@ $hosteldata = $UserController->get_hostel()
 
                                         <!-- Display hostel image -->
                                         <div class="img">
-                                            <a href="#"><img src="uploads/hostels/<?php echo $hostel->image; ?>" alt=""></a>
+                                            <a href="#"><img src="uploads/hostels/<?php echo explode(',', $hostel->image)[0]; ?>" alt=""></a>
                                         </div>
 
                                         <!-- Display hostel name -->
@@ -106,14 +117,13 @@ $hosteldata = $UserController->get_hostel()
                             <button type="submit" class="awe-btn awe-btn-13">Filter Now</button>
                         </div>
                     </form>
-
-
                 </div>
                 <!-- END / FORM BOOK -->
             </div>
         </div>
     </div>
 </section>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
