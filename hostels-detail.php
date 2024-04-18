@@ -112,9 +112,9 @@ $UserController->AddInquery($hostelId);
                 <div class="row">
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
-                            <li class="active"><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
-                            <li><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
-                            <li><a href="#location" data-toggle="tab">LOCATION</a></li>
+                            <li class="active"><i class="bi bi-globe2"></i><a href="#overview" data-toggle="tab">OVERVIEW</a></li>
+                            <li ><i class="bi bi-grid"></i><a href="#amenities" data-toggle="tab">AMENITIES</a></li>
+                            <li><i class="bi bi-geo-alt"></i><a href="#location" data-toggle="tab">LOCATION</a></li>
                         </ul>
                     </div>
 

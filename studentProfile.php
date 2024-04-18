@@ -71,6 +71,10 @@ $complaintStatus = [
         object-fit: cover;
         margin-bottom: 20px;
     }
+    .icon-text-wrapper {
+    margin-right: 10px; /* Adjust the margin as needed */
+}
+
 </style>
 
 <section class="section-sub-banner bg-16">
@@ -90,14 +94,39 @@ $complaintStatus = [
             <div class="room-detail_tab">
                 <div class="row">
                     <div class="col-md-3">
-                        <ul class="room-detail_tab-header">
-                            <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#myassignBooking" data-toggle="tab">My Bookings</a></li>
-                            <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
-                            <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
-                            <li><a href="logout.php">Logout</a></li>
+                    <ul class="room-detail_tab-header">
+    <li class="active">
+        <div class="icon-text-wrapper">
+            <i class="bi bi-person-circle mr-2"></i>
+            <a href="#profile" data-toggle="tab">Profile</a>
+        </div>
+    </li>
+    <li>
+        <div class="icon-text-wrapper">
+            <i class="bi bi-journal mr-2"></i>
+            <a href="#myassignBooking" data-toggle="tab">My Bookings</a>
+        </div>
+    </li>
+    <li>
+        <div class="icon-text-wrapper">
+            <i class="bi bi-chat-left-text-fill mr-2"></i>
+            <a href="#complaints" data-toggle="tab">Complaints</a>
+        </div>
+    </li>
+    <li>
+        <div class="icon-text-wrapper">
+            <i class="bi bi-lock-fill mr-2"></i>
+            <a href="#password" data-toggle="tab">Change Password</a>
+        </div>
+    </li>
+    <li>
+        <div class="icon-text-wrapper">
+            <i class="bi bi-box-arrow-left mr-2"></i>
+            <a href="logout.php">Logout</a>
+        </div>
+    </li>
+</ul>
 
-                        </ul>
 
                     </div>
 

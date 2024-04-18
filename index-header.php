@@ -94,7 +94,7 @@
                     </div>
 
                     <!-- HEADER LOGO -->
-                    <a class="logo-top img-responsive" href="index.php"><img src="images/logo-header.png" alt=""></a>
+                    <a class="logo-top img-responsive" href="index.php"><img src="images/LOGO (1).png" alt=""></a>
                     <!-- END / HEADER LOGO -->
 
                 </div>

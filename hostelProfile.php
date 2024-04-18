@@ -114,6 +114,11 @@ $complaintStatus = [
             opacity: 1;
         }
     }
+
+    .icon-text-wrapper {
+        margin-right: 20px;
+        /* Adjust the margin as needed */
+    }
 </style>
 
 <section class="section-sub-banner bg-16">
@@ -134,15 +139,49 @@ $complaintStatus = [
                 <div class="row">
                     <div class="col-md-3">
                         <ul class="room-detail_tab-header">
-                            <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
-                            <li><a href="#ManageHostels" data-toggle="tab">Manage Hostel</a></li>
-                            <li><a href="#complaints" data-toggle="tab">Complaints</a></li>
-                            <li><a href="#Inquery" data-toggle="tab">inquiry</a></li>
-                            <li><a href="#assignBooking" data-toggle="tab">Assign Booking</a></li>
-                            <li><a href="#password" data-toggle="tab">Change PAssword</a></li>
-                            <li><a href="logout.php">Logout</a></li>
-
+                            <li class="active">
+                                <div class="icon-text-wrapper">
+                                    <i class="bi bi-person-circle"></i>
+                                    <a href="#profile" data-toggle="tab">Profile</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                    <a href="#ManageHostels" data-toggle="tab">Manage Hostel</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                <i class="bi bi-chat-left-dots-fill"></i>
+                                    <a href="#complaints" data-toggle="tab">Complaints</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                    <i class="bi bi-chat-left-text-fill"></i>
+                                    <a href="#Inquery" data-toggle="tab">Inquiry</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                    <i class="bi bi-person-check-fill"></i>
+                                    <a href="#assignBooking" data-toggle="tab">Assign Booking</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                <i class="bi bi-key-fill"></i>
+                                    <a href="#password" data-toggle="tab">Change Password</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="icon-text-wrapper">
+                                <i class="bi bi-box-arrow-in-left"></i>
+                                    <a href="logout.php">Logout</a>
+                                </div>
+                            </li>
                         </ul>
+
 
                     </div>
 
