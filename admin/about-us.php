@@ -53,6 +53,7 @@ if ($delateid) {
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Sr No</th>
+                                            <th>Title</th>
                                             <th>Picture</th>
                                             <th>description</th>
                                             <th class="text-end">Actions</th>
@@ -62,9 +63,11 @@ if ($delateid) {
                                         <?php while ($row = $aboutusList->fetch_assoc()) : ?>
                                             <tr>
                                                 <td><?= $row['id']; ?></td>
+                                                <td><?= $row['heading']; ?></td>
                                                 <td><img src="../uploads/about-us/<?= $row['picture']; ?>" style="width:50%;height:30%;" /></td>
                                                 <td><?= $row['info']; ?></td>
                                                 <td>
+                                                <!-- <a href="editAbout-us.php" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</a> -->
                                                     <a href="javascript:;" onclick="deleteAboutUs(<?= $row['id']; ?>)" class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Delete</a>
                                                 </td>
                                             </tr>

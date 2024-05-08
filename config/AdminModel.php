@@ -36,7 +36,7 @@ class AdminModel
 
             // Check if the user exists
             if ($result->num_rows > 0) {
-                return true; // Login successful
+                return $result->fetch_assoc(); // Login successful
             } else {
                 return false; // Login failed
             }
@@ -56,7 +56,7 @@ class AdminModel
                 throw new Exception("Error in login query: " . $this->mysqli->error);
             }
 
-            return $result;
+            return $result->fetch_assoc();
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -76,24 +76,31 @@ class AdminModel
             echo "error :" . $e->getMessage();
         }
     }
-
-    public function update_adminInfo($name, $email, $phone)
+    function updateAdminInfo($email, $contact_no, $name, $image)
     {
         try {
-
             $name = $this->mysqli->real_escape_string($name);
             $email = $this->mysqli->real_escape_string($email);
-            $phone = $this->mysqli->real_escape_string($phone);
-
-            $updateAdminInfo = "UPDATE users SET `email`='$email',`full_name`='$name' , `contact_no` = '$phone' WHERE role ='admin'";
-            $result2 = $this->mysqli->query($updateAdminInfo);
-            if (!$result2) {
-                throw new Exception("Error in update  query: " . $this->mysqli->error);
+            $contact_no = $this->mysqli->real_escape_string($contact_no);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+    
+            // Update query to include image update
+            $picturequery = "";
+            if ($image) {
+                $picturequery = ", image = '$image'";
+            }
+    
+            $updateQuery = "UPDATE users SET `email`='$email', `full_name`='$name', `contact_no`='$contact_no' $picturequery WHERE role ='admin'";
+            $result = $this->mysqli->query($updateQuery);
+    
+            if (!$result) {
+                throw new Exception("Error in update query: " . $this->mysqli->error);
             }
         } catch (Exception $e) {
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
+    
 
     public function update_password($current_password, $new_password, $confirm_password)
     {
@@ -130,11 +137,24 @@ class AdminModel
     }
 
 
-
-    public function add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $image, $amenities)
+    function getAdminimage()
     {
         try {
-            // Insert user data into the users table
+            $getstudentimage = "SELECT users.image FROM `users` WHERE role = 'admin'";
+            $result = $this->mysqli->query($getstudentimage);
+            if (!$result) {
+                throw new Exception("Picrure not Found: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $images, $amenities)
+    {
+        try {
             $email = $this->mysqli->real_escape_string($email);
             $password = $this->mysqli->real_escape_string($password);
             $role = $this->mysqli->real_escape_string($role);
@@ -144,7 +164,9 @@ class AdminModel
             $location = $this->mysqli->real_escape_string($location);
             $status = $this->mysqli->real_escape_string($status);
             $description = $this->mysqli->real_escape_string($description);
-            $image = $this->mysqli->real_escape_string($image) ?? '';
+    
+            $imagesString = implode(',', $images); 
+            
     
             $amenitiesString = implode(',', $amenities);
     
@@ -154,8 +176,8 @@ class AdminModel
             if ($result1) {
                 $lastInsertedID = $this->mysqli->insert_id;
     
-                $query2 = "INSERT INTO hostels(user_id, hostel_name, description, location, status, image, amenities) VALUES ('$lastInsertedID', '$hostelname', '$description', '$location', '$status', '$image', '$amenitiesString')";
-             
+                $query2 = "INSERT INTO hostels(user_id, hostel_name, description, location, status, image, amenities) VALUES ('$lastInsertedID', '$hostelname', '$description', '$location', '$status', '$imagesString', '$amenitiesString')";
+
                 $result2 = $this->mysqli->query($query2);
     
                 if (!$result2) {
@@ -168,6 +190,7 @@ class AdminModel
             throw new Exception("Error in add_hostel function: " . $e->getMessage());
         }
     }
+    
     
     function showHostelData()
     {
@@ -185,8 +208,7 @@ class AdminModel
         }
     }
 
-
-    public function update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $image, $status)
+    public function update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $pictures, $status)
     {
         try {
             $email = $this->mysqli->real_escape_string($email);
@@ -197,32 +219,36 @@ class AdminModel
             $location = $this->mysqli->real_escape_string($location);
             $description = $this->mysqli->real_escape_string($description);
             $status = $this->mysqli->real_escape_string($status);
-            $image = $this->mysqli->real_escape_string($image) ?? '';
             $hostelid = $this->mysqli->real_escape_string($hostelid);
-
-            if ($image) {
-                $picturequery = ",hostels.image = '$image'";
-            } else {
-                $picturequery = "";
+    
+            $picturesQuery = '';
+    
+            foreach ($pictures as $picture) {
+                $picture = $this->mysqli->real_escape_string($picture);
+                $picturesQuery .= "'$picture', "; 
             }
-
-
+    
+            // Remove the trailing comma and space
+            $picturesQuery = rtrim($picturesQuery, ', ');
+    
+            $picturesUpdateQuery = "hostels.image = CONCAT(hostels.image, $picturesQuery)";
+    
+            // Prepare update query
             $updatehosteldata = "UPDATE hostels JOIN users ON users.id = hostels.user_id
-             SET users.full_name = '$name', users.email = '$email' , users.contact_no = '$phone' ,users.password = '$password',
-             hostels.hostel_name = '$hostelname', hostels.location = '$location',   hostels.description = ' $description',   hostels.status = ' $status'" . $picturequery . " 
-            WHERE hostels.id = '$hostelid'";
-
+                SET users.full_name = '$name', users.email = '$email', users.contact_no = '$phone', users.password = '$password',
+                hostels.hostel_name = '$hostelname', hostels.location = '$location', hostels.description = '$description',
+                hostels.status = '$status', $picturesUpdateQuery
+                WHERE hostels.id = '$hostelid'";
 
             $result2 = $this->mysqli->query($updatehosteldata);
             if (!$result2) {
-                throw new Exception("Error in update  query: " . $this->mysqli->error);
+                throw new Exception("Error in update query: " . $this->mysqli->error);
             }
         } catch (Exception $e) {
             throw new Exception("Error in update function: " . $e->getMessage());
         }
     }
-
-
+    
 
 
     function gethosteldetails($id)
@@ -259,21 +285,21 @@ class AdminModel
         }
     }
 
-    function gethostelimage($id)
-    {
-        try {
-            $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
-            $result = $this->mysqli->query($gethostelimage);
+        function gethostelimage($id)
+        {
+            try {
+                $gethostelimage = "SELECT hostels.image FROM `hostels`  where hostels.id = '$id'";
+                $result = $this->mysqli->query($gethostelimage);
 
-            if (!$result) {
-                throw new Exception("Error in login query: " . $this->mysqli->error);
+                if (!$result) {
+                    throw new Exception("Error in login query: " . $this->mysqli->error);
+                }
+
+                return $result->fetch_assoc();
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
             }
-
-            return $result->fetch_assoc();
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
         }
-    }
 
 
 
@@ -562,7 +588,7 @@ class AdminModel
     function GetBookinInqueryCount()
     {
         try {
-            $GetinqueryCount = "SELECT COUNT(*) as count FROM inquery ";
+            $GetinqueryCount = "SELECT COUNT(*) as count FROM inquiry ";
             $result = $this->mysqli->query($GetinqueryCount);
 
             if (!$result) {
@@ -579,7 +605,10 @@ class AdminModel
     function GetBookinginquery()
     {
         try {
-            $getbookinginquery = "SELECT * from inquiry";
+            $getbookinginquery = "SELECT inquery.*, hostels.hostel_name
+            FROM inquery
+            JOIN hostels ON inquery.hostel_id = hostels.id;
+            ";
             $getbookinginquery = $this->mysqli->query($getbookinginquery);
 
             if (!$getbookinginquery) {
@@ -607,6 +636,21 @@ class AdminModel
         }
     }
 
+    function getsliderimage($id)
+    {
+        try {
+            $getsliderimage = "SELECT sliders.picture FROM `sliders`  where sliders.id = '$id'";
+            $result = $this->mysqli->query($getsliderimage);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result->fetch_assoc();
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 
     
     function showSlider()
@@ -625,13 +669,14 @@ class AdminModel
         }
     }
 
-    public function add_slider($image){
+    public function add_slider($description,$image){
         try {
 
+            $description = $this->mysqli->real_escape_string($description);
             $image = $this->mysqli->real_escape_string($image) ?? '';
 
 
-            $query = "INSERT INTO sliders (picture) VALUES ('$image')";
+            $query = "INSERT INTO sliders (info,picture) VALUES ('$description','$image')";
             $result1 = $this->mysqli->query($query);
             if (!$result1) {
                   throw new Exception("Error in insert  query: " . $this->mysqli->error);
@@ -642,6 +687,44 @@ class AdminModel
             throw new Exception("Error in login function: " . $e->getMessage());
         }
     }
+
+    
+    public function update_slider($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $image, $status)
+    {
+        try {
+            $email = $this->mysqli->real_escape_string($email);
+            $password = $this->mysqli->real_escape_string($password);
+            $phone = $this->mysqli->real_escape_string($phone);
+            $name = $this->mysqli->real_escape_string($name);
+            $hostelname = $this->mysqli->real_escape_string($hostelname);
+            $location = $this->mysqli->real_escape_string($location);
+            $description = $this->mysqli->real_escape_string($description);
+            $status = $this->mysqli->real_escape_string($status);
+            $image = $this->mysqli->real_escape_string($image) ?? '';
+            $hostelid = $this->mysqli->real_escape_string($hostelid);
+
+            if ($image) {
+                $picturequery = ",hostels.image = '$image'";
+            } else {
+                $picturequery = "";
+            }
+
+
+            $updatehosteldata = "UPDATE hostels JOIN users ON users.id = hostels.user_id
+             SET users.full_name = '$name', users.email = '$email' , users.contact_no = '$phone' ,users.password = '$password',
+             hostels.hostel_name = '$hostelname', hostels.location = '$location',   hostels.description = ' $description',   hostels.status = ' $status'" . $picturequery . " 
+            WHERE hostels.id = '$hostelid'";
+
+
+            $result2 = $this->mysqli->query($updatehosteldata);
+            if (!$result2) {
+                throw new Exception("Error in update  query: " . $this->mysqli->error);
+            }
+        } catch (Exception $e) {
+            throw new Exception("Error in update function: " . $e->getMessage());
+        }
+    }
+
 
     function delete_slider($id)
     {
@@ -659,6 +742,21 @@ class AdminModel
         }
     }
 
+    function get_slider($id)
+    {
+        try {
+            $query = "SELECT * FROM sliders WHERE id=$id";
+            $result = $this->mysqli->query($query);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
     
     function showrAboutUS()
     {
@@ -676,14 +774,15 @@ class AdminModel
         }
     }
 
-    public function add_AboutUS($description, $image){
+    public function add_AboutUS($title,$description, $image){
         try {
 
+            $title = $this->mysqli->real_escape_string($title);
             $description = $this->mysqli->real_escape_string($description);
             $image = $this->mysqli->real_escape_string($image) ?? '';
 
 
-            $query = "INSERT INTO aboutus (picture, info) VALUES ('$image', '$description')";
+            $query = "INSERT INTO aboutus (heading,picture, info) VALUES ('$title','$image', '$description')";
 
             $result1 = $this->mysqli->query($query);
             if (!$result1) {
@@ -693,6 +792,23 @@ class AdminModel
             
          catch (Exception $e) {
             throw new Exception("Error in login function: " . $e->getMessage());
+        }
+    }
+
+    
+    function getAboutUs($id)
+    {
+        try {
+            $query = "SELECT * FROM aboutus WHERE id=$id";
+            $result = $this->mysqli->query($query);
+
+            if (!$result) {
+                throw new Exception("Error in login query: " . $this->mysqli->error);
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
     }
 

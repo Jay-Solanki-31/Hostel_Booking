@@ -1,23 +1,36 @@
+<style>
+    .round-div {
+        width: 150px;
+        height: 150px;
+        background-color: #ccc;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 150px;
+        cursor: pointer;
+    }
+
+    .round-div img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>
+
 <?php
-// ob_start();
-// session_start();
-// if (!isset($_SESSION['user_email'])) {
-//     header("Location: index.php");
-//     exit();
-// } 
+ob_start();
+session_start();
 require "main_header.php";
 require "main_sidebar.php";
 
 include "../config/AdminController.php";
 $AdminController = new AdminController();
-$AdminData = $AdminController->displayAdminDetails()->fetch_assoc();
+$AdminData = $AdminController->displayAdminDetails();
 
 if (isset($_POST['new_password'])) {
     $AdminController->updateAdminPassword();
 }
 
 if (isset($_POST['email'])) {
-    $AdminController->update_AdminInfo();
+    $AdminController->updateAdminInfo();
 }
 
 
@@ -47,11 +60,26 @@ if (isset($_POST['email'])) {
                             </div>
                             <div class="card-body">
 
-                                <form action="" method="POST">
+                                <form action="" method="POST" enctype="multipart/form-data">
+
+                                    <div class="row form-group">
+                                        <label for="profile_image" class="col-sm-3 col-form-label input-label">Profile Image</label>
+                                        <div class="col-sm-9">
+                                            <div class="round-div" id="profile_image_preview">
+                                                <?php if (!empty($AdminData['image'])) : ?>
+                                                    <img src="../uploads/owners/<?php echo $AdminData['image']; ?>" alt="Profile Image">
+                                                <?php else : ?>
+                                                    <span>N/A</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <input type="file" class="form-control file-input" id="profile_image" name="profile_image" style="display: none;">
+                                        </div>
+                                    </div>
+
 
                                     <div class="row form-group">
                                         <label for="name" class="col-sm-3 col-form-label input-label">Name</label>
-                                        <div class="col-sm-9"> 
+                                        <div class="col-sm-9">
                                             <input type="text" class="form-control" id="name" name="full_name" value="<?php echo $AdminData['full_name']; ?>">
                                         </div>
                                     </div>
@@ -98,7 +126,7 @@ if (isset($_POST['email'])) {
                                         <label for="confirm_password" class="col-sm-3 col-form-label input-label">Confirm New password</label>
                                         <div class="col-sm-9">
                                             <div class="mb-3">
-                                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm = "##new_password">
+                                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm your new password" require confirm="##new_password">
                                             </div>
                                         </div>
                                     </div>
@@ -121,3 +149,57 @@ if (isset($_POST['email'])) {
 
     <?php require "main_footer.php"; ?>
 </body>
+
+<script>
+    document.getElementById('profile_image_preview').addEventListener('click', function() {
+        document.getElementById('profile_image').click();
+    });
+
+    document.getElementById('profile_image').addEventListener('change', function(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function() {
+            var imgElement = document.createElement("img");
+            imgElement.src = reader.result;
+            imgElement.onload = function() {
+                // Adjust the size of the image to fit within the round div
+                var canvas = document.createElement("canvas");
+                var ctx = canvas.getContext("2d");
+                var max_width = 150,
+                    max_height = 150;
+                var width = imgElement.width,
+                    height = imgElement.height;
+
+                if (width > height) {
+                    if (width > max_width) {
+                        height *= max_width / width;
+                        width = max_width;
+                    }
+                } else {
+                    if (height > max_height) {
+                        width *= max_height / height;
+                        height = max_height;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(imgElement, 0, 0, width, height);
+
+                var roundedCanvas = document.createElement("canvas");
+                var roundedCtx = roundedCanvas.getContext("2d");
+                roundedCanvas.width = width;
+                roundedCanvas.height = height;
+                roundedCtx.beginPath();
+                roundedCtx.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI);
+                roundedCtx.closePath();
+                roundedCtx.clip();
+                roundedCtx.drawImage(canvas, 0, 0, width, height);
+
+                document.getElementById('profile_image_preview').innerHTML = '';
+                document.getElementById('profile_image_preview').appendChild(roundedCanvas);
+            };
+        };
+        reader.readAsDataURL(input.files[0]);
+    });
+</script>

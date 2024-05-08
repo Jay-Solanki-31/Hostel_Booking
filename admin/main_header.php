@@ -27,18 +27,31 @@
 
 </head>
 
+<?php
+// ob_start();/
+$userdata = [];
+if (isset($_SESSION['user']) && !empty($_SESSION['user']) && is_array($_SESSION['user'])) {
+    $userdata = $_SESSION['user'];
+}
+
+    // echo "<pre>";
+    // print_r($_SESSION['user']);
+    // die;
+
+?>
+
 <body class="nk-body bg-lighter npc-default has-sidebar no-touch nk-nio-theme">
     <div class="main-wrapper">
         <div class="header header-one">
             <div class="header-left header-left-one">
                 <a href="index.php" class="logo">
-                    <img src="assets/img/logo.png" alt="Logo">
+                <img src="assets/img/mainLogo.png" alt="Logo" width="30" height="30">
                 </a>
                 <a href="index.php" class="white-logo">
-                    <img src="assets/img/logo-white.png" alt="Logo">
+                <img src="assets/img/mainLogo.png" alt="Logo" width="30" height="30">
                 </a>
                 <a href="index.php" class="logo logo-small">
-                    <img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
+                    <img src="assets/img/mainLogo.png" alt="Logo" width="30" height="30">
                 </a>
             </div>
             <a href="javascript:void(0);" id="toggle_btn">
@@ -48,10 +61,25 @@
                 <li class="nav-item dropdown has-arrow main-drop">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <span class="user-img">
-                            <img src="assets/img/profiles/avatar-01.jpg" alt="">
+                            <?php if (isset($userdata['image']) && !empty($userdata['image'])) : ?>
+                                <img src="../uploads/owners/<?php echo $userdata['image']; ?>" alt="Profile Image" width="30" height="30">
+                            <?php else : ?>
+                                <span>N/A</span>
+                            <?php endif; ?>
+                            <!-- <img src="../uploads/owners/<?php echo $AdminData['image']; ?>" alt="Logo" width="30" height="30"> -->
                             <span class="status online"></span>
                         </span>
-                        <span>Admin</span>
+                        <span>
+
+                            <?php
+                            if (isset($userdata['full_name']) && !empty($userdata['full_name'])) :
+                                echo $userdata['full_name'];
+                            else :
+                                echo "N/A";
+                            endif;
+                            ?>
+
+                        </span>
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="profile.php"><i data-feather="user" class="me-1"></i>
@@ -62,6 +90,3 @@
                 </li>
             </ul>
         </div>
-
-
-     

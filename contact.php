@@ -1,6 +1,9 @@
 <?php
 
-
+session_start();
+function isLoggedIn() {
+    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+}
 include "main_header.php";
 
 include "config/UserController.php";
@@ -49,7 +52,7 @@ $UserController->Contact();
 
                 <div class="col-md-6 col-lg-6 col-lg-offset-1">
                     <div class="contact-form">
-                        <form action="" method="POST">
+                        <form action="" id="contact_form" method="POST">
                             <div class="row">
                                 <div class="col-sm-6">
                                     <input type="text" class="field-text" name="name" id="name" placeholder="Name">

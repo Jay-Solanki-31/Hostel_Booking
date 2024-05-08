@@ -49,6 +49,7 @@ if ($delateid) {
                                         <tr>
                                                 <th>Sr No</th>
                                                 <th>Name </th>
+                                                <th>Hostel Name </th>
                                                 <th>Email </th>
                                                 <th>Contact No</th>
                                                 <th>Description</th>
@@ -62,6 +63,7 @@ if ($delateid) {
                                             <tr>
                                                 <td><?= $row['id']; ?></td>                                           
                                                 <td> <?= $row['name']; ?> </td>
+                                                <td><?= $row['hostel_name']; ?></td>                                           
                                                 <td><?= $row['email']; ?></td>
                                                 <td><?= $row['contact_no']; ?></td>
                                                 <td><?= $row['description']; ?></td>

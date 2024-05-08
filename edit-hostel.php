@@ -1,69 +1,98 @@
 <style>
     .card {
-        margin: 0 auto; 
-        float: none; 
+        margin: 0 auto;
+        float: none;
         margin-top: 120px;
     }
-   
 </style>
 
 <?php
 session_start();
+function isLoggedIn()
+{
+    return isset($_SESSION['user_email']) && isset($_SESSION['user_role']) && isset($_SESSION['user_id']);
+}
 include "main_header.php";
 include "config/UserController.php";
 $UserController = new UserController();
-$hostelid = isset($_SESSION['user_id']) ? $_SESSION['user_id']  :  '';
-$hostelDetails = $UserController->gethostelInformation($hostelid);
+$hostelid = isset($_GET['id']) ? $_GET['id'] : '';
+$hostelDetails = $UserController->gethosteldetails($hostelid);
 $hostel = $hostelDetails->fetch_assoc();
-$UserController->updateOwnerInfo();
-?>
+$UserController->update_hostel();
 
+?>
 ?>
 
 
 <div class="main-wrapper">
     <div class="page-wrapper">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="" method="post" id="EdithostelForm" enctype="multipart/form-data">
-                                <h4 class="card-title mt-4">Hostel Information </h4>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Hostel Pictures</label>
-                                            <input class="form-control" name="picture" id="picture" type="file" onchange="previewHostelImage()">
-                                            <img id="hostelImagePreview" src="uploads/hostels/<?= $hostel['image']; ?>" class="img-thumbnail mt-2" style="width:30%;" alt="Hostel Image Preview">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description*</label>
-                                            <textarea rows="3" cols="4" class="form-control" name="description" id="description"><?= $hostel['description']; ?></textarea>
-                                        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="" method="post" id="EdithostelForm" enctype="multipart/form-data">
+                            <h4 class="card-title mt-4">Hostel Information </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Hostel Pictures</label>
+                                        <input class="form-control" name="picture" id="picture" type="file" onchange="previewHostelImage()">
+                                        <img id="hostelImagePreview" src="uploads/hostels/<?= $hostel['image']; ?>" class="img-thumbnail mt-2" style="width:30%;" alt="Hostel Image Preview">
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label> Hostel Name*</label>
-                                            <input type="text" name="hostelName" value="<?= $hostel['hostel_name']; ?>" id="hostelName" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Location*</label>
-                                            <input type="text" name="location" value="<?= $hostel['location']; ?>" id="location" class="form-control">
-                                        </div>
+                                    <div class="form-group">
+                                        <label>Description*</label>
+                                        <textarea rows="3" cols="4" class="form-control" name="description" id="description"><?= $hostel['description']; ?></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label> Hostel Name*</label>
+                                        <input type="text" name="hostelName" value="<?= $hostel['hostel_name']; ?>" id="hostelName" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Location*</label>
+                                        <input type="text" name="location" value="<?= $hostel['location']; ?>" id="location" class="form-control">
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label>Hostel Amenities*</label>
+                                        <select name="status" class="form-select" onchange="toggleAmenities(this)">
+                                            <option value="1">Normal Amenities</option>
+                                            <option value="0">Premium Amenities</option>
+                                        </select>
+                                    </div>
+                                    <div id="normalHostelAmenities" style="display: none;">
+                                        <?php foreach (NORMAL_AMENITIES as $amenity) { ?>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="amenities[]" value="<?= $amenity['value'] ?>" class="form-check-input">
+                                                <label class="form-check-label"><?= $amenity['name'] ?></label>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+
+                                    <div id="premiumHostelAmenities" style="display: none;">
+                                        <?php foreach (PREMIUM_AMENITIES as $amenity) { ?>
+                                            <div class="form-check">
+                                                <input type="checkbox" name="amenities[]" value="<?= $amenity['value'] ?>" class="form-check-input">
+                                                <label class="form-check-label"><?= $amenity['name'] ?></label>
+                                            </div>
+                                        <?php } ?>
                                     </div>
 
 
                                 </div>
-                                <div class="text-end mt-4" style="text-align: left!important;">
-                                    <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
-                                    <a href="hostels.php" style="margin-left: 5px;">Cancel</a>
-                                </div>
-                        </div>
-                        </form>
+
+
+                            </div>
+                            <div class="text-end mt-4" style="text-align: left!important;">
+                                <button type="submit" id="submitHostel" class="btn btn-primary">Save</button>
+                                <a href="hostelProfile.php" style="margin-left: 5px;">Cancel</a>
+                            </div>
                     </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
     </div>
 
@@ -85,5 +114,19 @@ $UserController->updateOwnerInfo();
         };
 
         reader.readAsDataURL(file);
+    }
+
+
+    function toggleAmenities(selectElement) {
+        var normalHostelAmenitiesDiv = document.getElementById("normalHostelAmenities");
+        var premiumHostelAmenitiesDiv = document.getElementById("premiumHostelAmenities");
+
+        if (selectElement.value === "1") { // Normal Hostel selected
+            normalHostelAmenitiesDiv.style.display = "block";
+            premiumHostelAmenitiesDiv.style.display = "none";
+        } else if (selectElement.value === "0") { // Premium Hostel selected
+            normalHostelAmenitiesDiv.style.display = "none";
+            premiumHostelAmenitiesDiv.style.display = "block";
+        }
     }
 </script>

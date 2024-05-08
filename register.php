@@ -45,6 +45,7 @@ $UserController->UserRegister();
                     <div class="field-form field-submit">
                         <button id="register_btn" class="awe-btn awe-btn-13">REGISTER</button>
                     </div>
+                    <span style= " font-size:medium; font-family:bolt; color:black;"   class="account-desc">I have account - <a href="login.php">Login  Account</a></span>
                 </form>
             </div>
         </div>

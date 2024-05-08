@@ -2,6 +2,7 @@
 <?php
 ob_start();
 include '../config/function.php';
+include '../config/constants.php';
 include '../config/AdminModel.php';
 
 class AdminController
@@ -30,6 +31,7 @@ class AdminController
                 if ($loginResult) {
                     showToast('Login successful');
                     $_SESSION['user_email'] = $email;
+                    $_SESSION['user'] = $loginResult;
                     header("refresh:1;url=dashboard.php");
                 } else {
                     showToast('Login failed. Please check your credentials.', 'error');
@@ -44,35 +46,69 @@ class AdminController
     public function displayAdminDetails()
     {
         try {
-            return $this->adminModel->GetAdminDetails();
+            $profileData =  $this->adminModel->GetAdminDetails();
+            $_SESSION['user'] = $profileData;
+            return $profileData;
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
         }
     }
 
+    public function updateAdminInfo()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = $_POST['full_name'];
+        $email = $_POST['email'];
+        $contact_no = $_POST['phone'];
+        $imageFILE = $_FILES['profile_image'];
+        $imageFILEDestination = "";
 
-    public function update_AdminInfo()
-    {
+        try {
+            $uploadDirectory = '../uploads/owners/';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $name = $_POST['full_name'];
-            $phone = $_POST['phone'];
+            // Check if a new image is uploaded
+            if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                // If there's an existing image, delete it
+                $oldImagePath = $this->adminModel->getAdminimage();
+                if ($oldImagePath && file_exists($oldImagePath['image'])) {
+                    unlink($oldImagePath['image']);
+                }
 
+                $uploadedFile = $imageFILE['tmp_name'];
+                $originalFileName = $imageFILE['name'];
+                $destination = $uploadDirectory . $originalFileName;
 
-            try {
-                $this->adminModel->update_adminInfo($name, $email, $phone);
-                showToast('Admin Information updated successfully!');
-                header("refresh:1;url=profile.php");
-                exit();
-            } catch (Exception $e) {
-
-                error_log('Error: ' . $e->getMessage());
-                showToast($e->getMessage(), 'error');
+                if (move_uploaded_file($uploadedFile, $destination)) {
+                    $imageFILEDestination = $destination;
+                }
             }
+
+            $this->adminModel->updateAdminInfo($email, $contact_no, $name, $originalFileName);
+            showToast('Admin Information updated successfully!');
+            
+            // Check if page has been refreshed already
+            if (!isset($_SESSION['page_refreshed'])) {
+                // JavaScript to reload the page after 2 seconds
+                echo '<script>
+                        setTimeout(function(){
+                            window.location.reload(true); // Perform hard refresh
+                        }, 2000);
+                      </script>';
+
+                $_SESSION['page_refreshed'] = true; // Mark page as refreshed
+            }
+
+            exit();
+
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
         }
     }
+}
+
+    
 
     public function updateAdminPassword()
     {
@@ -93,7 +129,6 @@ class AdminController
         }
     }
 
-
     public function add_hostel()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -106,7 +141,7 @@ class AdminController
             $location = $_POST['location'];
             $status = $_POST['status'];
             $description = $_POST['description'];
-            $imageFILE = $_FILES['image'];
+            $imageFILES = $_FILES['images']; 
     
             try {
                 $uploadDirectory = '../uploads/hostels/';
@@ -115,22 +150,24 @@ class AdminController
                     mkdir($uploadDirectory, 0777, true);
                 }
     
-                $originalFileName = '';
-                $imageFILEDestination = '';
+                $imageFILEDestinations = array(); 
+
     
-                if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                    $uploadedFile = $imageFILE['tmp_name'];
-                    $originalFileName = $imageFILE['name'];
-                    $destination = $uploadDirectory . $originalFileName;
+                foreach ($imageFILES['tmp_name'] as $key => $tmp_name) {
+                    if ($imageFILES['error'][$key] === UPLOAD_ERR_OK) {
+                        $uploadedFile = $imageFILES['tmp_name'][$key];
+                        $originalFileName = $imageFILES['name'][$key];
+                        $destination = $uploadDirectory . $originalFileName;
     
-                    if (move_uploaded_file($uploadedFile, $destination)) {
-                        $imageFILEDestination = $originalFileName;
+                        if (move_uploaded_file($uploadedFile, $destination)) {
+                            $imageFILEDestinations[] = $originalFileName;
+                        }
                     }
                 }
     
-                $amenities = isset($_POST['amenities']) ? $_POST['amenities'] : array(); 
+                $amenities = isset($_POST['amenities']) ? $_POST['amenities'] : array();
     
-                $this->adminModel-> add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $imageFILEDestination, $amenities);
+                $this->adminModel->add_hostel($email, $password, $role, $phone, $name, $hostelname, $location, $status, $description, $imageFILEDestinations, $amenities);
     
                 showToast('Hostel added successfully!');
                 header("refresh:2;url=hostels.php");
@@ -140,6 +177,7 @@ class AdminController
             }
         }
     }
+    
     
 
 
@@ -155,59 +193,57 @@ class AdminController
 
 
     public function update_hostel()
-    {
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve form data
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $phone = $_POST['phone'];
+        $name = $_POST['name'];
+        $hostelname = $_POST['hostelName'];
+        $location = $_POST['location'];
+        $description = $_POST['description'];
+        $status = $_POST['status'];
+        $imageFILES = $_FILES['pictures'];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $phone = $_POST['phone'];
-            $name = $_POST['name'];
-            $hostelname = $_POST['hostelName'];
-            $location = $_POST['location'];
-            $description = $_POST['description'];
-            $status = $_POST['status'];
-            $imageFILE = $_FILES['picture'];
-            $imageFILEDestination = "";
-            $originalFileName = "";
+        $hostelid = isset($_GET['id']) ? $_GET['id'] : '';
 
-            $hostelid = isset($_GET['id']) ? $_GET['id']  :  '';
+        try {
+            $uploadDirectory = '../uploads/hostels/';
+            $imageFILEDestination = [];
+            $originalFileNames = [];
 
-            try {
+            $singleImageArray = $this->adminModel->gethostelimage($hostelid);
+            $currentPictures = [$singleImageArray['image']];
 
 
-
-                $uploadDirectory = '../uploads/hostels/'; 
-                $singleImageArray = $this->adminModel->gethostelimage($hostelid);
-
-                if ($singleImageArray) {
-                    $oldImagePath = $singleImageArray['image'];
-
-                    $imageFILE = $_FILES['picture'];
-                    if ($imageFILE['error'] === UPLOAD_ERR_OK) {
-                        // Delete the old image
-                        if (file_exists($oldImagePath)) {
-                            unlink($oldImagePath);
-                        }
-
-                        $uploadedFile = $imageFILE['tmp_name'];
-                        $originalFileName = $imageFILE['name'];
-                        $destination = $uploadDirectory . $originalFileName;
-
-                        if (move_uploaded_file($uploadedFile, $destination)) {
-                            $imageFILEDestination = $destination;
-                        }
+            foreach ($imageFILES['tmp_name'] as $key => $tmp_name) {
+                if ($imageFILES['error'][$key] === UPLOAD_ERR_OK) {
+                    $originalFileName = uniqid() . '_' . $imageFILES['name'][$key];
+                    $destination = $uploadDirectory . $originalFileName;
+                    
+                    if (move_uploaded_file($imageFILES['tmp_name'][$key], $destination)) {
+                        $imageFILEDestination[] = $destination;
+                        $originalFileNames[] = $originalFileName;
                     }
                 }
-                $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
-                showToast('Hostel updated successfully!');
-                header("refresh:1;url=hostels.php");
-            } catch (Exception $e) {
-
-                error_log('Error: ' . $e->getMessage());
-                showToast($e->getMessage(), 'error');
             }
+
+            $mergedPictures = array_merge($currentPictures, $originalFileNames);    
+
+
+
+            $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description, $mergedPictures, $status);
+            
+            showToast('Hostel updated successfully!');
+            header("refresh:1;url=hostels.php");
+        } catch (Exception $e) {
+            error_log('Error: ' . $e->getMessage());
+            showToast($e->getMessage(), 'error');
         }
     }
+}
+
 
 
     public function gethosteldetails($id)
@@ -531,7 +567,7 @@ class AdminController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-           
+           $description = $_POST['info'];
             $imageFILE = $_FILES['image'];
             $imageFILEDestination = "";
             $originalFileName = "";
@@ -553,7 +589,7 @@ class AdminController
                         $imageFILEDestination = $destination;
                     }
                 }
-                $this->adminModel->add_slider( $originalFileName);
+                $this->adminModel->add_slider( $description,$originalFileName);
                 showToast('slider  added successfully!');
                 header("refresh:2;url=slider.php");
             } catch (Exception $e) {
@@ -564,12 +600,73 @@ class AdminController
         }
     }
 
+    
+    public function update_slider()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+           
+            $description = $_POST['description'];
+            $imageFILE = $_FILES['picture'];
+            $imageFILEDestination = "";
+            $originalFileName = "";
+
+            $sliderid = isset($_GET['id']) ? $_GET['id']  :  '';
+
+            try {
+
+
+
+                $uploadDirectory = '../uploads/sliders/'; 
+                $singleImageArray = $this->adminModel->getsliderimage($sliderid);
+
+                if ($singleImageArray) {
+                    $oldImagePath = $singleImageArray['image'];
+
+                    $imageFILE = $_FILES['picture'];
+                    if ($imageFILE['error'] === UPLOAD_ERR_OK) {
+                        // Delete the old image
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+
+                        $uploadedFile = $imageFILE['tmp_name'];
+                        $originalFileName = $imageFILE['name'];
+                        $destination = $uploadDirectory . $originalFileName;
+
+                        if (move_uploaded_file($uploadedFile, $destination)) {
+                            $imageFILEDestination = $destination;
+                        }
+                    }
+                }
+                // $this->adminModel->update_hostel($hostelid, $email, $password, $phone, $name, $hostelname, $location, $description,$originalFileName,$status);
+                showToast('Hostel updated successfully!');
+                header("refresh:1;url=hostels.php");
+            } catch (Exception $e) {
+
+                error_log('Error: ' . $e->getMessage());
+                showToast($e->getMessage(), 'error');
+            }
+        }
+    }
+
+
     public function deleteSlider($id)
     {
         try {
             $this->adminModel->delete_slider($id);
             showToast('Slider Record delated successfully!');
             header("location:slider.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    public function getsliderldetails($id)
+    {
+        try {
+            return $this->adminModel->get_slider($id);
         } catch (Exception $e) {
             // Handle exceptions or log errors
             echo "Error: " . $e->getMessage();
@@ -593,6 +690,7 @@ class AdminController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+            $title = $_POST['Title'];
             $description = $_POST['description'];
             $imageFILE = $_FILES['image'];
             $imageFILEDestination = "";
@@ -616,7 +714,7 @@ class AdminController
                         $imageFILEDestination = $destination;
                     }
                 }
-                $this->adminModel->add_AboutUS($description, $originalFileName);
+                $this->adminModel->add_AboutUS($title,$description, $originalFileName);
                 showToast('about-us  added successfully!');
                 header("refresh:2;url=about-us.php");
             } catch (Exception $e) {
@@ -624,6 +722,18 @@ class AdminController
                 error_log('Error: ' . $e->getMessage());
                 showToast($e->getMessage(), 'error');
             }
+        }
+    }
+
+    public function GetAboutUsDetails($id)
+    {
+        try {
+            $this->adminModel->getAboutUs($id);
+            showToast(' Record delated successfully!');
+            header("location:about-us.php");
+        } catch (Exception $e) {
+            // Handle exceptions or log errors
+            echo "Error: " . $e->getMessage();
         }
     }
 
